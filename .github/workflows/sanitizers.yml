@@ -1,6 +1,6 @@
 # This is a basic workflow to build robot code.
 
-name: Build Robot Code Ubsan
+name: Run Sanitizers on Robot Code
 
 on:
   push:
