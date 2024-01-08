@@ -3,6 +3,6 @@ repos:
     hooks:
     -   id: wpiformat
         name: wpiformat
-        entry: ./venv/Scripts/wpiformat.exe
+        entry: ./.github/workflows/run-wpiformat.py
         language: system
         pass_filenames: false
