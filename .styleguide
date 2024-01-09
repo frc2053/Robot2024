@@ -13,6 +13,7 @@ modifiableFileExclude {
    gradle/
    requirements.txt
    src/main/deploy/
+   img/
    .wpilib/
    .gitignore
    .github/
