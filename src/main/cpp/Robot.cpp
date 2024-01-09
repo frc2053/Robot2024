@@ -5,8 +5,12 @@
 #include "Robot.h"
 
 #include <frc2/command/CommandScheduler.h>
+#include <str/DataUtils.h>
 
-void Robot::RobotInit() {}
+void Robot::RobotInit() {
+  str::DataUtils::SetupDataLogging();
+  str::DataUtils::LogGitInfo();
+}
 
 void Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
