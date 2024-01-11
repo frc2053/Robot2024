@@ -16,7 +16,6 @@ jobs:
         include:
           - name: asan
             gradle-flags: "-Pasan"
-          tsan is broken with phoenix
           - name: tsan
             gradle-flags: "-Ptsan"
           - name: ubsan
