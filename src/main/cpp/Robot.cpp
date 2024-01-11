@@ -10,10 +10,13 @@
 void Robot::RobotInit() {
   str::DataUtils::SetupDataLogging();
   str::DataUtils::LogGitInfo();
+  AddPeriodic([this] { m_container.GetDrivebaseSubsystem().UpdateOdometry(); },
+              1 / 250_Hz);
 }
 
 void Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
+  nt::NetworkTableInstance::GetDefault().Flush();
 }
 
 void Robot::DisabledInit() {}

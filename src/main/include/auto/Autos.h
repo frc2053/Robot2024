@@ -41,8 +41,8 @@ class Autos {
         std::pair{SQUARE, pathplanner::PathPlannerAuto{"Square"}.ToPtr()},
         std::pair{PATHPLANNER_TEST,
                   pathplanner::PathPlannerAuto{"PPTest"}.ToPtr()},
-        std::pair{CHOREO_TEST,
-                  pathplanner::PathPlannerAuto{"ChoreoTestPath"}.ToPtr()});
+        std::pair{CHOREO_TEST, m_driveSub.FollowChoreoTrajectory(
+                                   [] { return "ChoreoTestPath"; })});
 
     chooser.SetDefaultOption("Do Nothing", CommandSelector::DO_NOTHING);
     chooser.AddOption("Three Feet Forward", CommandSelector::THREE_FT_FORWARD);
