@@ -207,54 +207,56 @@ frc2::CommandPtr DrivebaseSubsystem::ZeroYawCMD() {
 
 frc2::CommandPtr DrivebaseSubsystem::FollowChoreoTrajectory(
     std::function<std::string()> pathName) {
-  // clang-format off
   return frc2::cmd::Either(
-    frc2::cmd::Sequence(
-      frc2::cmd::RunOnce([this, pathName] {
-        swerveDrive.SeedFieldRelative(pathMap[pathName()].GetInitialPose());
-        swerveDrive.GetField().GetObject("CurrentChoreoTrajectory")->SetPoses(pathMap[pathName()].GetPoses());
-      }),
-      choreolib::Choreo::ChoreoSwerveCommandFactory(
-        pathMap[pathName()], [this] {
-          return swerveDrive.GetPose();
-        },
-        choreoController,
-        [this](frc::ChassisSpeeds speeds) {
-          swerveDrive.SetChassisSpeeds(speeds, false);
-        },
-        [this] { return ShouldMirrorPath(); },
-        {this}
-      ),
-      frc2::cmd::RunOnce([this] {
-        swerveDrive.Drive(0_mps, 0_mps, 0_rad_per_s, false);
-      })
-    ),
-    frc2::cmd::Print("ERROR: Choreo path wasn't found in pathMap!!!!\n\n\n\n"),
-    [this, pathName] {
-      return pathMap.contains(pathName());
-    }
-  );
-  // clang-foramt on
+      frc2::cmd::Sequence(
+          frc2::cmd::RunOnce([this, pathName] {
+            if (ShouldMirrorPath()) {
+              choreolib::ChoreoTrajectory flippedTraj =
+                  pathMap[pathName()].Flipped();
+              swerveDrive.SeedFieldRelative(flippedTraj.GetInitialPose());
+              swerveDrive.GetField()
+                  .GetObject("CurrentChoreoTrajectory")
+                  ->SetPoses(flippedTraj.GetPoses());
+            } else {
+              swerveDrive.SeedFieldRelative(
+                  pathMap[pathName()].GetInitialPose());
+              swerveDrive.GetField()
+                  .GetObject("CurrentChoreoTrajectory")
+                  ->SetPoses(pathMap[pathName()].GetPoses());
+            }
+          }),
+          choreolib::Choreo::ChoreoSwerveCommandFactory(
+              pathMap[pathName()], [this] { return swerveDrive.GetPose(); },
+              choreoController,
+              [this](frc::ChassisSpeeds speeds) {
+                swerveDrive.SetChassisSpeeds(speeds, false);
+              },
+              [this] { return ShouldMirrorPath(); }, {this}),
+          frc2::cmd::RunOnce(
+              [this] { swerveDrive.Drive(0_mps, 0_mps, 0_rad_per_s, false); })),
+      frc2::cmd::Print(
+          "ERROR: Choreo path wasn't found in pathMap!!!!\n\n\n\n"),
+      [this, pathName] { return pathMap.contains(pathName()); });
 }
 
 frc2::CommandPtr DrivebaseSubsystem::TunePathPid() {
-  // clang-foramt off
-  return frc2::cmd::Sequence(
-    frc2::cmd::RunOnce([this] {
-      SetPathTuning(true);
-      frc::SmartDashboard::PutNumber("Drivebase/TRANS_P", xTranslationController.GetP());
-      frc::SmartDashboard::PutNumber("Drivebase/TRANS_I", xTranslationController.GetI());
-      frc::SmartDashboard::PutNumber("Drivebase/TRANS_D", xTranslationController.GetD());
-      frc::SmartDashboard::PutNumber("Drivebase/ROT_P", rotationController.GetP());
-      frc::SmartDashboard::PutNumber("Drivebase/ROT_I", rotationController.GetI());
-      frc::SmartDashboard::PutNumber("Drivebase/ROT_D", rotationController.GetD());
-    })
-  );
-  // clang-foramt on
+  return frc2::cmd::Sequence(frc2::cmd::RunOnce([this] {
+    SetPathTuning(true);
+    frc::SmartDashboard::PutNumber("Drivebase/TRANS_P",
+                                   xTranslationController.GetP());
+    frc::SmartDashboard::PutNumber("Drivebase/TRANS_I",
+                                   xTranslationController.GetI());
+    frc::SmartDashboard::PutNumber("Drivebase/TRANS_D",
+                                   xTranslationController.GetD());
+    frc::SmartDashboard::PutNumber("Drivebase/ROT_P",
+                                   rotationController.GetP());
+    frc::SmartDashboard::PutNumber("Drivebase/ROT_I",
+                                   rotationController.GetI());
+    frc::SmartDashboard::PutNumber("Drivebase/ROT_D",
+                                   rotationController.GetD());
+  }));
 }
 
 frc2::CommandPtr DrivebaseSubsystem::DoneTuningPathPids() {
-  return frc2::cmd::RunOnce([this] {
-    SetPathTuning(false);
-  });
+  return frc2::cmd::RunOnce([this] { SetPathTuning(false); });
 }
