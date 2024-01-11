@@ -1,0 +1,2 @@
+# suppresses ctre mutex double lock
+mutex:ctre::phoenix::threading::ManualEvent::Signal

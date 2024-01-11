@@ -16,9 +16,9 @@ jobs:
         include:
           - name: asan
             gradle-flags: "-Pasan"
-          # tsan is broken with phoenix
-          # - name: tsan
-          #   gradle-flags: "-Ptsan"
+          tsan is broken with phoenix
+          - name: tsan
+            gradle-flags: "-Ptsan"
           - name: ubsan
             gradle-flags: "-Pubsan"
     # The type of runner that the job will run on
@@ -44,4 +44,6 @@ jobs:
 
     # Runs a single command using the runners shell
     - name: Compile and run tests on robot code
+      env: 
+        TSAN_OPTIONS: suppressions=./.github/workflows/.tsan_suppressions
       run: ./gradlew build ${{ matrix.gradle-flags }}
