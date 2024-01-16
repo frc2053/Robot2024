@@ -88,6 +88,10 @@ DrivebaseSubsystem& RobotContainer::GetDrivebaseSubsystem() {
   return driveSub;
 }
 
+ElevatorSubsystem& RobotContainer::GetElevatorSubsystem() {
+  return elevatorSub;
+}
+
 str::DeadbandAndSquareFunc RobotContainer::DeadbandAndSquare(
     std::function<double()> joystickValue) {
   return [joystickValue]() {

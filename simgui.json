@@ -13,10 +13,22 @@
       "/SmartDashboard/Drivebase/TuneDriveCmd": "Command",
       "/SmartDashboard/Drivebase/TuneSteerCmd": "Command",
       "/SmartDashboard/Drivebase/ZeroYawCMD": "Command",
+      "/SmartDashboard/Elevator Telemetry": "Subsystem",
+      "/SmartDashboard/Elevator Vis": "Mechanism2d",
       "/SmartDashboard/Field": "Field2d"
     },
     "windows": {
       "/SmartDashboard/Auto Chooser": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/Elevator Telemetry": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/Elevator Vis": {
         "window": {
           "visible": true
         }
@@ -28,7 +40,6 @@
         },
         "Estimated Robot Modules": {
           "arrows": false,
-          "image": "/home/drew/dev/Robot2024/img/swerve_module.png",
           "length": 0.20000000298023224,
           "style": "Box/Image",
           "width": 0.20000000298023224
@@ -60,9 +71,12 @@
         "Drivebase": {
           "Module 3": {
             "open": true
-          },
+          }
+        },
+        "Elevator Telemetry": {
           "open": true
-        }
+        },
+        "open": true
       }
     }
   },
@@ -93,7 +107,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 303,
+          "height": -27,
           "series": [
             {
               "color": [
@@ -127,7 +141,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 303,
+          "height": -27,
           "series": [
             {
               "color": [
@@ -161,7 +175,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 303,
+          "height": -27,
           "series": [
             {
               "color": [
@@ -195,7 +209,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 303,
+          "height": -27,
           "series": [
             {
               "color": [
@@ -236,7 +250,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": -31,
+          "height": -27,
           "series": [
             {
               "color": [
@@ -270,7 +284,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": -31,
+          "height": -27,
           "series": [
             {
               "color": [
@@ -304,7 +318,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": -31,
+          "height": -27,
           "series": [
             {
               "color": [
@@ -338,7 +352,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": -31,
+          "height": -27,
           "series": [
             {
               "color": [
@@ -363,6 +377,56 @@
       ],
       "window": {
         "name": "Steer Angles"
+      }
+    },
+    "Plot <2>": {
+      "plots": [
+        {
+          "axis": [
+            {
+              "autoFit": true
+            }
+          ],
+          "backgroundColor": [
+            0.0,
+            0.0,
+            0.0,
+            0.8500000238418579
+          ],
+          "height": 648,
+          "series": [
+            {
+              "color": [
+                0.2980392277240753,
+                0.44705885648727417,
+                0.6901960968971252,
+                1.0
+              ],
+              "id": "NT:/SmartDashboard/Elevator Telemetry/Current Position (ft)"
+            },
+            {
+              "color": [
+                0.8666667342185974,
+                0.5176470875740051,
+                0.32156863808631897,
+                1.0
+              ],
+              "id": "NT:/SmartDashboard/Elevator Telemetry/Position Setpoint (ft)"
+            },
+            {
+              "color": [
+                0.3333333432674408,
+                0.658823549747467,
+                0.4078431725502014,
+                1.0
+              ],
+              "id": "NT:/SmartDashboard/Elevator Telemetry/Current Velocity (ft per sec)"
+            }
+          ]
+        }
+      ],
+      "window": {
+        "name": "ElevatorInfo"
       }
     }
   }
