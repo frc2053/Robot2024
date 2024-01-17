@@ -11,10 +11,10 @@ This repo holds our 2024 Robot. Our test drivebase is a swerve drivetrain using 
 ## Prerequisites (Install this stuff first)
 - Python 3 (not installed from Windows store. Please install from Python website)
 - Visual Studio 2022 with C++ workload
-- Version [2024.1.1](https://github.com/wpilibsuite/allwpilib/releases/tag/v2024.0.1) of the WPILib installer installed.
-- Choreo [v2024.0.1](https://github.com/SleipnirGroup/Choreo/releases/tag/v2024.1.0)
+- Version [2024.1.1](https://github.com/wpilibsuite/allwpilib/releases/tag/v2024.1.1) of the WPILib installer installed.
+- Choreo [v2024.1.0](https://github.com/SleipnirGroup/Choreo/releases/tag/v2024.1.0)
 - Pathplanner [v2024.1.1](https://github.com/mjansen4857/pathplanner/releases/tag/v2024.1.1)
-- Elastic Dashboard [v2024.0.1](https://github.com/Gold872/elastic-dashboard/releases/tag/v2024.0.1)
+- Elastic Dashboard [v2024.0.2](https://github.com/Gold872/elastic-dashboard/releases/tag/v2024.0.2)
 
 ## Install steps: 
 - Create your virtual environment
