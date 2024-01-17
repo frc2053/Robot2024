@@ -18,7 +18,7 @@ frc2::CommandPtr ElevatorSubsystem::GoToHeightCommand(
   return frc2::cmd::Sequence(
       frc2::cmd::RunOnce([height, this] { GoToHeight(height()); }, {this}),
       frc2::cmd::WaitUntil([this] { return IsElevatorAtSetpoint(); }));
-};
+}
 
 // This method will be called once per scheduler run
 void ElevatorSubsystem::Periodic() {

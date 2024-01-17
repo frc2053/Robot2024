@@ -9,6 +9,8 @@
 #include <frc/smartdashboard/MechanismLigament2d.h>
 #include <frc2/command/SubsystemBase.h>
 
+#include <functional>
+
 #include <ctre/phoenix6/TalonFX.hpp>
 
 #include "Constants.h"

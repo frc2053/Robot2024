@@ -12,6 +12,10 @@ RobotContainer::RobotContainer() {
 }
 
 void RobotContainer::ConfigureBindings() {
+  operatorController.A().WhileTrue(shooterSub.GoToSpeedCmd([this] {
+    return frc::ApplyDeadband<double>(operatorController.GetLeftY(), 0.2);
+  }));
+
   driveSub.SetDefaultCommand(driveSub.DriveFactory(
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
       DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
@@ -90,6 +94,10 @@ DrivebaseSubsystem& RobotContainer::GetDrivebaseSubsystem() {
 
 ElevatorSubsystem& RobotContainer::GetElevatorSubsystem() {
   return elevatorSub;
+}
+
+ShooterSubsystem& RobotContainer::GetShooterSubsystem() {
+  return shooterSub;
 }
 
 str::DeadbandAndSquareFunc RobotContainer::DeadbandAndSquare(

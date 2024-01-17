@@ -14,6 +14,7 @@
 #include "frc2/command/PrintCommand.h"
 #include "subsystems/DrivebaseSubsystem.h"
 #include "subsystems/ElevatorSubsystem.h"
+#include "subsystems/ShooterSubsystem.h"
 
 namespace autos {
 
@@ -27,8 +28,11 @@ enum CommandSelector {
 
 class Autos {
  public:
-  explicit Autos(DrivebaseSubsystem& driveSub, ElevatorSubsystem& elevatorSub)
-      : m_driveSub(driveSub), m_elevatorSub(elevatorSub) {
+  explicit Autos(DrivebaseSubsystem& driveSub, ElevatorSubsystem& elevatorSub,
+                 ShooterSubsystem& shooterSub)
+      : m_driveSub(driveSub),
+        m_elevatorSub(elevatorSub),
+        m_shooterSub(shooterSub) {
     pathplanner::NamedCommands::registerCommand(
         "TestCommandPrint",
         frc2::PrintCommand("Test Print from PP Command").ToPtr());
@@ -57,6 +61,7 @@ class Autos {
 
   DrivebaseSubsystem& m_driveSub;
   ElevatorSubsystem& m_elevatorSub;
+  ShooterSubsystem& m_shooterSub;
   frc::SendableChooser<CommandSelector> chooser;
 
   frc2::CommandPtr GetSelectedAutoCmd{frc2::cmd::None()};

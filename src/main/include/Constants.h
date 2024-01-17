@@ -9,11 +9,30 @@
 #include <frc/system/plant/DCMotor.h>
 #include <frc/trajectory/TrapezoidProfile.h>
 #include <units/angular_acceleration.h>
+#include <units/moment_of_inertia.h>
 #include <units/velocity.h>
 
 #include "str/Units.h"
 
 namespace constants {
+
+namespace shooter {
+struct ShooterGains {
+  units::radial_ka_unit_t kA{0};
+  frc::DCMotor::radians_per_second_per_volt_t kV{0};
+  units::volt_t kS{0};
+  units::radian_volt_kp_unit_t kP{0};
+  units::radian_volt_ki_unit_t kI{0};
+  units::radian_volt_kd_unit_t kD{0};
+};
+
+inline constexpr int LEFT_SHOOTER_CAN_ID = 17;
+inline constexpr int RIGHT_SHOOTER_CAN_ID = 18;
+
+inline constexpr units::scalar_t SHOOTER_RATIO = 1.0;
+inline constexpr units::kilogram_square_meter_t SHOOTER_MOI = 0.001_kg_sq_m;
+inline constexpr units::radians_per_second_t SHOOTER_TOLERANCE = 1_rad_per_s;
+}  // namespace shooter
 
 namespace elevator {
 struct ElevatorGains {

@@ -12,6 +12,7 @@
 #include "auto/Autos.h"
 #include "subsystems/DrivebaseSubsystem.h"
 #include "subsystems/ElevatorSubsystem.h"
+#include "subsystems/ShooterSubsystem.h"
 
 namespace str {
 using DeadbandAndSquareFunc = std::function<double()>;
@@ -24,6 +25,7 @@ class RobotContainer {
   frc2::Command* GetAutonomousCommand();
   DrivebaseSubsystem& GetDrivebaseSubsystem();
   ElevatorSubsystem& GetElevatorSubsystem();
+  ShooterSubsystem& GetShooterSubsystem();
 
  private:
   void ConfigureBindings();
@@ -32,8 +34,9 @@ class RobotContainer {
 
   DrivebaseSubsystem driveSub;
   ElevatorSubsystem elevatorSub;
+  ShooterSubsystem shooterSub;
 
-  autos::Autos autos{driveSub, elevatorSub};
+  autos::Autos autos{driveSub, elevatorSub, shooterSub};
 
   frc2::CommandPtr characterizeSteerCmd = driveSub.CharacterizeSteerMotors([] {
     return frc::SmartDashboard::GetBoolean("Drivebase/DoneWithStep", false);
