@@ -20,6 +20,12 @@ void RobotContainer::ConfigureBindings() {
 
   operatorController.X().WhileTrue(intakeSub.SpitOutNotes());
 
+  operatorController.Y().WhileTrue(dunkSub.PivotDunkNotesOut());
+  operatorController.Y().OnFalse(dunkSub.PivotDunkNotesIn());
+
+  operatorController.RightBumper().WhileTrue(dunkSub.DunkTheNotes());
+  operatorController.LeftBumper().WhileTrue(dunkSub.JammedDunkNotes());
+
   driveSub.SetDefaultCommand(driveSub.DriveFactory(
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
       DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),

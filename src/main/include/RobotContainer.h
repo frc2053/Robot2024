@@ -11,6 +11,7 @@
 
 #include "auto/Autos.h"
 #include "subsystems/DrivebaseSubsystem.h"
+#include "subsystems/DunkerSubsystem.h"
 #include "subsystems/IntakeSubsystem.h"
 #include "subsystems/ShooterSubsystem.h"
 
@@ -34,6 +35,7 @@ class RobotContainer {
   DrivebaseSubsystem driveSub;
   ShooterSubsystem shooterSub;
   IntakeSubsystem intakeSub;
+  DunkerSubsystem dunkSub;
 
   autos::Autos autos{driveSub, shooterSub};
 

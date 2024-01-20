@@ -20,6 +20,14 @@ namespace intake {
 inline constexpr int INTAKE_CAN_ID = 19;
 }  // namespace intake
 
+namespace dunker {
+inline constexpr int DUNKER_CAN_ID = 20;
+inline constexpr int PIVOT_DUNKER_CAN_ID = 21;
+inline constexpr units::radian_t DUNKER_PIVOT_ANGLE_TOLERANCE = 1_deg;
+inline constexpr units::radian_t DUNKER_OUT_ANGLE = 90_deg;
+inline constexpr units::radian_t DUNKER_IN_ANGLE = 0_deg;
+}  // namespace dunker
+
 namespace shooter {
 struct ShooterGains {
   units::radial_ka_unit_t kA{0};
