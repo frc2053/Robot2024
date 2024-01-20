@@ -16,6 +16,10 @@ void RobotContainer::ConfigureBindings() {
     return frc::ApplyDeadband<double>(operatorController.GetLeftY(), 0.2);
   }));
 
+  operatorController.B().WhileTrue(intakeSub.SuckInNotes());
+
+  operatorController.X().WhileTrue(intakeSub.SpitOutNotes());
+
   driveSub.SetDefaultCommand(driveSub.DriveFactory(
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
       DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),

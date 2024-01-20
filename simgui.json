@@ -1,4 +1,13 @@
 {
+  "HALProvider": {
+    "Other Devices": {
+      " Talon FX (v6)[19]": {
+        "header": {
+          "open": true
+        }
+      }
+    }
+  },
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
@@ -108,7 +117,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": -27,
+          "height": 3,
           "series": [
             {
               "color": [
@@ -142,7 +151,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": -27,
+          "height": 3,
           "series": [
             {
               "color": [
@@ -176,7 +185,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": -27,
+          "height": 3,
           "series": [
             {
               "color": [
@@ -210,7 +219,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": -27,
+          "height": 3,
           "series": [
             {
               "color": [
@@ -251,7 +260,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": -27,
+          "height": 3,
           "series": [
             {
               "color": [
@@ -285,7 +294,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": -27,
+          "height": 3,
           "series": [
             {
               "color": [
@@ -319,7 +328,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": -27,
+          "height": 3,
           "series": [
             {
               "color": [
@@ -353,7 +362,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": -27,
+          "height": 3,
           "series": [
             {
               "color": [
@@ -394,7 +403,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": -43,
+          "height": 0,
           "series": [
             {
               "color": [
@@ -444,7 +453,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 387,
+          "height": 0,
           "series": [
             {
               "color": [

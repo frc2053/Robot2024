@@ -11,6 +11,7 @@
 
 #include "auto/Autos.h"
 #include "subsystems/DrivebaseSubsystem.h"
+#include "subsystems/IntakeSubsystem.h"
 #include "subsystems/ShooterSubsystem.h"
 
 namespace str {
@@ -32,6 +33,7 @@ class RobotContainer {
 
   DrivebaseSubsystem driveSub;
   ShooterSubsystem shooterSub;
+  IntakeSubsystem intakeSub;
 
   autos::Autos autos{driveSub, shooterSub};
 

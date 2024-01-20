@@ -16,6 +16,10 @@
 
 namespace constants {
 
+namespace intake {
+inline constexpr int INTAKE_CAN_ID = 19;
+}  // namespace intake
+
 namespace shooter {
 struct ShooterGains {
   units::radial_ka_unit_t kA{0};
@@ -33,39 +37,6 @@ inline constexpr units::scalar_t SHOOTER_RATIO = 1.0;
 inline constexpr units::kilogram_square_meter_t SHOOTER_MOI = 0.001_kg_sq_m;
 inline constexpr units::radians_per_second_t SHOOTER_TOLERANCE = 1_rad_per_s;
 }  // namespace shooter
-
-namespace elevator {
-struct ElevatorGains {
-  units::linear_ka_unit_t kA{0};
-  units::linear_kv_unit_t kV{2};
-  units::volt_t kG{.35};
-  units::volt_t kS{0};
-  units::meter_volt_kp_unit_t kP{10};
-  units::meter_volt_ki_unit_t kI{0};
-  units::meter_volt_kd_unit_t kD{.3};
-
-  bool operator==(const ElevatorGains& rhs) const {
-    return units::essentiallyEqual(kA, rhs.kA, 1e-6) &&
-           units::essentiallyEqual(kV, rhs.kV, 1e-6) &&
-           units::essentiallyEqual(kG, rhs.kG, 1e-6) &&
-           units::essentiallyEqual(kS, rhs.kS, 1e-6) &&
-           units::essentiallyEqual(kP, rhs.kP, 1e-6) &&
-           units::essentiallyEqual(kI, rhs.kI, 1e-6) &&
-           units::essentiallyEqual(kD, rhs.kD, 1e-6);
-  }
-  bool operator!=(const ElevatorGains& rhs) const { return !operator==(rhs); }
-};
-
-inline constexpr int LEFT_ELEVATOR_CAN_ID = 15;
-inline constexpr int RIGHT_ELEVATOR_CAN_ID = 16;
-
-inline constexpr units::scalar_t ELEVATOR_RATIO = 9.0 / 1.0;
-inline constexpr units::kilogram_t CARRIAGE_MASS = 15_lb;
-inline constexpr units::meter_t ELEVATOR_DRUM_RADIUS = 1.75_in;
-inline constexpr units::meter_t ELEVATOR_MAX_HEIGHT = 40_in;
-
-inline constexpr units::meter_t ELEVATOR_TOLERANCE = 0.25_in;
-}  // namespace elevator
 
 namespace swerve {
 
