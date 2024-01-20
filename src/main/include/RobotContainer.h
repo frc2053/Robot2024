@@ -11,7 +11,6 @@
 
 #include "auto/Autos.h"
 #include "subsystems/DrivebaseSubsystem.h"
-#include "subsystems/ElevatorSubsystem.h"
 #include "subsystems/ShooterSubsystem.h"
 
 namespace str {
@@ -24,7 +23,6 @@ class RobotContainer {
 
   frc2::Command* GetAutonomousCommand();
   DrivebaseSubsystem& GetDrivebaseSubsystem();
-  ElevatorSubsystem& GetElevatorSubsystem();
   ShooterSubsystem& GetShooterSubsystem();
 
  private:
@@ -33,10 +31,9 @@ class RobotContainer {
   frc2::CommandXboxController operatorController{1};
 
   DrivebaseSubsystem driveSub;
-  ElevatorSubsystem elevatorSub;
   ShooterSubsystem shooterSub;
 
-  autos::Autos autos{driveSub, elevatorSub, shooterSub};
+  autos::Autos autos{driveSub, shooterSub};
 
   frc2::CommandPtr characterizeSteerCmd = driveSub.CharacterizeSteerMotors([] {
     return frc::SmartDashboard::GetBoolean("Drivebase/DoneWithStep", false);

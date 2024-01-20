@@ -92,10 +92,6 @@ DrivebaseSubsystem& RobotContainer::GetDrivebaseSubsystem() {
   return driveSub;
 }
 
-ElevatorSubsystem& RobotContainer::GetElevatorSubsystem() {
-  return elevatorSub;
-}
-
 ShooterSubsystem& RobotContainer::GetShooterSubsystem() {
   return shooterSub;
 }
