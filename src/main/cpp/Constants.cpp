@@ -5,6 +5,13 @@
 #include "Constants.h"
 
 namespace constants {
+
+namespace dunker {
+const frc::TrapezoidProfile<units::radians>::Constraints
+    PIVOT_CONTROLLER_CONSTRAINTS{constants::dunker::MAX_ROTATION_SPEED,
+                                 constants::dunker::MAX_ROTATION_ACCEL};
+}  // namespace dunker
+
 namespace swerve {
 namespace pathplanning {
 const frc::TrapezoidProfile<units::radians>::Constraints

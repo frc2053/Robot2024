@@ -4,41 +4,29 @@
 
 #include "subsystems/DunkerSubsystem.h"
 
+#include "frc/smartdashboard/SmartDashboard.h"
+
 DunkerSubsystem::DunkerSubsystem() {
   ConfigureMotors();
-}
-
-void DunkerSubsystem::ConfigureMotors() {
-  dunkMotor.RestoreFactoryDefaults();
-  dunkMotor.SetIdleMode(rev::CANSparkBase::IdleMode::kCoast);
-  dunkMotor.SetSmartCurrentLimit(20);
-  if (dunkMotor.BurnFlash() == rev::REVLibError::kOk) {
-    fmt::print("Successfully configured dunk motor!\n");
-  } else {
-    fmt::print("ERROR: Unable to configure dunk motor!\n");
-  }
-}
-
-void DunkerSubsystem::Periodic() {
-  ctre::phoenix6::BaseStatusSignal::RefreshAll(dunkPivotPositionSig);
-
-  currentPivotPos = dunkPivotPositionSig.GetValue();
+  frc::SmartDashboard::PutData("Dunker Telemetry", this);
+  frc::SmartDashboard::PutData("Dunker Mechanism Vis", &pivotMech);
+  pivotController.SetTolerance(constants::dunker::DUNKER_PIVOT_ANGLE_TOLERANCE,
+                               constants::dunker::DUNKER_PIVOT_VEL_TOLERANCE);
 }
 
 frc2::CommandPtr DunkerSubsystem::PivotDunkNotesOut() {
   return frc2::cmd::Sequence(
       frc2::cmd::RunOnce(
-          [this] { SetPivotAngle(constants::dunker::DUNKER_OUT_ANGLE); },
+          [this] { SetPivotGoal(constants::dunker::DUNKER_OUT_ANGLE); },
           {this}),
-      frc2::cmd::WaitUntil([this] { return IsPivotSetPoint(); }));
+      frc2::cmd::WaitUntil([this] { return IsPivotAtGoal(); }));
 }
 
 frc2::CommandPtr DunkerSubsystem::PivotDunkNotesIn() {
   return frc2::cmd::Sequence(
       frc2::cmd::RunOnce(
-          [this] { SetPivotAngle(constants::dunker::DUNKER_IN_ANGLE); },
-          {this}),
-      frc2::cmd::WaitUntil([this] { return IsPivotSetPoint(); }));
+          [this] { SetPivotGoal(constants::dunker::DUNKER_IN_ANGLE); }, {this}),
+      frc2::cmd::WaitUntil([this] { return IsPivotAtGoal(); }));
 }
 
 frc2::CommandPtr DunkerSubsystem::DunkTheNotes() {
@@ -49,4 +37,155 @@ frc2::CommandPtr DunkerSubsystem::DunkTheNotes() {
 frc2::CommandPtr DunkerSubsystem::JammedDunkNotes() {
   return frc2::cmd::RunEnd([this] { SetDunkSpeed(-1); },
                            [this] { SetDunkSpeed(0); }, {this});
+}
+
+void DunkerSubsystem::Periodic() {
+  currentPivotPos = ConvertEncoderToAngle(pivotEncoder.GetOutput());
+  dunkPivotMotor.SetVoltage(
+      units::volt_t{pivotController.Calculate(currentPivotPos)} +
+      pivotFeedfoward.Calculate(pivotController.GetSetpoint().position,
+                                pivotController.GetSetpoint().velocity));
+}
+
+void DunkerSubsystem::SimulationPeriodic() {
+  pivotSim.SetInput(frc::Vectord<1>{dunkPivotMotor.Get() *
+                                    frc::RobotController::GetInputVoltage()});
+  pivotSim.Update(20_ms);
+  encoderSim.SetOutput(ConvertAngleToEncoder(pivotSim.GetAngle()));
+  pivotArm->SetAngle(-pivotSim.GetAngle() + 180_deg);
+}
+
+void DunkerSubsystem::ConfigureMotors() {
+  dunkPivotMotor.RestoreFactoryDefaults();
+  dunkPivotMotor.SetIdleMode(rev::CANSparkBase::IdleMode::kBrake);
+  dunkPivotMotor.SetSmartCurrentLimit(40);
+  if (dunkPivotMotor.BurnFlash() == rev::REVLibError::kOk) {
+    fmt::print("Successfully configured dunk pivot motor!\n");
+  } else {
+    fmt::print("ERROR: Unable to configure dunk pivot motor!\n");
+  }
+
+  dunkMotor.RestoreFactoryDefaults();
+  dunkMotor.SetIdleMode(rev::CANSparkBase::IdleMode::kCoast);
+  dunkMotor.SetSmartCurrentLimit(20);
+  if (dunkMotor.BurnFlash() == rev::REVLibError::kOk) {
+    fmt::print("Successfully configured dunk motor!\n");
+  } else {
+    fmt::print("ERROR: Unable to configure dunk motor!\n");
+  }
+}
+
+units::radian_t DunkerSubsystem::ConvertEncoderToAngle(double encoderReading) {
+  return units::radian_t{
+      units::Map<double>(encoderReading, constants::dunker::DUNKER_MIN_ENCODER,
+                         constants::dunker::DUNKER_MAX_ENCODER,
+                         constants::dunker::DUNKER_MIN_ANGLE.value(),
+                         constants::dunker::DUNKER_MAX_ANGLE.value())};
+}
+
+double DunkerSubsystem::ConvertAngleToEncoder(units::radian_t angle) {
+  return units::Map<double>(angle.value(),
+                            constants::dunker::DUNKER_MIN_ANGLE.value(),
+                            constants::dunker::DUNKER_MAX_ANGLE.value(),
+                            constants::dunker::DUNKER_MIN_ENCODER,
+                            constants::dunker::DUNKER_MAX_ENCODER);
+}
+
+units::radian_t DunkerSubsystem::GetPivotAngle() {
+  return currentPivotPos;
+}
+
+void DunkerSubsystem::SetDunkSpeed(double speed) {
+  dunkMotor.SetVoltage(speed * 12_V);
+}
+
+void DunkerSubsystem::SetPivotGoal(units::radian_t angleGoal) {
+  pivotController.SetGoal(angleGoal);
+}
+
+bool DunkerSubsystem::IsPivotAtGoal() {
+  return pivotController.AtGoal();
+}
+
+void DunkerSubsystem::InitSendable(wpi::SendableBuilder& builder) {
+  frc2::SubsystemBase::InitSendable(builder);
+  builder.AddDoubleProperty(
+      "Angle Goal (Degrees)",
+      [this] {
+        return pivotController.GetGoal()
+            .position.convert<units::degrees>()
+            .value();
+      },
+      [this](double newGoalDegrees) {
+        SetPivotGoal(units::degree_t{newGoalDegrees});
+      });
+  builder.AddDoubleProperty(
+      "Current Position (Degrees)",
+      [this] { return GetPivotAngle().convert<units::degrees>().value(); },
+      nullptr);
+  builder.AddDoubleProperty(
+      "kP", [this] { return currentGains.kP.to<double>(); },
+      [this](double newKp) {
+        constants::dunker::DunkerGains newGains = GetGains();
+        newGains.kP = units::radian_volt_kp_unit_t{newKp};
+        SetGains(newGains);
+      });
+  builder.AddDoubleProperty(
+      "kI", [this] { return currentGains.kI.to<double>(); },
+      [this](double newKi) {
+        constants::dunker::DunkerGains newGains = GetGains();
+        newGains.kI = units::radian_volt_ki_unit_t{newKi};
+        SetGains(newGains);
+      });
+  builder.AddDoubleProperty(
+      "kD", [this] { return currentGains.kD.to<double>(); },
+      [this](double newKd) {
+        constants::dunker::DunkerGains newGains = GetGains();
+        newGains.kD = units::radian_volt_kd_unit_t{newKd};
+        SetGains(newGains);
+      });
+  builder.AddDoubleProperty(
+      "kV", [this] { return currentGains.kV.to<double>(); },
+      [this](double newKv) {
+        constants::dunker::DunkerGains newGains = GetGains();
+        newGains.kV =
+            units::unit_t<frc::SimpleMotorFeedforward<units::radians>::kv_unit>{
+                newKv};
+        SetGains(newGains);
+      });
+  builder.AddDoubleProperty(
+      "kA", [this] { return currentGains.kA.to<double>(); },
+      [this](double newKa) {
+        constants::dunker::DunkerGains newGains = GetGains();
+        newGains.kA =
+            units::unit_t<frc::SimpleMotorFeedforward<units::radians>::ka_unit>{
+                newKa};
+        SetGains(newGains);
+      });
+  builder.AddDoubleProperty(
+      "kS", [this] { return currentGains.kS.to<double>(); },
+      [this](double newKs) {
+        constants::dunker::DunkerGains newGains = GetGains();
+        newGains.kS = units::volt_t{newKs};
+        SetGains(newGains);
+      });
+  builder.AddDoubleProperty(
+      "kG", [this] { return currentGains.kG.to<double>(); },
+      [this](double newKg) {
+        constants::dunker::DunkerGains newGains = GetGains();
+        newGains.kG = units::volt_t{newKg};
+        SetGains(newGains);
+      });
+}
+
+void DunkerSubsystem::SetGains(const constants::dunker::DunkerGains newGains) {
+  currentGains = newGains;
+  // pivotFeedfoward = frc::ArmFeedforward{newGains.kS, newGains.kG,
+  // newGains.kV, newGains.kA};
+  pivotController.SetPID(newGains.kP.value(), newGains.kI.value(),
+                         newGains.kD.value());
+}
+
+constants::dunker::DunkerGains DunkerSubsystem::GetGains() {
+  return currentGains;
 }

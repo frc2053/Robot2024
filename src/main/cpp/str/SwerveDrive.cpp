@@ -637,9 +637,11 @@ frc2::CommandPtr SwerveDrive::TuneSteerPID(std::function<bool()> done,
       frc2::cmd::Run(
           [this, tablePrefix] {
             constants::swerve::ModuleSteerGains newGains{
-                units::unit_t<frc::SimpleMotorFeedforward<units::radians>::ka_unit>{
+                units::unit_t<
+                    frc::SimpleMotorFeedforward<units::radians>::ka_unit>{
                     frc::SmartDashboard::GetNumber(tablePrefix + "kA", 0)},
-                units::unit_t<frc::SimpleMotorFeedforward<units::radians>::kv_unit>{
+                units::unit_t<
+                    frc::SimpleMotorFeedforward<units::radians>::kv_unit>{
                     frc::SmartDashboard::GetNumber(tablePrefix + "kV", 0)},
                 units::volt_t{
                     frc::SmartDashboard::GetNumber(tablePrefix + "kS", 0)},
@@ -694,9 +696,11 @@ frc2::CommandPtr SwerveDrive::TuneDrivePID(std::function<bool()> done,
       frc2::cmd::Run(
           [this, tablePrefix] {
             constants::swerve::ModuleDriveGains newGains{
-                units::unit_t<frc::SimpleMotorFeedforward<units::meters>::ka_unit>{
+                units::unit_t<
+                    frc::SimpleMotorFeedforward<units::meters>::ka_unit>{
                     frc::SmartDashboard::GetNumber(tablePrefix + "kA", 0)},
-                units::unit_t<frc::SimpleMotorFeedforward<units::meters>::kv_unit>{
+                units::unit_t<
+                    frc::SimpleMotorFeedforward<units::meters>::kv_unit>{
                     frc::SmartDashboard::GetNumber(tablePrefix + "kV", 0)},
                 units::volt_t{
                     frc::SmartDashboard::GetNumber(tablePrefix + "kS", 0)},

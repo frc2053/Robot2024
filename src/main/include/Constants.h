@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include <frc/geometry/Translation2d.h>
 #include <frc/controller/ArmFeedforward.h>
 #include <frc/controller/SimpleMotorFeedforward.h>
+#include <frc/geometry/Translation2d.h>
 #include <frc/kinematics/SwerveDriveKinematics.h>
 #include <frc/system/plant/DCMotor.h>
 #include <frc/trajectory/TrapezoidProfile.h>
@@ -26,6 +26,10 @@ namespace dunker {
 inline constexpr int PIVOT_ENCODER_PORT = 1;
 inline constexpr int DUNKER_CAN_ID = 20;
 inline constexpr int PIVOT_DUNKER_CAN_ID = 21;
+
+inline constexpr double PIVOT_GEAR_RATIO = 60.0;
+inline constexpr units::meter_t PIVOT_ARM_LENGTH = 12_in;
+inline constexpr units::kilogram_t PIVOT_MASS = 15_lb;
 
 struct DunkerGains {
   units::unit_t<frc::ArmFeedforward::ka_unit> kA{0};
@@ -50,23 +54,30 @@ struct DunkerGains {
 
 inline constexpr DunkerGains GAINS{
     units::unit_t<frc::ArmFeedforward::ka_unit>{0.0},
-    units::unit_t<frc::ArmFeedforward::kv_unit>{0.0},
+    units::unit_t<frc::ArmFeedforward::kv_unit>{1.0},
     units::volt_t{0.0},
     units::volt_t{0.0},
-    units::radian_volt_kp_unit_t{0.0},
+    units::radian_volt_kp_unit_t{10.0},
     units::radian_volt_ki_unit_t{0.0},
     units::radian_volt_kd_unit_t{0.0}};
 
-inline constexpr units::radians_per_second_t MAX_ROTATION_SPEED = 90_deg_per_s;
+inline constexpr units::radians_per_second_t MAX_ROTATION_SPEED = 900_deg_per_s;
 inline constexpr units::radians_per_second_squared_t MAX_ROTATION_ACCEL =
-    1000_deg_per_s_sq;
+    10000_deg_per_s_sq;
 
 extern const frc::TrapezoidProfile<units::radians>::Constraints
     PIVOT_CONTROLLER_CONSTRAINTS;
 
+inline constexpr double DUNKER_MIN_ENCODER = 0.1;
+inline constexpr double DUNKER_MAX_ENCODER = 0.7;
+inline constexpr units::radian_t DUNKER_MIN_ANGLE = 0_deg;
+inline constexpr units::radian_t DUNKER_MAX_ANGLE = 180_deg;
+
 inline constexpr units::radian_t DUNKER_PIVOT_ANGLE_TOLERANCE = 1_deg;
-inline constexpr units::radian_t DUNKER_OUT_ANGLE = 90_deg;
-inline constexpr units::radian_t DUNKER_IN_ANGLE = 0_deg;
+inline constexpr units::radians_per_second_t DUNKER_PIVOT_VEL_TOLERANCE =
+    1_deg_per_s;
+inline constexpr units::radian_t DUNKER_OUT_ANGLE = 120_deg;
+inline constexpr units::radian_t DUNKER_IN_ANGLE = 1_deg;
 }  // namespace dunker
 
 namespace shooter {
@@ -149,12 +160,13 @@ struct ModuleSteerGains {
   }
 };
 
-inline constexpr ModuleDriveGains driveGains{units::unit_t<frc::SimpleMotorFeedforward<units::meters>::ka_unit>{0.0},
-                                             units::unit_t<frc::SimpleMotorFeedforward<units::meters>::kv_unit>{0.0},
-                                             3_V,
-                                             10.0,
-                                             0.0,
-                                             0.05};
+inline constexpr ModuleDriveGains driveGains{
+    units::unit_t<frc::SimpleMotorFeedforward<units::meters>::ka_unit>{0.0},
+    units::unit_t<frc::SimpleMotorFeedforward<units::meters>::kv_unit>{0.0},
+    3_V,
+    10.0,
+    0.0,
+    0.05};
 inline constexpr ModuleSteerGains steerGains{
     units::unit_t<frc::SimpleMotorFeedforward<units::radians>::ka_unit>{0},
     units::unit_t<frc::SimpleMotorFeedforward<units::radians>::kv_unit>{0.0},

@@ -4,6 +4,15 @@
 
 #pragma once
 
+#include <frc/DigitalInput.h>
+#include <frc/DutyCycle.h>
+#include <frc/controller/ArmFeedforward.h>
+#include <frc/controller/ProfiledPIDController.h>
+#include <frc/simulation/DutyCycleSim.h>
+#include <frc/simulation/SingleJointedArmSim.h>
+#include <frc/smartdashboard/Mechanism2d.h>
+#include <frc/smartdashboard/MechanismLigament2d.h>
+#include <frc/smartdashboard/MechanismObject2d.h>
 #include <frc2/command/Commands.h>
 #include <frc2/command/SubsystemBase.h>
 #include <rev/CANSparkMax.h>
@@ -17,6 +26,7 @@ class DunkerSubsystem : public frc2::SubsystemBase {
   DunkerSubsystem();
 
   void Periodic() override;
+  void SimulationPeriodic() override;
   frc2::CommandPtr PivotDunkNotesOut();
   frc2::CommandPtr PivotDunkNotesIn();
   frc2::CommandPtr DunkTheNotes();
@@ -24,30 +34,57 @@ class DunkerSubsystem : public frc2::SubsystemBase {
 
  private:
   void ConfigureMotors();
+  void InitSendable(wpi::SendableBuilder& builder) override;
+  void SetGains(const constants::dunker::DunkerGains newGains);
+  constants::dunker::DunkerGains GetGains();
 
-  ctre::phoenix6::hardware::TalonFX dunkPivotMotor{
-      constants::dunker::PIVOT_DUNKER_CAN_ID};
+  void SetDunkSpeed(double speed);
+  units::radian_t GetPivotAngle();
+  void SetPivotGoal(units::radian_t angleGoal);
+  bool IsPivotAtGoal();
 
-  ctre::phoenix6::controls::MotionMagicVoltage positionSetter{0_rad};
+  units::radian_t ConvertEncoderToAngle(double encoderReading);
+  double ConvertAngleToEncoder(units::radian_t angle);
 
-  ctre::phoenix6::StatusSignal<units::turn_t> dunkPivotPositionSig{
-      dunkPivotMotor.GetPosition()};
+  rev::CANSparkMax dunkPivotMotor{constants::dunker::PIVOT_DUNKER_CAN_ID,
+                                  rev::CANSparkLowLevel::MotorType::kBrushless};
+
+  frc::DigitalInput pivotEncoderPort{constants::dunker::PIVOT_ENCODER_PORT};
+  frc::DutyCycle pivotEncoder{pivotEncoderPort};
+
+  frc::ArmFeedforward pivotFeedfoward{
+      constants::dunker::GAINS.kS, constants::dunker::GAINS.kG,
+      constants::dunker::GAINS.kV, constants::dunker::GAINS.kA};
+  frc::ProfiledPIDController<units::radians> pivotController{
+      constants::dunker::GAINS.kP.value(), constants::dunker::GAINS.kI.value(),
+      constants::dunker::GAINS.kD.value(),
+      constants::dunker::PIVOT_CONTROLLER_CONSTRAINTS};
 
   rev::CANSparkMax dunkMotor{constants::dunker::DUNKER_CAN_ID,
                              rev::CANSparkLowLevel::MotorType::kBrushless};
 
   units::radian_t currentPivotPos = 0_rad;
-  units::radian_t currentPivotSetpoint = 0_rad;
+  constants::dunker::DunkerGains currentGains{};
 
-  void SetDunkSpeed(double speed) { dunkMotor.SetVoltage(speed * 12_V); }
+  // sim stuff
+  frc::DCMotor pivotGearbox = frc::DCMotor::NEO(1);
+  frc::sim::SingleJointedArmSim pivotSim{
+      pivotGearbox,
+      constants::dunker::PIVOT_GEAR_RATIO,
+      frc::sim::SingleJointedArmSim::EstimateMOI(
+          constants::dunker::PIVOT_ARM_LENGTH, constants::dunker::PIVOT_MASS),
+      constants::dunker::PIVOT_ARM_LENGTH,
+      constants::dunker::DUNKER_MIN_ANGLE,
+      constants::dunker::DUNKER_MAX_ANGLE,
+      true,
+      constants::dunker::DUNKER_MIN_ANGLE};
 
-  void SetPivotAngle(units::radian_t angleSetPoint) {
-    currentPivotSetpoint = angleSetPoint;
-    dunkPivotMotor.SetControl(positionSetter.WithPosition(angleSetPoint));
-  }
+  frc::sim::DutyCycleSim encoderSim{pivotEncoder};
 
-  bool IsPivotSetPoint() {
-    return units::math::abs(currentPivotPos - currentPivotSetpoint) <=
-           constants::dunker::DUNKER_PIVOT_ANGLE_TOLERANCE;
-  }
+  frc::Mechanism2d pivotMech{60, 60};
+  frc::MechanismRoot2d* armPivotPoint = pivotMech.GetRoot("PivotRoot", 30, 30);
+  frc::MechanismLigament2d* pivotArm =
+      armPivotPoint->Append<frc::MechanismLigament2d>(
+          "Pivot Arm", 30, -GetPivotAngle() - 180_deg, 6,
+          frc::Color8Bit{frc::Color::kYellow});
 };
