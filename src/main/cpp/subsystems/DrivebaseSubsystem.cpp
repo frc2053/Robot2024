@@ -175,15 +175,6 @@ frc2::CommandPtr DrivebaseSubsystem::TurnToAngleFactory(
       .WithName("Turn To Angle Factory");
 }
 
-frc2::CommandPtr DrivebaseSubsystem::CharacterizeSteerMotors(
-    std::function<bool()> nextStepButton) {
-  return swerveDrive.CharacterizeSteerMotors(nextStepButton, {this});
-}
-frc2::CommandPtr DrivebaseSubsystem::CharacterizeDriveMotors(
-    std::function<bool()> nextStepButton) {
-  return swerveDrive.CharacterizeDriveMotors(nextStepButton, {this});
-}
-
 frc2::CommandPtr DrivebaseSubsystem::SelfTest() {
   return swerveDrive.SelfTest({this});
 }

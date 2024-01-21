@@ -42,10 +42,6 @@ class DrivebaseSubsystem : public frc2::SubsystemBase {
           angleProfile,
       std::function<bool()> wantsToOverride);
 
-  frc2::CommandPtr CharacterizeSteerMotors(
-      std::function<bool()> nextStepButton);
-  frc2::CommandPtr CharacterizeDriveMotors(
-      std::function<bool()> nextStepButton);
   frc2::CommandPtr SelfTest();
   frc2::CommandPtr MeasureWheelDiam(std::function<bool()> done);
   frc2::CommandPtr TuneSteerPID(std::function<bool()> done);

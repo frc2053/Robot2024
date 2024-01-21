@@ -61,12 +61,6 @@ class SwerveDrive {
   units::ampere_t GetCurrentDraw() const;
   std::array<frc::Pose2d, 4> GetModulePoses() const;
 
-  frc2::CommandPtr CharacterizeSteerMotors(std::function<bool()> nextStepButton,
-                                           frc2::Requirements reqs);
-
-  frc2::CommandPtr CharacterizeDriveMotors(std::function<bool()> nextStepButton,
-                                           frc2::Requirements reqs);
-
   frc2::CommandPtr SelfTest(frc2::Requirements reqs);
 
   frc2::CommandPtr MeasureWheelDiam(std::function<bool()> done,
@@ -131,14 +125,5 @@ class SwerveDrive {
 
   // Logging
   frc::Field2d ntField{};
-
-  // Characterization
-  //  This is for characterization
-  wpi::json flSteerModuleData{};
-  wpi::json driveData{};
-
-  units::volt_t quasistaticVolts = 0_V;
-  static constexpr auto quasistaticStep{0.25_V / 1_s};
-  units::volt_t dynamicStepVolts = 7_V;
 };
 }  // namespace str

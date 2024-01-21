@@ -80,12 +80,6 @@ void RobotContainer::ConfigureBindings() {
 
   frc::SmartDashboard::PutBoolean("Drivebase/DoneWithStep", false);
 
-  frc::SmartDashboard::PutData("Drivebase/CharacterizeSteerMotorsCmd",
-                               characterizeSteerCmd.get());
-
-  frc::SmartDashboard::PutData("Drivebase/CharacterizeDriveMotorsCmd",
-                               characterizeDriveCmd.get());
-
   frc::SmartDashboard::PutData("Drivebase/SelfTestCmd", selfTestCmd.get());
 
   frc::SmartDashboard::PutData("Drivebase/MeasureWheelCmd",
