@@ -12,10 +12,9 @@ void DunkerSubsystem::ConfigureMotors() {
   dunkMotor.RestoreFactoryDefaults();
   dunkMotor.SetIdleMode(rev::CANSparkBase::IdleMode::kCoast);
   dunkMotor.SetSmartCurrentLimit(20);
-  if(dunkMotor.BurnFlash() == rev::REVLibError::kOk) {
+  if (dunkMotor.BurnFlash() == rev::REVLibError::kOk) {
     fmt::print("Successfully configured dunk motor!\n");
-  }
-  else {
+  } else {
     fmt::print("ERROR: Unable to configure dunk motor!\n");
   }
 }
@@ -43,18 +42,11 @@ frc2::CommandPtr DunkerSubsystem::PivotDunkNotesIn() {
 }
 
 frc2::CommandPtr DunkerSubsystem::DunkTheNotes() {
-  return frc2::cmd::RunEnd(
-      [this] {
-        SetDunkSpeed(1);
-      },
-      [this] { SetDunkSpeed(0); }, {this});
+  return frc2::cmd::RunEnd([this] { SetDunkSpeed(1); },
+                           [this] { SetDunkSpeed(0); }, {this});
 }
 
 frc2::CommandPtr DunkerSubsystem::JammedDunkNotes() {
-  return frc2::cmd::RunEnd(
-      [this] {
-        SetDunkSpeed(-1);
-      },
-      [this] { SetDunkSpeed(0); }, {this});
+  return frc2::cmd::RunEnd([this] { SetDunkSpeed(-1); },
+                           [this] { SetDunkSpeed(0); }, {this});
 }
-

@@ -21,7 +21,7 @@ class DunkerSubsystem : public frc2::SubsystemBase {
   frc2::CommandPtr PivotDunkNotesIn();
   frc2::CommandPtr DunkTheNotes();
   frc2::CommandPtr JammedDunkNotes();
-  
+
  private:
   void ConfigureMotors();
 
