@@ -160,14 +160,14 @@ void ShooterSubsystem::InitSendable(wpi::SendableBuilder& builder) {
       "kV", [this] { return currentGains.kV.to<double>(); },
       [this](double newKv) {
         constants::shooter::ShooterGains newGains = GetGains();
-        newGains.kV = frc::DCMotor::radians_per_second_per_volt_t{newKv};
+        newGains.kV = units::unit_t<frc::SimpleMotorFeedforward<units::radians>::kv_unit>{newKv};
         SetGains(newGains);
       });
   builder.AddDoubleProperty(
       "kA", [this] { return currentGains.kA.to<double>(); },
       [this](double newKa) {
         constants::shooter::ShooterGains newGains = GetGains();
-        newGains.kA = units::radial_ka_unit_t{newKa};
+        newGains.kA = units::unit_t<frc::SimpleMotorFeedforward<units::radians>::ka_unit>{newKa};
         SetGains(newGains);
       });
   builder.AddDoubleProperty(

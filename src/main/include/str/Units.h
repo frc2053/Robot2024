@@ -23,38 +23,7 @@ bool essentiallyEqual(T a, T b, units::scalar_t epsilon) {
           epsilon);
 }
 
-using linear_kv_unit =
-    units::compound_unit<units::compound_unit<units::volts, units::seconds>,
-                         units::inverse<units::meters>>;
-using linear_kv_unit_t = units::unit_t<linear_kv_unit>;
-
-using linear_ka_unit = units::compound_unit<
-    units::compound_unit<units::volts, units::squared<units::seconds>>,
-    units::inverse<units::meters>>;
-using linear_ka_unit_t = units::unit_t<linear_ka_unit>;
-
-using radial_ka_unit = units::compound_unit<
-    units::compound_unit<units::volts, units::squared<units::seconds>>,
-    units::inverse<units::radians>>;
-using radial_ka_unit_t = units::unit_t<radial_ka_unit>;
-
-// ELEVATOR
-
-using meter_volt_kp_unit =
-    units::compound_unit<units::volt, units::inverse<units::meters>>;
-using meter_volt_kp_unit_t = units::unit_t<meter_volt_kp_unit>;
-
-using meter_volt_ki_unit = units::compound_unit<
-    units::volt,
-    units::inverse<units::compound_unit<units::meter, units::seconds>>>;
-using meter_volt_ki_unit_t = units::unit_t<meter_volt_ki_unit>;
-
-using meter_volt_kd_unit =
-    units::compound_unit<units::volt, units::inverse<units::meters_per_second>>;
-using meter_volt_kd_unit_t = units::unit_t<meter_volt_kd_unit>;
-
 // SHOOTER
-
 using radian_volt_kp_unit =
     units::compound_unit<units::volt, units::inverse<units::radians>>;
 using radian_volt_kp_unit_t = units::unit_t<radian_volt_kp_unit>;

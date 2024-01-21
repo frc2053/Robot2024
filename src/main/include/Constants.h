@@ -5,6 +5,8 @@
 #pragma once
 
 #include <frc/geometry/Translation2d.h>
+#include <frc/controller/ArmFeedforward.h>
+#include <frc/controller/SimpleMotorFeedforward.h>
 #include <frc/kinematics/SwerveDriveKinematics.h>
 #include <frc/system/plant/DCMotor.h>
 #include <frc/trajectory/TrapezoidProfile.h>
@@ -21,8 +23,47 @@ inline constexpr int INTAKE_CAN_ID = 19;
 }  // namespace intake
 
 namespace dunker {
+inline constexpr int PIVOT_ENCODER_PORT = 1;
 inline constexpr int DUNKER_CAN_ID = 20;
 inline constexpr int PIVOT_DUNKER_CAN_ID = 21;
+
+struct DunkerGains {
+  units::unit_t<frc::ArmFeedforward::ka_unit> kA{0};
+  units::unit_t<frc::ArmFeedforward::kv_unit> kV{0};
+  units::volt_t kS{0};
+  units::volt_t kG{0};
+  units::radian_volt_kp_unit_t kP{0};
+  units::radian_volt_ki_unit_t kI{0};
+  units::radian_volt_kd_unit_t kD{0};
+
+  bool operator==(const DunkerGains& rhs) const {
+    return units::essentiallyEqual(kA, rhs.kA, 1e-6) &&
+           units::essentiallyEqual(kV, rhs.kV, 1e-6) &&
+           units::essentiallyEqual(kS, rhs.kS, 1e-6) &&
+           units::essentiallyEqual(kG, rhs.kS, 1e-6) &&
+           units::essentiallyEqual(kP, rhs.kP, 1e-6) &&
+           units::essentiallyEqual(kI, rhs.kI, 1e-6) &&
+           units::essentiallyEqual(kD, rhs.kD, 1e-6);
+  }
+  bool operator!=(const DunkerGains& rhs) const { return !operator==(rhs); }
+};
+
+inline constexpr DunkerGains GAINS{
+    units::unit_t<frc::ArmFeedforward::ka_unit>{0.0},
+    units::unit_t<frc::ArmFeedforward::kv_unit>{0.0},
+    units::volt_t{0.0},
+    units::volt_t{0.0},
+    units::radian_volt_kp_unit_t{0.0},
+    units::radian_volt_ki_unit_t{0.0},
+    units::radian_volt_kd_unit_t{0.0}};
+
+inline constexpr units::radians_per_second_t MAX_ROTATION_SPEED = 90_deg_per_s;
+inline constexpr units::radians_per_second_squared_t MAX_ROTATION_ACCEL =
+    1000_deg_per_s_sq;
+
+extern const frc::TrapezoidProfile<units::radians>::Constraints
+    PIVOT_CONTROLLER_CONSTRAINTS;
+
 inline constexpr units::radian_t DUNKER_PIVOT_ANGLE_TOLERANCE = 1_deg;
 inline constexpr units::radian_t DUNKER_OUT_ANGLE = 90_deg;
 inline constexpr units::radian_t DUNKER_IN_ANGLE = 0_deg;
@@ -30,16 +71,34 @@ inline constexpr units::radian_t DUNKER_IN_ANGLE = 0_deg;
 
 namespace shooter {
 struct ShooterGains {
-  units::radial_ka_unit_t kA{0};
-  frc::DCMotor::radians_per_second_per_volt_t kV{0};
+  units::unit_t<frc::SimpleMotorFeedforward<units::radians>::ka_unit> kA{0};
+  units::unit_t<frc::SimpleMotorFeedforward<units::radians>::kv_unit> kV{0};
   units::volt_t kS{0};
   units::radian_volt_kp_unit_t kP{0};
   units::radian_volt_ki_unit_t kI{0};
   units::radian_volt_kd_unit_t kD{0};
+
+  bool operator==(const ShooterGains& rhs) const {
+    return units::essentiallyEqual(kA, rhs.kA, 1e-6) &&
+           units::essentiallyEqual(kV, rhs.kV, 1e-6) &&
+           units::essentiallyEqual(kS, rhs.kS, 1e-6) &&
+           units::essentiallyEqual(kP, rhs.kP, 1e-6) &&
+           units::essentiallyEqual(kI, rhs.kI, 1e-6) &&
+           units::essentiallyEqual(kD, rhs.kD, 1e-6);
+  }
+  bool operator!=(const ShooterGains& rhs) const { return !operator==(rhs); }
 };
 
 inline constexpr int LEFT_SHOOTER_CAN_ID = 17;
 inline constexpr int RIGHT_SHOOTER_CAN_ID = 18;
+
+inline constexpr ShooterGains GAINS{
+    units::unit_t<frc::SimpleMotorFeedforward<units::radians>::ka_unit>{0.0},
+    units::unit_t<frc::SimpleMotorFeedforward<units::radians>::kv_unit>{0},
+    units::volt_t{0},
+    units::radian_volt_kp_unit_t{0},
+    units::radian_volt_ki_unit_t{0},
+    units::radian_volt_kd_unit_t{0}};
 
 inline constexpr units::scalar_t SHOOTER_RATIO = 1.0;
 inline constexpr units::kilogram_square_meter_t SHOOTER_MOI = 0.001_kg_sq_m;
@@ -49,8 +108,8 @@ inline constexpr units::radians_per_second_t SHOOTER_TOLERANCE = 1_rad_per_s;
 namespace swerve {
 
 struct ModuleDriveGains {
-  units::linear_ka_unit_t kA{0};
-  units::linear_kv_unit_t kV{0};
+  units::unit_t<frc::SimpleMotorFeedforward<units::meters>::ka_unit> kA{0};
+  units::unit_t<frc::SimpleMotorFeedforward<units::meters>::kv_unit> kV{0};
   units::volt_t kS{0};
   units::scalar_t kP{0};
   units::scalar_t kI{0};
@@ -70,8 +129,8 @@ struct ModuleDriveGains {
 };
 
 struct ModuleSteerGains {
-  units::radial_ka_unit_t kA{0};
-  frc::DCMotor::radians_per_second_per_volt_t kV{0};
+  units::unit_t<frc::SimpleMotorFeedforward<units::radians>::ka_unit> kA{0};
+  units::unit_t<frc::SimpleMotorFeedforward<units::radians>::kv_unit> kV{0};
   units::volt_t kS{0};
   units::scalar_t kP{0};
   units::scalar_t kI{0};
@@ -90,15 +149,15 @@ struct ModuleSteerGains {
   }
 };
 
-inline constexpr ModuleDriveGains driveGains{units::linear_ka_unit_t{0.0},
-                                             units::linear_kv_unit_t{0.0},
+inline constexpr ModuleDriveGains driveGains{units::unit_t<frc::SimpleMotorFeedforward<units::meters>::ka_unit>{0.0},
+                                             units::unit_t<frc::SimpleMotorFeedforward<units::meters>::kv_unit>{0.0},
                                              3_V,
                                              10.0,
                                              0.0,
                                              0.05};
 inline constexpr ModuleSteerGains steerGains{
-    units::radial_ka_unit_t{0},
-    frc::DCMotor::radians_per_second_per_volt_t{0.0},
+    units::unit_t<frc::SimpleMotorFeedforward<units::radians>::ka_unit>{0},
+    units::unit_t<frc::SimpleMotorFeedforward<units::radians>::kv_unit>{0.0},
     0.0_V,
     150,
     0.0,
