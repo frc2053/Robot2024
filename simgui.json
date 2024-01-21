@@ -91,6 +91,9 @@
         "Dunker Telemetry": {
           "open": true
         },
+        "Shooter Telemetry": {
+          "open": true
+        },
         "open": true
       }
     }
@@ -104,7 +107,8 @@
     },
     "Server": {
       "open": true
-    }
+    },
+    "visible": true
   },
   "Plot": {
     "Plot <0>": {
@@ -480,8 +484,7 @@
         }
       ],
       "window": {
-        "name": "ShooterInfo",
-        "visible": false
+        "name": "ShooterInfo"
       }
     }
   }

@@ -59,7 +59,7 @@ inline constexpr DunkerGains GAINS{
     units::volt_t{2.5792},
     units::radian_volt_kp_unit_t{64.147},
     units::radian_volt_ki_unit_t{0.0},
-    units::radian_volt_kd_unit_t{3.1238}};
+    units::radian_volt_kd_unit_t{0.5}};
 
 inline constexpr units::radians_per_second_t MAX_ROTATION_SPEED = 900_deg_per_s;
 inline constexpr units::radians_per_second_squared_t MAX_ROTATION_ACCEL =
@@ -104,10 +104,12 @@ inline constexpr int LEFT_SHOOTER_CAN_ID = 17;
 inline constexpr int RIGHT_SHOOTER_CAN_ID = 18;
 
 inline constexpr ShooterGains GAINS{
-    units::unit_t<frc::SimpleMotorFeedforward<units::radians>::ka_unit>{0.0},
-    units::unit_t<frc::SimpleMotorFeedforward<units::radians>::kv_unit>{0},
-    units::volt_t{0},
-    units::radian_volt_kp_unit_t{0},
+    units::unit_t<frc::SimpleMotorFeedforward<units::radians>::ka_unit>{
+        0.028843},
+    units::unit_t<frc::SimpleMotorFeedforward<units::radians>::kv_unit>{
+        0.11788},
+    units::volt_t{0.012179},
+    units::radian_volt_kp_unit_t{0.17882},
     units::radian_volt_ki_unit_t{0},
     units::radian_volt_kd_unit_t{0}};
 

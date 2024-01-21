@@ -17,11 +17,31 @@ frc2::CommandPtr ShooterSubsystem::GoToSpeedCmd(std::function<double()> speed) {
       .FinallyDo([this] { Set(0); });
 }
 
+frc2::CommandPtr ShooterSubsystem::GoToVelocityCmd(
+    std::function<units::radians_per_second_t()> speed) {
+  return frc2::cmd::Run([this, speed] { GoToVelocity(speed()); }, {this})
+      .FinallyDo([this] { Set(0); });
+}
+
+frc2::CommandPtr ShooterSubsystem::SysIdQuasistatic(
+    frc2::sysid::Direction direction) {
+  return sysIdRoutine.Quasistatic(direction);
+}
+
+frc2::CommandPtr ShooterSubsystem::SysIdDynamic(
+    frc2::sysid::Direction direction) {
+  return sysIdRoutine.Dynamic(direction);
+}
+
 // This method will be called once per scheduler run
 void ShooterSubsystem::Periodic() {
-  ctre::phoenix6::BaseStatusSignal::RefreshAll(leftShooterVelSignal,
-                                               rightShooterVelSignal);
+  ctre::phoenix6::BaseStatusSignal::RefreshAll(
+      leftShooterVelSignal, rightShooterVelSignal, leftShooterPosSignal,
+      leftShooterVoltageSignal);
 
+  currentLeftPosition =
+      leftShooterPosSignal.GetValue() * constants::shooter::SHOOTER_RATIO;
+  currentLeftVoltage = leftShooterVoltageSignal.GetValue();
   currentLeftVelocity =
       ConvertMotorVelToShooterVel(leftShooterVelSignal.GetValue());
   currentRightVelocity =
@@ -37,6 +57,7 @@ void ShooterSubsystem::SimulationPeriodic() {
   leftShooterSim.Update(20_ms);
   rightShooterSim.Update(20_ms);
 
+  leftShooterSimState.SetRawRotorPosition(leftShooterSim.GetAngularPosition());
   leftShooterSimState.SetRotorVelocity(
       ConvertShooterVelToMotorVel(leftShooterSim.GetAngularVelocity()));
   rightShooterSimState.SetRotorVelocity(
@@ -54,16 +75,19 @@ void ShooterSubsystem::GoToVelocity(units::radians_per_second_t speed) {
 }
 
 void ShooterSubsystem::Set(double speed) {
+  // This is because if we tell the motor to go to 0 rpm with velocity control,
+  // it will spin in reverse, which we dont want
+  currentVelocitySetpoint = 0_rpm;
   shooterLeftMotor.SetControl(voltageController.WithOutput(speed * 12_V));
   shooterRightMotor.SetControl(voltageController.WithOutput(speed * -12_V));
 }
 
 units::radians_per_second_t ShooterSubsystem::GetLeftShooterCurrentVelocity() {
-  return currentRightVelocity;
+  return currentLeftVelocity;
 }
 
 units::radians_per_second_t ShooterSubsystem::GetRightShooterCurrentVelocity() {
-  return currentLeftVelocity;
+  return currentRightVelocity;
 }
 
 bool ShooterSubsystem::IsShooterUpToSpeed() {
@@ -102,6 +126,8 @@ void ShooterSubsystem::ConfigureMotors() {
   shooterRightMotor.GetConfigurator().Apply(mainConfig);
 
   // Disable all other signals we dont care about
+  leftShooterVoltageSignal.SetUpdateFrequency(250_Hz);
+  leftShooterPosSignal.SetUpdateFrequency(250_Hz);
   leftShooterVelSignal.SetUpdateFrequency(250_Hz);
   rightShooterVelSignal.SetUpdateFrequency(250_Hz);
   shooterLeftMotor.OptimizeBusUtilization();
@@ -120,7 +146,7 @@ void ShooterSubsystem::InitSendable(wpi::SendableBuilder& builder) {
         GoToVelocity(units::revolutions_per_minute_t{newSetpointRpm});
       });
   builder.AddDoubleProperty(
-      "Left Current Position (RPM)",
+      "Left Current Velocity (RPM)",
       [this] {
         return GetLeftShooterCurrentVelocity()
             .convert<units::revolutions_per_minute>()
@@ -128,7 +154,7 @@ void ShooterSubsystem::InitSendable(wpi::SendableBuilder& builder) {
       },
       nullptr);
   builder.AddDoubleProperty(
-      "Right Current Position (RPM)",
+      "Right Current Velocity (RPM)",
       [this] {
         return GetRightShooterCurrentVelocity()
             .convert<units::revolutions_per_minute>()

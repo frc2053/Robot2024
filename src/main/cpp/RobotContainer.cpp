@@ -26,14 +26,17 @@ void RobotContainer::ConfigureBindings() {
   operatorController.RightBumper().WhileTrue(dunkSub.DunkTheNotes());
   operatorController.LeftBumper().WhileTrue(dunkSub.JammedDunkNotes());
 
-  operatorController.Start().WhileTrue(
-      dunkSub.SysIdQuasistatic(frc2::sysid::Direction::kForward));
-  operatorController.Back().WhileTrue(
-      dunkSub.SysIdQuasistatic(frc2::sysid::Direction::kReverse));
   operatorController.RightTrigger().WhileTrue(
-      dunkSub.SysIdDynamic(frc2::sysid::Direction::kForward));
-  operatorController.LeftTrigger().WhileTrue(
-      dunkSub.SysIdDynamic(frc2::sysid::Direction::kReverse));
+      shooterSub.GoToVelocityCmd([] { return 4500_rpm; }));
+
+  // operatorController.Start().WhileTrue(
+  //     shooterSub.SysIdQuasistatic(frc2::sysid::Direction::kForward));
+  // operatorController.Back().WhileTrue(
+  //     shooterSub.SysIdQuasistatic(frc2::sysid::Direction::kReverse));
+  // operatorController.RightTrigger().WhileTrue(
+  //     shooterSub.SysIdDynamic(frc2::sysid::Direction::kForward));
+  // operatorController.LeftTrigger().WhileTrue(
+  //     shooterSub.SysIdDynamic(frc2::sysid::Direction::kReverse));
 
   driveSub.SetDefaultCommand(driveSub.DriveFactory(
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
