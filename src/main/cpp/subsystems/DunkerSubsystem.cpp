@@ -39,12 +39,30 @@ frc2::CommandPtr DunkerSubsystem::JammedDunkNotes() {
                            [this] { SetDunkSpeed(0); }, {this});
 }
 
+frc2::CommandPtr DunkerSubsystem::SysIdQuasistatic(
+    frc2::sysid::Direction direction) {
+  return sysIdRoutine.Quasistatic(direction).BeforeStarting(
+      [this] { currentlyCharacterizing = true; });
+}
+
+frc2::CommandPtr DunkerSubsystem::SysIdDynamic(
+    frc2::sysid::Direction direction) {
+  return sysIdRoutine.Dynamic(direction).BeforeStarting(
+      [this] { currentlyCharacterizing = true; });
+}
+
 void DunkerSubsystem::Periodic() {
   currentPivotPos = ConvertEncoderToAngle(pivotEncoder.GetOutput());
-  dunkPivotMotor.SetVoltage(
-      units::volt_t{pivotController.Calculate(currentPivotPos)} +
-      pivotFeedfoward.Calculate(pivotController.GetSetpoint().position,
-                                pivotController.GetSetpoint().velocity));
+
+  pivotVelocity = (currentPivotPos - prevPivotPosition) / 0.02_s;
+  prevPivotPosition = currentPivotPos;
+
+  if (!currentlyCharacterizing) {
+    dunkPivotMotor.SetVoltage(
+        units::volt_t{pivotController.Calculate(currentPivotPos)} +
+        pivotFeedfoward.Calculate(pivotController.GetSetpoint().position,
+                                  pivotController.GetSetpoint().velocity));
+  }
 }
 
 void DunkerSubsystem::SimulationPeriodic() {

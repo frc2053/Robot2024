@@ -53,13 +53,13 @@ struct DunkerGains {
 };
 
 inline constexpr DunkerGains GAINS{
-    units::unit_t<frc::ArmFeedforward::ka_unit>{0.0},
-    units::unit_t<frc::ArmFeedforward::kv_unit>{1.0},
-    units::volt_t{0.0},
-    units::volt_t{0.0},
-    units::radian_volt_kp_unit_t{10.0},
+    units::unit_t<frc::ArmFeedforward::ka_unit>{0.38299},
+    units::unit_t<frc::ArmFeedforward::kv_unit>{7.2702},
+    units::volt_t{0.44012},
+    units::volt_t{2.5792},
+    units::radian_volt_kp_unit_t{64.147},
     units::radian_volt_ki_unit_t{0.0},
-    units::radian_volt_kd_unit_t{0.0}};
+    units::radian_volt_kd_unit_t{3.1238}};
 
 inline constexpr units::radians_per_second_t MAX_ROTATION_SPEED = 900_deg_per_s;
 inline constexpr units::radians_per_second_squared_t MAX_ROTATION_ACCEL =

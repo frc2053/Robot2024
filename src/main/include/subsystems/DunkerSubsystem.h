@@ -15,6 +15,7 @@
 #include <frc/smartdashboard/MechanismObject2d.h>
 #include <frc2/command/Commands.h>
 #include <frc2/command/SubsystemBase.h>
+#include <frc2/command/sysid/SysIdRoutine.h>
 #include <rev/CANSparkMax.h>
 
 #include <ctre/phoenix6/TalonFX.hpp>
@@ -31,6 +32,8 @@ class DunkerSubsystem : public frc2::SubsystemBase {
   frc2::CommandPtr PivotDunkNotesIn();
   frc2::CommandPtr DunkTheNotes();
   frc2::CommandPtr JammedDunkNotes();
+  frc2::CommandPtr SysIdQuasistatic(frc2::sysid::Direction direction);
+  frc2::CommandPtr SysIdDynamic(frc2::sysid::Direction direction);
 
  private:
   void ConfigureMotors();
@@ -64,7 +67,7 @@ class DunkerSubsystem : public frc2::SubsystemBase {
                              rev::CANSparkLowLevel::MotorType::kBrushless};
 
   units::radian_t currentPivotPos = 0_rad;
-  constants::dunker::DunkerGains currentGains{};
+  constants::dunker::DunkerGains currentGains = constants::dunker::GAINS;
 
   // sim stuff
   frc::DCMotor pivotGearbox = frc::DCMotor::NEO(1);
@@ -87,4 +90,27 @@ class DunkerSubsystem : public frc2::SubsystemBase {
       armPivotPoint->Append<frc::MechanismLigament2d>(
           "Pivot Arm", 30, -GetPivotAngle() - 180_deg, 6,
           frc::Color8Bit{frc::Color::kYellow});
+
+  // characterization stuff
+
+  units::radian_t prevPivotPosition = 0_rad;
+  units::radians_per_second_t pivotVelocity = 0_rad_per_s;
+  bool currentlyCharacterizing = false;
+
+  frc2::sysid::SysIdRoutine sysIdRoutine{
+      frc2::sysid::Config{std::nullopt, std::nullopt, std::nullopt,
+                          std::nullopt},
+      frc2::sysid::Mechanism{
+          [this](units::volt_t voltsToSend) {
+            dunkPivotMotor.SetVoltage(voltsToSend);
+          },
+          [this](frc::sysid::SysIdRoutineLog* log) {
+            log->Motor("dunk-pivot")
+                .voltage(dunkPivotMotor.Get() *
+                         frc::RobotController::GetBatteryVoltage())
+                .position(GetPivotAngle().convert<units::turns>())
+                .velocity(pivotVelocity.convert<units::turns_per_second>());
+          },
+          this},
+  };
 };
