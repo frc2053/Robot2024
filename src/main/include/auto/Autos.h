@@ -22,7 +22,8 @@ enum CommandSelector {
   THREE_FT_FORWARD,
   SQUARE,
   PATHPLANNER_TEST,
-  CHOREO_TEST
+  CHOREO_TEST,
+  AMP_SIDE
 };
 
 class Autos {
@@ -44,13 +45,16 @@ class Autos {
         std::pair{PATHPLANNER_TEST,
                   pathplanner::PathPlannerAuto{"PPTest"}.ToPtr()},
         std::pair{CHOREO_TEST, m_driveSub.FollowChoreoTrajectory(
-                                   [] { return "ChoreoTestPath"; })});
+                                   [] { return "ChoreoTestPath"; })},
+        std::pair{AMP_SIDE,
+                  m_driveSub.FollowChoreoTrajectory([] { return "AmpSide"; })});
 
     chooser.SetDefaultOption("Do Nothing", CommandSelector::DO_NOTHING);
     chooser.AddOption("Three Feet Forward", CommandSelector::THREE_FT_FORWARD);
     chooser.AddOption("Drive in Square", CommandSelector::SQUARE);
     chooser.AddOption("Pathplanner Test", CommandSelector::PATHPLANNER_TEST);
     chooser.AddOption("Choreo Test", CommandSelector::CHOREO_TEST);
+    chooser.AddOption("Amp Side", CommandSelector::AMP_SIDE);
 
     frc::SmartDashboard::PutData("Auto Chooser", &chooser);
   }
