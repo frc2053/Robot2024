@@ -16,45 +16,12 @@ class DunkerSubsystem : public frc2::SubsystemBase {
  public:
   DunkerSubsystem();
 
-  frc2::CommandPtr PivotDunkNotesOut() {
-    return frc2::cmd::Sequence(
-        frc2::cmd::RunOnce(
-            [this] { SetPivotAngle(constants::dunker::DUNKER_OUT_ANGLE); },
-            {this}),
-        frc2::cmd::WaitUntil([this] { return IsPivotSetPoint(); }));
-  }
-
-  frc2::CommandPtr PivotDunkNotesIn() {
-    return frc2::cmd::Sequence(
-        frc2::cmd::RunOnce(
-            [this] { SetPivotAngle(constants::dunker::DUNKER_IN_ANGLE); },
-            {this}),
-        frc2::cmd::WaitUntil([this] { return IsPivotSetPoint(); }));
-  }
-
-  frc2::CommandPtr DunkTheNotes() {
-    return frc2::cmd::RunEnd(
-        [this] {
-          fmt::print("Spitting out notes!\n");
-          SetDunkSpeed(1);
-        },
-        [this] { SetDunkSpeed(0); }, {this});
-  }
-
-  frc2::CommandPtr JammedDunkNotes() {
-    return frc2::cmd::RunEnd(
-        [this] {
-          fmt::print("unjamming notes!\n");
-          SetDunkSpeed(-1);
-        },
-        [this] { SetDunkSpeed(0); }, {this});
-  }
-  void Periodic() override {
-    ctre::phoenix6::BaseStatusSignal::RefreshAll(dunkPivotPositionSig);
-
-    currentPivotPos = dunkPivotPositionSig.GetValue();
-  }
-
+  void Periodic() override;
+  frc2::CommandPtr PivotDunkNotesOut();
+  frc2::CommandPtr PivotDunkNotesIn();
+  frc2::CommandPtr DunkTheNotes();
+  frc2::CommandPtr JammedDunkNotes();
+  
  private:
   void ConfigureMotors();
 
