@@ -101,10 +101,9 @@ void ShooterSubsystem::ConfigureMotors() {
   shooterLeftMotor.GetConfigurator().Apply(mainConfig);
   shooterRightMotor.GetConfigurator().Apply(mainConfig);
 
-  // Super fast refresh rate!
-  ctre::phoenix6::BaseStatusSignal::SetUpdateFrequencyForAll(
-      1000_Hz, leftShooterVelSignal, rightShooterVelSignal);
   // Disable all other signals we dont care about
+  leftShooterVelSignal.SetUpdateFrequency(250_Hz);
+  rightShooterVelSignal.SetUpdateFrequency(250_Hz);
   shooterLeftMotor.OptimizeBusUtilization();
   shooterRightMotor.OptimizeBusUtilization();
 }
