@@ -17,6 +17,20 @@ void Robot::RobotInit() {
 void Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
   nt::NetworkTableInstance::GetDefault().Flush();
+
+  auto visionEst = m_container.GetVisionSystem().GetEstimatedGlobalPose();
+  if (visionEst.has_value()) {
+    auto est = visionEst.value();
+    auto estPose = est.estimatedPose.ToPose2d();
+    auto estStdDevs =
+        m_container.GetVisionSystem().GetEstimationStdDevs(estPose);
+    m_container.GetDrivebaseSubsystem().AddVisionMeasurement(
+        est.estimatedPose.ToPose2d(), est.timestamp, estStdDevs);
+  }
+}
+
+void Robot::SimulationPeriodic() {
+  // m_container.GetVisionSystem().SimPeriodic(m_container.GetDrivebaseSubsystem().GetRobotPose());
 }
 
 void Robot::DisabledInit() {}

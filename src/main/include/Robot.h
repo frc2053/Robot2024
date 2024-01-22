@@ -27,6 +27,7 @@ class Robot : public frc::TimedRobot {
   void TestInit() override;
   void TestPeriodic() override;
   void TestExit() override;
+  void SimulationPeriodic() override;
 
  private:
   frc2::Command* m_autonomousCommand;

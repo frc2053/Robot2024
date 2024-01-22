@@ -458,3 +458,15 @@ frc2::CommandPtr SwerveDrive::TuneDrivePID(std::function<bool()> done,
 void SwerveDrive::ZeroYaw() {
   imu.SetYaw(0_deg);
 }
+
+void SwerveDrive::AddVisionMeasurement(const frc::Pose2d& visionMeasurement,
+                                       units::second_t timestamp) {
+  poseEstimator.AddVisionMeasurement(visionMeasurement, timestamp);
+}
+
+void SwerveDrive::AddVisionMeasurement(const frc::Pose2d& visionMeasurement,
+                                       units::second_t timestamp,
+                                       const Eigen::Vector3d& stdDevs) {
+  wpi::array<double, 3> newStdDevs{stdDevs(0), stdDevs(1), stdDevs(2)};
+  poseEstimator.AddVisionMeasurement(visionMeasurement, timestamp, newStdDevs);
+}

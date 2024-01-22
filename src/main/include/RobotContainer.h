@@ -10,6 +10,7 @@
 #include <functional>
 
 #include "auto/Autos.h"
+#include "str/Vision.h"
 #include "subsystems/DrivebaseSubsystem.h"
 #include "subsystems/DunkerSubsystem.h"
 #include "subsystems/IntakeSubsystem.h"
@@ -26,6 +27,7 @@ class RobotContainer {
   frc2::Command* GetAutonomousCommand();
   DrivebaseSubsystem& GetDrivebaseSubsystem();
   ShooterSubsystem& GetShooterSubsystem();
+  Vision& GetVisionSystem();
 
  private:
   void ConfigureBindings();
@@ -36,6 +38,7 @@ class RobotContainer {
   ShooterSubsystem shooterSub;
   IntakeSubsystem intakeSub;
   DunkerSubsystem dunkSub;
+  Vision vision;
 
   autos::Autos autos{driveSub, shooterSub};
 

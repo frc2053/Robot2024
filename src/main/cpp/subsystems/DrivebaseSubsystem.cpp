@@ -251,3 +251,18 @@ frc2::CommandPtr DrivebaseSubsystem::TunePathPid() {
 frc2::CommandPtr DrivebaseSubsystem::DoneTuningPathPids() {
   return frc2::cmd::RunOnce([this] { SetPathTuning(false); });
 }
+
+void DrivebaseSubsystem::AddVisionMeasurement(
+    const frc::Pose2d& visionMeasurement, units::second_t timestamp) {
+  swerveDrive.AddVisionMeasurement(visionMeasurement, timestamp);
+}
+
+void DrivebaseSubsystem::AddVisionMeasurement(
+    const frc::Pose2d& visionMeasurement, units::second_t timestamp,
+    const Eigen::Vector3d& stdDevs) {
+  swerveDrive.AddVisionMeasurement(visionMeasurement, timestamp, stdDevs);
+}
+
+frc::Pose2d DrivebaseSubsystem::GetRobotPose() {
+  return swerveDrive.GetPose();
+}

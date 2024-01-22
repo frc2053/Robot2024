@@ -112,6 +112,10 @@ ShooterSubsystem& RobotContainer::GetShooterSubsystem() {
   return shooterSub;
 }
 
+Vision& RobotContainer::GetVisionSystem() {
+  return vision;
+}
+
 str::DeadbandAndSquareFunc RobotContainer::DeadbandAndSquare(
     std::function<double()> joystickValue) {
   return [joystickValue]() {

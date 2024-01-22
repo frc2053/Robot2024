@@ -57,7 +57,6 @@ class SwerveDrive {
   frc::Rotation2d GetHeading() const;
   frc::Rotation2d GetGyroYaw() const;
   frc::Pose2d GetPose() const;
-  frc::Pose2d GetSimPose() const;
   units::ampere_t GetCurrentDraw() const;
   std::array<frc::Pose2d, 4> GetModulePoses() const;
 
@@ -72,6 +71,14 @@ class SwerveDrive {
                                 frc2::Requirements reqs);
 
   frc::Field2d& GetField();
+
+  // Vision
+  void AddVisionMeasurement(const frc::Pose2d& visionMeasurement,
+                            units::second_t timestamp);
+
+  void AddVisionMeasurement(const frc::Pose2d& visionMeasurement,
+                            units::second_t timestamp,
+                            const Eigen::Vector3d& stdDevs);
 
  private:
   std::array<SwerveModule, 4> swerveModules = {

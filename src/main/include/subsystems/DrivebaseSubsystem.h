@@ -55,6 +55,12 @@ class DrivebaseSubsystem : public frc2::SubsystemBase {
   void SetTranslationPIDs(double p, double i, double d);
   void SetRotationPIDs(double p, double i, double d);
   void SetPathTuning(bool onOff);
+  void AddVisionMeasurement(const frc::Pose2d& visionMeasurement,
+                            units::second_t timestamp);
+  void AddVisionMeasurement(const frc::Pose2d& visionMeasurement,
+                            units::second_t timestamp,
+                            const Eigen::Vector3d& stdDevs);
+  frc::Pose2d GetRobotPose();
 
  private:
   str::SwerveDrive swerveDrive{};

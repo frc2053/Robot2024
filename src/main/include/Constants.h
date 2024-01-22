@@ -4,8 +4,11 @@
 
 #pragma once
 
+#include <frc/apriltag/AprilTagFieldLayout.h>
+#include <frc/apriltag/AprilTagFields.h>
 #include <frc/controller/ArmFeedforward.h>
 #include <frc/controller/SimpleMotorFeedforward.h>
+#include <frc/geometry/Transform3d.h>
 #include <frc/geometry/Translation2d.h>
 #include <frc/kinematics/SwerveDriveKinematics.h>
 #include <frc/system/plant/DCMotor.h>
@@ -250,4 +253,16 @@ inline frc::SwerveDriveKinematics<4> KINEMATICS{
     moduleLocations[3]};
 }  // namespace physical
 }  // namespace swerve
+
+namespace vision {
+static constexpr std::string_view kCameraName{"apriltagcam"};
+static const frc::Transform3d kRobotToCam{
+    frc::Translation3d{0.5_m, 0.0_m, 0.5_m},
+    frc::Rotation3d{0_rad, 0_rad, 0_rad}};
+static const frc::AprilTagFieldLayout kTagLayout{
+    frc::LoadAprilTagLayoutField(frc::AprilTagField::k2024Crescendo)};
+
+static const Eigen::Matrix<double, 3, 1> kSingleTagStdDevs{4, 4, 8};
+static const Eigen::Matrix<double, 3, 1> kMultiTagStdDevs{0.5, 0.5, 1};
+}  // namespace vision
 }  // namespace constants

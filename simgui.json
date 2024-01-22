@@ -27,7 +27,8 @@
       "/SmartDashboard/Elevator Telemetry": "Subsystem",
       "/SmartDashboard/Elevator Vis": "Mechanism2d",
       "/SmartDashboard/Field": "Field2d",
-      "/SmartDashboard/Shooter Telemetry": "Subsystem"
+      "/SmartDashboard/Shooter Telemetry": "Subsystem",
+      "/SmartDashboard/VisionSystemSim-main/Sim Field": "Field2d"
     },
     "windows": {
       "/SmartDashboard/Auto Chooser": {
@@ -68,13 +69,27 @@
         "window": {
           "visible": true
         }
+      },
+      "/SmartDashboard/VisionSystemSim-main/Sim Field": {
+        "bottom": 1476,
+        "height": 8.210550308227539,
+        "left": 150,
+        "right": 2961,
+        "top": 79,
+        "width": 16.541748046875
       }
     }
   },
   "NetworkTables": {
     "transitory": {
-      "PathPlanner": {
-        "open": true
+      "CameraPublisher": {
+        "open": true,
+        "photonvision-processed": {
+          "open": true,
+          "string[]##v_/CameraPublisher/photonvision-processed/streams": {
+            "open": true
+          }
+        }
       },
       "SmartDashboard": {
         "Drivebase": {
@@ -87,8 +102,13 @@
         },
         "Shooter Telemetry": {
           "open": true
-        },
-        "open": true
+        }
+      },
+      "photonvision": {
+        "open": true,
+        "photonvision": {
+          "open": true
+        }
       }
     }
   },
