@@ -214,8 +214,8 @@ namespace physical {
 inline constexpr frc::DCMotor SWERVE_MOTOR{frc::DCMotor::Falcon500(1)};
 inline constexpr frc::DCMotor SWERVE_MOTOR_FOC{frc::DCMotor::Falcon500FOC(1)};
 
-inline constexpr units::meter_t WHEELBASE_LENGTH = 23.5_in;
-inline constexpr units::meter_t WHEELBASE_WIDTH = 23.5_in;
+inline constexpr units::meter_t WHEELBASE_LENGTH = 22.75_in;
+inline constexpr units::meter_t WHEELBASE_WIDTH = 22.75_in;
 inline constexpr units::meter_t DRIVE_WHEEL_DIAMETER = 4_in;
 inline constexpr units::scalar_t DRIVE_GEARING =
     (50.0 / 16.0) * (17.0 / 27.0) * (45.0 / 15.0);  // SDS L2 with 16t pinion

@@ -5,6 +5,7 @@
 #include "str/SwerveDrive.h"
 
 #include <frc/DataLogManager.h>
+#include <frc/DriverStation.h>
 #include <frc/RobotBase.h>
 #include <frc/TimedRobot.h>
 #include <frc/geometry/Pose2d.h>
@@ -67,8 +68,17 @@ SwerveDrive::SwerveDrive() {
 void SwerveDrive::Drive(units::meters_per_second_t vx,
                         units::meters_per_second_t vy,
                         units::radians_per_second_t omega, bool openLoop) {
+  // offset if red
+  auto allyValue = frc::DriverStation::GetAlliance();
+  frc::Rotation2d rotationOffset = 0_rad;
+  if (allyValue) {
+    if (allyValue.value() == frc::DriverStation::Alliance::kRed) {
+      rotationOffset = frc::Rotation2d{units::radian_t{std::numbers::pi}};
+    }
+  }
   frc::ChassisSpeeds newChassisSpeeds =
-      frc::ChassisSpeeds::FromFieldRelativeSpeeds(vx, vy, omega, GetHeading());
+      frc::ChassisSpeeds::FromFieldRelativeSpeeds(
+          vx, vy, omega, GetHeading() + rotationOffset);
   SetChassisSpeeds(newChassisSpeeds, openLoop);
 }
 
