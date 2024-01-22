@@ -15,15 +15,8 @@ class IntakeSubsystem : public frc2::SubsystemBase {
  public:
   IntakeSubsystem();
 
-  frc2::CommandPtr SuckInNotes() {
-    return frc2::cmd::RunEnd([this] { SetIntakeSpeed(1); },
-                             [this] { SetIntakeSpeed(0); }, {this});
-  }
-
-  frc2::CommandPtr SpitOutNotes() {
-    return frc2::cmd::RunEnd([this] { SetIntakeSpeed(-1); },
-                             [this] { SetIntakeSpeed(0); }, {this});
-  }
+  frc2::CommandPtr SuckInNotes();
+  frc2::CommandPtr SpitOutNotes();
 
   void Periodic() override;
 
@@ -31,5 +24,6 @@ class IntakeSubsystem : public frc2::SubsystemBase {
   ctre::phoenix6::hardware::TalonFX intakeMotor{
       constants::intake::INTAKE_CAN_ID};
 
-  void SetIntakeSpeed(double speed) { intakeMotor.Set(speed); }
+  void ConfigureMotors();
+  void SetIntakeSpeed(double speed);
 };

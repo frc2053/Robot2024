@@ -4,7 +4,32 @@
 
 #include "subsystems/IntakeSubsystem.h"
 
-IntakeSubsystem::IntakeSubsystem() = default;
+IntakeSubsystem::IntakeSubsystem() {
+  ConfigureMotors();
+}
 
 // This method will be called once per scheduler run
 void IntakeSubsystem::Periodic() {}
+
+void IntakeSubsystem::ConfigureMotors() {
+  ctre::phoenix6::configs::TalonFXConfiguration mainConfig;
+
+  mainConfig.MotorOutput.NeutralMode =
+      ctre::phoenix6::signals::NeutralModeValue::Brake;
+
+  intakeMotor.GetConfigurator().Apply(mainConfig);
+}
+
+frc2::CommandPtr IntakeSubsystem::SuckInNotes() {
+  return frc2::cmd::RunEnd([this] { SetIntakeSpeed(1); },
+                           [this] { SetIntakeSpeed(0); }, {this});
+}
+
+frc2::CommandPtr IntakeSubsystem::SpitOutNotes() {
+  return frc2::cmd::RunEnd([this] { SetIntakeSpeed(-1); },
+                           [this] { SetIntakeSpeed(0); }, {this});
+}
+
+void IntakeSubsystem::SetIntakeSpeed(double speed) {
+  intakeMotor.Set(speed);
+}
