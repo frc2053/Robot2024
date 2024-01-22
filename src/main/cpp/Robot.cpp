@@ -30,7 +30,8 @@ void Robot::RobotPeriodic() {
 }
 
 void Robot::SimulationPeriodic() {
-  // m_container.GetVisionSystem().SimPeriodic(m_container.GetDrivebaseSubsystem().GetRobotPose());
+  m_container.GetVisionSystem().SimPeriodic(
+      m_container.GetDrivebaseSubsystem().GetRobotPose());
 }
 
 void Robot::DisabledInit() {}

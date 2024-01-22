@@ -22,20 +22,31 @@
 class Vision {
  public:
   Vision() {
-    photonEstimator.SetMultiTagFallbackStrategy(
+    frc::AprilTagFieldLayout layout =
+        frc::LoadAprilTagLayoutField(frc::AprilTagField::k2024Crescendo);
+    layout.SetOrigin(
+        frc::AprilTagFieldLayout::OriginPosition::kBlueAllianceWallRightSide);
+
+    photonEstimator = std::make_unique<photon::PhotonPoseEstimator>(
+        layout, photon::PoseStrategy::LOWEST_AMBIGUITY,
+        photon::PhotonCamera(constants::vision::kCameraName),
+        constants::vision::kRobotToCam);
+    camera = photonEstimator->GetCamera();
+
+    photonEstimator->SetMultiTagFallbackStrategy(
         photon::PoseStrategy::LOWEST_AMBIGUITY);
 
     if (frc::RobotBase::IsSimulation()) {
       visionSim = std::make_unique<photon::VisionSystemSim>("main");
 
-      visionSim->AddAprilTags(constants::vision::kTagLayout);
+      visionSim->AddAprilTags(layout);
 
       cameraProp = std::make_unique<photon::SimCameraProperties>();
 
       cameraProp->SetCalibration(960, 720, frc::Rotation2d{90_deg});
       cameraProp->SetCalibError(.35, .10);
-      cameraProp->SetFPS(15_Hz);
-      cameraProp->SetAvgLatency(50_ms);
+      cameraProp->SetFPS(45_Hz);
+      cameraProp->SetAvgLatency(20_ms);
       cameraProp->SetLatencyStdDev(15_ms);
 
       cameraSim = std::make_shared<photon::PhotonCameraSim>(camera.get(),
@@ -51,7 +62,7 @@ class Vision {
   }
 
   std::optional<photon::EstimatedRobotPose> GetEstimatedGlobalPose() {
-    auto visionEst = photonEstimator.Update();
+    auto visionEst = photonEstimator->Update();
     units::second_t latestTimestamp = camera->GetLatestResult().GetTimestamp();
     bool newResult =
         units::math::abs(latestTimestamp - lastEstTimestamp) > 1e-5_s;
@@ -80,7 +91,7 @@ class Vision {
     units::meter_t avgDist = 0_m;
     for (const auto& tgt : targets) {
       auto tagPose =
-          photonEstimator.GetFieldLayout().GetTagPose(tgt.GetFiducialId());
+          photonEstimator->GetFieldLayout().GetTagPose(tgt.GetFiducialId());
       if (tagPose.has_value()) {
         numTags++;
         avgDist += tagPose.value().ToPose2d().Translation().Distance(
@@ -119,11 +130,8 @@ class Vision {
 
  private:
   frc::Transform3d robotToCam = constants::vision::kRobotToCam;
-  photon::PhotonPoseEstimator photonEstimator{
-      LoadAprilTagLayoutField(frc::AprilTagField::k2023ChargedUp),
-      photon::PoseStrategy::MULTI_TAG_PNP_ON_COPROCESSOR,
-      photon::PhotonCamera{"photonvision"}, robotToCam};
-  std::shared_ptr<photon::PhotonCamera> camera{photonEstimator.GetCamera()};
+  std::unique_ptr<photon::PhotonPoseEstimator> photonEstimator;
+  std::shared_ptr<photon::PhotonCamera> camera;
   std::unique_ptr<photon::VisionSystemSim> visionSim;
   std::unique_ptr<photon::SimCameraProperties> cameraProp;
   std::shared_ptr<photon::PhotonCameraSim> cameraSim;
