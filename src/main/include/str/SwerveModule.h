@@ -42,18 +42,6 @@ struct SwerveModuleConstants {
   const bool invertSteer;
 };
 
-struct SteerCharData {
-  units::volt_t motorVoltage{0_V};
-  units::radian_t motorAngle{0_rad};
-  units::radians_per_second_t motorVelocity{0_rad_per_s};
-};
-
-struct DriveCharData {
-  units::volt_t motorVoltage{0_V};
-  units::meter_t motorPosition{0_m};
-  units::meters_per_second_t motorVelocity{0_mps};
-};
-
 class SwerveModule {
  public:
   explicit SwerveModule(const SwerveModuleConstants& moduleConstants);
@@ -62,9 +50,6 @@ class SwerveModule {
                         units::meters_per_second_t driveVelocity,
                         units::radian_t steerDistance,
                         units::radians_per_second_t steerVelocity);
-
-  DriveCharData GetDriveCharData();
-  SteerCharData GetSteerCharData();
 
   frc::SwerveModulePosition GetPosition(bool refresh);
   frc::SwerveModulePosition GetCachedPosition() const;

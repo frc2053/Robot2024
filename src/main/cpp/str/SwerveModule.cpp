@@ -86,31 +86,6 @@ void SwerveModule::SimulationUpdate(units::meter_t driveDistance,
   simEncoder.SetSupplyVoltage(frc::RobotController::GetBatteryVoltage());
 }
 
-DriveCharData SwerveModule::GetDriveCharData() {
-  ctre::phoenix6::BaseStatusSignal::WaitForAll(
-      0_s, drivePositionSignal, driveVelocitySignal, driveVoltageSignal);
-
-  units::radian_t drivePosition =
-      ctre::phoenix6::BaseStatusSignal::GetLatencyCompensatedValue(
-          drivePositionSignal, driveVelocitySignal);
-
-  return DriveCharData{
-      driveVoltageSignal.GetValue(), ConvertMotorToWheelDistance(drivePosition),
-      ConvertMotorSpeedToWheelVelocity(driveVelocitySignal.GetValue())};
-}
-
-SteerCharData SwerveModule::GetSteerCharData() {
-  ctre::phoenix6::BaseStatusSignal::WaitForAll(
-      0_s, steerAngleSignal, steerAngleVelocitySignal, steerVoltageSignal);
-
-  units::radian_t steerPosition =
-      ctre::phoenix6::BaseStatusSignal::GetLatencyCompensatedValue(
-          steerAngleSignal, steerAngleVelocitySignal);
-
-  return SteerCharData{steerVoltageSignal.GetValue(), steerPosition,
-                       steerAngleVelocitySignal.GetValue()};
-}
-
 frc::SwerveModulePosition SwerveModule::GetPosition(bool refresh) {
   if (refresh) {
     ctre::phoenix::StatusCode status =
@@ -346,6 +321,10 @@ ctre::phoenix::StatusCode SwerveModule::ConfigureDriveMotor(bool invertDrive) {
           ? ctre::phoenix6::signals::InvertedValue::Clockwise_Positive
           : ctre::phoenix6::signals::InvertedValue::CounterClockwise_Positive;
 
+  driveConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+  driveConfig.CurrentLimits.SupplyCurrentLimit =
+      constants::swerve::physical::SUPPLY_CURRENT_LIMIT.value();
+
   return driveMotor.GetConfigurator().Apply(driveConfig);
 }
 
@@ -389,6 +368,10 @@ ctre::phoenix::StatusCode SwerveModule::ConfigureSteerMotor(bool invertSteer) {
   steerConfig.MotionMagic.MotionMagicExpo_kV =
       0.12 * constants::swerve::physical::STEER_GEARING;
   steerConfig.MotionMagic.MotionMagicExpo_kA = 0.1;
+
+  steerConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+  steerConfig.CurrentLimits.SupplyCurrentLimit =
+      constants::swerve::physical::SUPPLY_CURRENT_LIMIT.value();
 
   return steerMotor.GetConfigurator().Apply(steerConfig);
 }

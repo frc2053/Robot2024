@@ -237,6 +237,7 @@ inline constexpr double BL_ENCODER_OFFSET = 0.359375;
 inline constexpr double BR_ENCODER_OFFSET = 0.131104;
 
 inline constexpr units::ampere_t SLIP_CURRENT = 400_A;
+inline constexpr units::ampere_t SUPPLY_CURRENT_LIMIT = 60_A;
 
 inline constexpr std::array<frc::Translation2d, 4> moduleLocations{
     frc::Translation2d{WHEELBASE_LENGTH / 2, WHEELBASE_WIDTH / 2},
