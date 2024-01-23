@@ -386,3 +386,51 @@ frc2::CommandPtr DrivebaseSubsystem::GoToPose(
                rotationController.AtSetpoint();
       });
 }
+
+frc2::CommandPtr DrivebaseSubsystem::MoveAlongArc(
+    std::function<double()> joystick) {
+  return frc2::cmd::Sequence(
+      frc2::cmd::RunOnce(
+          [this] {
+            auto allyValue = frc::DriverStation::GetAlliance();
+            if (allyValue) {
+              if (allyValue.value() == frc::DriverStation::Alliance::kRed) {
+                thruAngle = 180_deg;
+                minArcAngle = 90_deg;
+                maxArcAngle = 270_deg;
+              } else {
+                thruAngle = 0_rad;
+                minArcAngle = -90_deg;
+                maxArcAngle = 90_deg;
+              }
+            }
+          },
+          {this}),
+      frc2::cmd::Run(
+          [this, joystick] {
+            frc::Translation2d pointToLookAt =
+                constants::swerve::automation::BLUE_ALLIANCE_GOAL;
+            auto allyValue = frc::DriverStation::GetAlliance();
+            if (allyValue) {
+              if (allyValue.value() == frc::DriverStation::Alliance::kRed) {
+                pointToLookAt =
+                    constants::swerve::automation::RED_ALLIANCE_GOAL;
+              } else {
+                pointToLookAt =
+                    constants::swerve::automation::BLUE_ALLIANCE_GOAL;
+              }
+            }
+
+            thruAngle += joystick() * 10_deg;
+            thruAngle = std::clamp(thruAngle, minArcAngle, maxArcAngle);
+            swerveDrive.GetField().GetObject("Arc")->SetPose(frc::Pose2d{
+                pointToLookAt.X() + units::math::cos(thruAngle) *
+                                        constants::swerve::automation::
+                                            GOOD_DISTANCE_FOR_SHOOTER,
+                pointToLookAt.Y() + units::math::sin(thruAngle) *
+                                        constants::swerve::automation::
+                                            GOOD_DISTANCE_FOR_SHOOTER,
+                frc::Rotation2d{thruAngle + 180_deg}});
+          },
+          {this}));
+}

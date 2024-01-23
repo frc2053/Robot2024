@@ -47,6 +47,10 @@ void RobotContainer::ConfigureBindings() {
             return closestPoint;
           })));
 
+  driverController.LeftBumper().WhileTrue(driveSub.MoveAlongArc([this] {
+    return frc::ApplyDeadband<double>(-driverController.GetLeftX(), .2);
+  }));
+
   driveSub.SetDefaultCommand(driveSub.DriveFactory(
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
       DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
