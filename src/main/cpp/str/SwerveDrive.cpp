@@ -69,12 +69,14 @@ SwerveDrive::SwerveDrive() {
 
 void SwerveDrive::Drive(units::meters_per_second_t vx,
                         units::meters_per_second_t vy,
-                        units::radians_per_second_t omega, bool openLoop) {
+                        units::radians_per_second_t omega, bool openLoop,
+                        bool fieldOriented) {
   // offset if red
   auto allyValue = frc::DriverStation::GetAlliance();
   frc::Rotation2d rotationOffset = 0_rad;
   if (allyValue) {
-    if (allyValue.value() == frc::DriverStation::Alliance::kRed) {
+    if (allyValue.value() == frc::DriverStation::Alliance::kRed &&
+        fieldOriented) {
       rotationOffset = frc::Rotation2d{units::radian_t{std::numbers::pi}};
     }
   }

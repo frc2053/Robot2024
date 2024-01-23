@@ -316,6 +316,9 @@ frc2::CommandPtr DrivebaseSubsystem::GoToPose(
                xTranslationController.SetTolerance(0.1524);
                yTranslationController.SetTolerance(0.1524);
                rotationController.SetTolerance(0.0349066);
+               swerveDrive.GetField()
+                   .GetObject("Pose to go to")
+                   ->SetPose(poseToGoTo());
              },
              {this})
       .AndThen(frc2::cmd::Run(
@@ -328,7 +331,7 @@ frc2::CommandPtr DrivebaseSubsystem::GoToPose(
             units::radians_per_second_t thetaOutput{
                 rotationController.Calculate(
                     currentPose.Rotation().Radians().value())};
-            swerveDrive.Drive(xOutput, yOutput, thetaOutput, false);
+            swerveDrive.Drive(xOutput, yOutput, thetaOutput, false, false);
           },
           {this}))
       .Until([this] {

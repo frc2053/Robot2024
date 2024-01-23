@@ -43,7 +43,8 @@ class SwerveDrive {
   void SeedFieldRelative(const frc::Pose2d& location);
 
   void Drive(units::meters_per_second_t vx, units::meters_per_second_t vy,
-             units::radians_per_second_t omega, bool openLoop);
+             units::radians_per_second_t omega, bool openLoop,
+             bool fieldOriented = true);
 
   void SetChassisSpeeds(const frc::ChassisSpeeds& newChassisSpeeds,
                         bool openLoop);
