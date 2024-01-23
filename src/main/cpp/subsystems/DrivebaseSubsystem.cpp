@@ -340,7 +340,7 @@ frc2::CommandPtr DrivebaseSubsystem::PathfindToSafeSpot(
   return pathplanner::AutoBuilder::pathfindToPose(
       poseToGoTo(),
       pathplanner::PathConstraints{
-          constants::swerve::physical::MAX_LINEAR_SPEED, 4_mps_sq,
+          constants::swerve::physical::MAX_LINEAR_SPEED, 50_mps_sq,
           constants::swerve::physical::MAX_ROTATION_SPEED,
           constants::swerve::physical::MAX_ROTATION_ACCEL},
       constants::swerve::physical::MAX_LINEAR_SPEED);
