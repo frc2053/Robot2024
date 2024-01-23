@@ -80,8 +80,6 @@ class SwerveDrive {
                             units::second_t timestamp,
                             const Eigen::Vector3d& stdDevs);
 
-  frc::Pose2d CalculateClosestGoodShooterPoint();
-
  private:
   std::array<SwerveModule, 4> swerveModules = {
       SwerveModule{SwerveModuleConstants{

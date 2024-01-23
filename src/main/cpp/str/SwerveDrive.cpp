@@ -82,7 +82,6 @@ void SwerveDrive::Drive(units::meters_per_second_t vx,
       frc::ChassisSpeeds::FromFieldRelativeSpeeds(
           vx, vy, omega, GetHeading() + rotationOffset);
   SetChassisSpeeds(newChassisSpeeds, openLoop);
-  CalculateClosestGoodShooterPoint();
 }
 
 void SwerveDrive::TareEverything() {
@@ -472,36 +471,4 @@ void SwerveDrive::AddVisionMeasurement(const frc::Pose2d& visionMeasurement,
                                        const Eigen::Vector3d& stdDevs) {
   wpi::array<double, 3> newStdDevs{stdDevs(0), stdDevs(1), stdDevs(2)};
   poseEstimator.AddVisionMeasurement(visionMeasurement, timestamp, newStdDevs);
-}
-
-frc::Pose2d SwerveDrive::CalculateClosestGoodShooterPoint() {
-  frc::Translation2d pointToLookAt =
-      constants::swerve::automation::BLUE_ALLIANCE_GOAL;
-  auto allyValue = frc::DriverStation::GetAlliance();
-  if (allyValue) {
-    if (allyValue.value() == frc::DriverStation::Alliance::kRed) {
-      pointToLookAt = constants::swerve::automation::RED_ALLIANCE_GOAL;
-    } else {
-      pointToLookAt = constants::swerve::automation::BLUE_ALLIANCE_GOAL;
-    }
-  }
-
-  frc::Translation2d robotPt = GetPose().Translation();
-  units::meter_t pointOnCircleX =
-      pointToLookAt.X() +
-      constants::swerve::automation::GOOD_DISTANCE_FOR_SHOOTER *
-          ((robotPt.X() - pointToLookAt.X()) /
-           (units::math::sqrt(
-               units::math::pow<2>(robotPt.X() - pointToLookAt.X()) +
-               units::math::pow<2>(robotPt.Y() - pointToLookAt.Y()))));
-  units::meter_t pointOnCircleY =
-      pointToLookAt.Y() +
-      constants::swerve::automation::GOOD_DISTANCE_FOR_SHOOTER *
-          ((robotPt.Y() - pointToLookAt.Y()) /
-           (units::math::sqrt(
-               units::math::pow<2>(robotPt.X() - pointToLookAt.X()) +
-               units::math::pow<2>(robotPt.Y() - pointToLookAt.Y()))));
-  frc::Pose2d retVal = frc::Pose2d{pointOnCircleX, pointOnCircleY, 0_deg};
-  ntField.GetObject("ClosestShootingPoint")->SetPose(retVal);
-  return retVal;
 }

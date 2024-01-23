@@ -38,6 +38,14 @@ void RobotContainer::ConfigureBindings() {
   // operatorController.LeftTrigger().WhileTrue(
   //     shooterSub.SysIdDynamic(frc2::sysid::Direction::kReverse));
 
+  driverController.RightBumper().WhileTrue(driveSub.GoToPose([this] {
+    frc::Pose2d closestPoint = driveSub.CalculateClosestGoodShooterPoint();
+    fmt::print("Closest Point in shooter range is: {},{},{}\n",
+               closestPoint.X(), closestPoint.Y(),
+               closestPoint.Rotation().Degrees());
+    return closestPoint;
+  }));
+
   driveSub.SetDefaultCommand(driveSub.DriveFactory(
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
       DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),

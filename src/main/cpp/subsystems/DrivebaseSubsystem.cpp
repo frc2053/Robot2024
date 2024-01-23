@@ -266,3 +266,74 @@ void DrivebaseSubsystem::AddVisionMeasurement(
 frc::Pose2d DrivebaseSubsystem::GetRobotPose() {
   return swerveDrive.GetPose();
 }
+
+frc::Pose2d DrivebaseSubsystem::CalculateClosestGoodShooterPoint() {
+  frc::Translation2d pointToLookAt =
+      constants::swerve::automation::BLUE_ALLIANCE_GOAL;
+  auto allyValue = frc::DriverStation::GetAlliance();
+  if (allyValue) {
+    if (allyValue.value() == frc::DriverStation::Alliance::kRed) {
+      pointToLookAt = constants::swerve::automation::RED_ALLIANCE_GOAL;
+    } else {
+      pointToLookAt = constants::swerve::automation::BLUE_ALLIANCE_GOAL;
+    }
+  }
+
+  frc::Translation2d robotPt = swerveDrive.GetPose().Translation();
+  units::meter_t pointOnCircleX =
+      pointToLookAt.X() +
+      constants::swerve::automation::GOOD_DISTANCE_FOR_SHOOTER *
+          ((robotPt.X() - pointToLookAt.X()) /
+           (units::math::sqrt(
+               units::math::pow<2>(robotPt.X() - pointToLookAt.X()) +
+               units::math::pow<2>(robotPt.Y() - pointToLookAt.Y()))));
+  units::meter_t pointOnCircleY =
+      pointToLookAt.Y() +
+      constants::swerve::automation::GOOD_DISTANCE_FOR_SHOOTER *
+          ((robotPt.Y() - pointToLookAt.Y()) /
+           (units::math::sqrt(
+               units::math::pow<2>(robotPt.X() - pointToLookAt.X()) +
+               units::math::pow<2>(robotPt.Y() - pointToLookAt.Y()))));
+  frc::Rotation2d angle{units::math::atan2(pointToLookAt.Y() - pointOnCircleY,
+                                           pointToLookAt.X() - pointOnCircleX)};
+  frc::Pose2d retVal = frc::Pose2d{pointOnCircleX, pointOnCircleY, angle};
+  return retVal;
+}
+
+frc2::CommandPtr DrivebaseSubsystem::GoToPose(
+    std::function<frc::Pose2d()> poseToGoTo) {
+  return frc2::cmd::RunOnce(
+             [this, poseToGoTo] {
+               xTranslationController.Reset();
+               yTranslationController.Reset();
+               rotationController.Reset();
+               rotationController.EnableContinuousInput(-std::numbers::pi,
+                                                        std::numbers::pi);
+               xTranslationController.SetSetpoint(poseToGoTo().X().value());
+               yTranslationController.SetSetpoint(poseToGoTo().Y().value());
+               rotationController.SetSetpoint(
+                   poseToGoTo().Rotation().Radians().value());
+               xTranslationController.SetTolerance(0.1524);
+               yTranslationController.SetTolerance(0.1524);
+               rotationController.SetTolerance(0.0349066);
+             },
+             {this})
+      .AndThen(frc2::cmd::Run(
+          [this] {
+            frc::Pose2d currentPose = GetRobotPose();
+            units::meters_per_second_t xOutput{
+                xTranslationController.Calculate(currentPose.X().value())};
+            units::meters_per_second_t yOutput{
+                yTranslationController.Calculate(currentPose.Y().value())};
+            units::radians_per_second_t thetaOutput{
+                rotationController.Calculate(
+                    currentPose.Rotation().Radians().value())};
+            swerveDrive.Drive(xOutput, yOutput, thetaOutput, false);
+          },
+          {this}))
+      .Until([this] {
+        return xTranslationController.AtSetpoint() &&
+               yTranslationController.AtSetpoint() &&
+               rotationController.AtSetpoint();
+      });
+}

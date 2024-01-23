@@ -24,11 +24,9 @@ class Vision {
   Vision() {
     frc::AprilTagFieldLayout layout =
         frc::LoadAprilTagLayoutField(frc::AprilTagField::k2024Crescendo);
-    layout.SetOrigin(
-        frc::AprilTagFieldLayout::OriginPosition::kBlueAllianceWallRightSide);
 
     photonEstimator = std::make_unique<photon::PhotonPoseEstimator>(
-        layout, photon::PoseStrategy::LOWEST_AMBIGUITY,
+        layout, photon::PoseStrategy::MULTI_TAG_PNP_ON_COPROCESSOR,
         photon::PhotonCamera(constants::vision::kCameraName),
         constants::vision::kRobotToCam);
     camera = photonEstimator->GetCamera();
