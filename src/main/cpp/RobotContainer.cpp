@@ -38,13 +38,14 @@ void RobotContainer::ConfigureBindings() {
   // operatorController.LeftTrigger().WhileTrue(
   //     shooterSub.SysIdDynamic(frc2::sysid::Direction::kReverse));
 
-  driverController.RightBumper().WhileTrue(driveSub.GoToPose([this] {
-    frc::Pose2d closestPoint = driveSub.CalculateClosestGoodShooterPoint();
-    fmt::print("Closest Point in shooter range is: {},{},{}\n",
-               closestPoint.X(), closestPoint.Y(),
-               closestPoint.Rotation().Degrees());
-    return closestPoint;
-  }));
+  driverController.RightBumper().WhileTrue(
+      frc2::cmd::Defer(GetAStarCmd(), {&driveSub})
+          .Unless([this] { return driveSub.InSafeZone(); })
+          .AndThen(driveSub.GoToPose([this] {
+            frc::Pose2d closestPoint =
+                driveSub.CalculateClosestGoodShooterPoint();
+            return closestPoint;
+          })));
 
   driveSub.SetDefaultCommand(driveSub.DriveFactory(
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
@@ -129,5 +130,12 @@ str::DeadbandAndSquareFunc RobotContainer::DeadbandAndSquare(
   return [joystickValue]() {
     double deadband = frc::ApplyDeadband<double>(joystickValue(), 0.2);
     return std::abs(deadband) * deadband;
+  };
+}
+
+std::function<frc2::CommandPtr()> RobotContainer::GetAStarCmd() {
+  return [this] {
+    return driveSub.PathfindToSafeSpot(
+        [this] { return driveSub.CalculateClosestSafeSpot(); });
   };
 }

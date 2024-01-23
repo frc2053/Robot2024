@@ -68,7 +68,6 @@
       "/SmartDashboard/VisionSystemSim-main/Sim Field": {
         "apriltag": {
           "arrows": false,
-          "image": "C:\\Users\\willi\\dev\\Robot2024\\img\\tag-blue.png",
           "length": 0.4000000059604645,
           "width": 0.5
         },
@@ -78,7 +77,6 @@
         "right": 2961,
         "top": 79,
         "visibleTargetPoses": {
-          "image": "C:\\Users\\willi\\dev\\Robot2024\\img\\tag-green.png",
           "length": 0.4000000059604645,
           "width": 0.5
         },
@@ -99,6 +97,9 @@
           }
         }
       },
+      "PathPlanner": {
+        "open": true
+      },
       "SmartDashboard": {
         "Drivebase": {
           "Module 3": {
@@ -106,7 +107,9 @@
           }
         },
         "Field": {
-          "open": true
+          "double[]##v_/SmartDashboard/Field/Estimated Robot Pose": {
+            "open": true
+          }
         },
         "VisionSystemSim-main": {
           "Sim Field": {
@@ -114,8 +117,7 @@
               "open": true
             },
             "open": true
-          },
-          "open": true
+          }
         },
         "open": true
       },

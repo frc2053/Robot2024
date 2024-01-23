@@ -58,6 +58,8 @@ class RobotContainer {
   frc2::CommandPtr donePathTuningCmd = driveSub.DoneTuningPathPids();
   frc2::CommandPtr zeroYawCMD = driveSub.ZeroYawCMD();
 
+  std::function<frc2::CommandPtr()> GetAStarCmd();
+
   str::DeadbandAndSquareFunc DeadbandAndSquare(
       std::function<double()> joystickValue);
 };

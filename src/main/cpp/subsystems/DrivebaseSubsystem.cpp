@@ -300,6 +300,52 @@ frc::Pose2d DrivebaseSubsystem::CalculateClosestGoodShooterPoint() {
   return retVal;
 }
 
+bool DrivebaseSubsystem::InSafeZone() {
+  units::meter_t safeLine = constants::swerve::automation::SAFE_ZONE_LINE_BLUE;
+  auto allyValue = frc::DriverStation::GetAlliance();
+  if (allyValue) {
+    if (allyValue.value() == frc::DriverStation::Alliance::kRed) {
+      safeLine = constants::swerve::automation::SAFE_ZONE_LINE_RED;
+      return GetRobotPose().X() >= safeLine;
+    } else {
+      safeLine = constants::swerve::automation::SAFE_ZONE_LINE_BLUE;
+      return GetRobotPose().X() <= safeLine;
+    }
+  }
+
+  return GetRobotPose().X() <= safeLine;
+}
+
+frc::Pose2d DrivebaseSubsystem::CalculateClosestSafeSpot() {
+  units::meter_t safeLine = constants::swerve::automation::SAFE_ZONE_LINE_BLUE;
+  auto allyValue = frc::DriverStation::GetAlliance();
+  if (allyValue) {
+    if (allyValue.value() == frc::DriverStation::Alliance::kRed) {
+      safeLine = constants::swerve::automation::SAFE_ZONE_LINE_RED;
+    } else {
+      safeLine = constants::swerve::automation::SAFE_ZONE_LINE_BLUE;
+    }
+  }
+
+  frc::Pose2d closestSafeSpot{safeLine, GetRobotPose().Y(),
+                              frc::Rotation2d{0_deg}};
+  swerveDrive.GetField()
+      .GetObject("Closest Safe Spot")
+      ->SetPose(closestSafeSpot);
+  return closestSafeSpot;
+}
+
+frc2::CommandPtr DrivebaseSubsystem::PathfindToSafeSpot(
+    std::function<frc::Pose2d()> poseToGoTo) {
+  return pathplanner::AutoBuilder::pathfindToPose(
+      poseToGoTo(),
+      pathplanner::PathConstraints{
+          constants::swerve::physical::MAX_LINEAR_SPEED, 4_mps_sq,
+          constants::swerve::physical::MAX_ROTATION_SPEED,
+          constants::swerve::physical::MAX_ROTATION_ACCEL},
+      constants::swerve::physical::MAX_LINEAR_SPEED);
+}
+
 frc2::CommandPtr DrivebaseSubsystem::GoToPose(
     std::function<frc::Pose2d()> poseToGoTo) {
   return frc2::cmd::RunOnce(

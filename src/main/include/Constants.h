@@ -257,6 +257,8 @@ namespace automation {
 inline constexpr frc::Translation2d BLUE_ALLIANCE_GOAL{0.5403_m, 5.419_m};
 inline constexpr frc::Translation2d RED_ALLIANCE_GOAL{16_m, 5.419_m};
 inline constexpr units::meter_t GOOD_DISTANCE_FOR_SHOOTER = 70_in;
+inline constexpr units::meter_t SAFE_ZONE_LINE_BLUE = 2.196_m;
+inline constexpr units::meter_t SAFE_ZONE_LINE_RED = 14.26_m;
 }  // namespace automation
 }  // namespace swerve
 
