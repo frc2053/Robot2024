@@ -359,6 +359,7 @@ frc2::CommandPtr DrivebaseSubsystem::GoToPose(
                yTranslationController.SetSetpoint(poseToGoTo().Y().value());
                rotationController.SetSetpoint(
                    poseToGoTo().Rotation().Radians().value());
+               lastPoseInMoveToArc = poseToGoTo();
                xTranslationController.SetTolerance(0.1524);
                yTranslationController.SetTolerance(0.1524);
                rotationController.SetTolerance(0.0349066);
@@ -388,49 +389,69 @@ frc2::CommandPtr DrivebaseSubsystem::GoToPose(
 }
 
 frc2::CommandPtr DrivebaseSubsystem::MoveAlongArc(
-    std::function<double()> joystick) {
-  return frc2::cmd::Sequence(
-      frc2::cmd::RunOnce(
-          [this] {
-            auto allyValue = frc::DriverStation::GetAlliance();
-            if (allyValue) {
-              if (allyValue.value() == frc::DriverStation::Alliance::kRed) {
-                thruAngle = 180_deg;
-                minArcAngle = 90_deg;
-                maxArcAngle = 270_deg;
-              } else {
-                thruAngle = 0_rad;
-                minArcAngle = -90_deg;
-                maxArcAngle = 90_deg;
-              }
-            }
-          },
-          {this}),
-      frc2::cmd::Run(
-          [this, joystick] {
-            frc::Translation2d pointToLookAt =
-                constants::swerve::automation::BLUE_ALLIANCE_GOAL;
-            auto allyValue = frc::DriverStation::GetAlliance();
-            if (allyValue) {
-              if (allyValue.value() == frc::DriverStation::Alliance::kRed) {
-                pointToLookAt =
-                    constants::swerve::automation::RED_ALLIANCE_GOAL;
-              } else {
-                pointToLookAt =
-                    constants::swerve::automation::BLUE_ALLIANCE_GOAL;
-              }
-            }
+    std::function<double()> joystick,
+    std::function<units::radian_t()> startAngle) {
+  return frc2::cmd::Run(
+             [this, joystick, startAngle] {
+               frc::Translation2d pointToLookAt =
+                   constants::swerve::automation::BLUE_ALLIANCE_GOAL;
+               auto allyValue = frc::DriverStation::GetAlliance();
+               if (allyValue) {
+                 if (allyValue.value() == frc::DriverStation::Alliance::kRed) {
+                   minArcAngle = 90_deg;
+                   maxArcAngle = 270_deg;
+                   pointToLookAt =
+                       constants::swerve::automation::RED_ALLIANCE_GOAL;
+                 } else {
+                   minArcAngle = -90_deg;
+                   maxArcAngle = 90_deg;
+                   pointToLookAt =
+                       constants::swerve::automation::BLUE_ALLIANCE_GOAL;
+                 }
+               }
 
-            thruAngle += joystick() * 10_deg;
-            thruAngle = std::clamp(thruAngle, minArcAngle, maxArcAngle);
-            swerveDrive.GetField().GetObject("Arc")->SetPose(frc::Pose2d{
-                pointToLookAt.X() + units::math::cos(thruAngle) *
-                                        constants::swerve::automation::
-                                            GOOD_DISTANCE_FOR_SHOOTER,
-                pointToLookAt.Y() + units::math::sin(thruAngle) *
-                                        constants::swerve::automation::
-                                            GOOD_DISTANCE_FOR_SHOOTER,
-                frc::Rotation2d{thruAngle + 180_deg}});
+               fmt::print("THRUANGLE: {}\n", thruAngle);
+               thruAngle += joystick() * 10_deg;
+               thruAngle = std::clamp(thruAngle, minArcAngle, maxArcAngle);
+
+               frc::Pose2d poseAlongArc{
+                   pointToLookAt.X() + units::math::cos(thruAngle) *
+                                           constants::swerve::automation::
+                                               GOOD_DISTANCE_FOR_SHOOTER,
+                   pointToLookAt.Y() + units::math::sin(thruAngle) *
+                                           constants::swerve::automation::
+                                               GOOD_DISTANCE_FOR_SHOOTER,
+                   frc::Rotation2d{thruAngle + 180_deg}};
+               swerveDrive.GetField().GetObject("Arc")->SetPose(poseAlongArc);
+
+               xTranslationController.SetSetpoint(poseAlongArc.X().value());
+               yTranslationController.SetSetpoint(poseAlongArc.Y().value());
+               rotationController.SetSetpoint(
+                   poseAlongArc.Rotation().Radians().value());
+
+               frc::Pose2d currentPose = GetRobotPose();
+               units::meters_per_second_t xOutput{
+                   xTranslationController.Calculate(currentPose.X().value())};
+               units::meters_per_second_t yOutput{
+                   yTranslationController.Calculate(currentPose.Y().value())};
+               units::radians_per_second_t thetaOutput{
+                   rotationController.Calculate(
+                       currentPose.Rotation().Radians().value())};
+               swerveDrive.Drive(xOutput, yOutput, thetaOutput, false, false);
+             },
+             {this})
+      .BeforeStarting(
+          [this] {
+            fmt::print("lastPose: X: {}, Y: {}, ROT: {}\n",
+                       lastPoseInMoveToArc.X(), lastPoseInMoveToArc.Y(),
+                       lastPoseInMoveToArc.Rotation().Radians());
+            thruAngle = lastPoseInMoveToArc.Rotation().Radians();
+            auto ally = frc::DriverStation::GetAlliance();
+            if (ally) {
+              if (ally.value() == frc::DriverStation::Alliance::kRed) {
+                thruAngle = thruAngle + 180_deg;
+              }
+            }
           },
-          {this}));
+          {this});
 }

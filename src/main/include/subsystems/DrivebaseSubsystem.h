@@ -66,7 +66,8 @@ class DrivebaseSubsystem : public frc2::SubsystemBase {
   frc::Pose2d CalculateClosestSafeSpot();
   frc2::CommandPtr PathfindToSafeSpot(std::function<frc::Pose2d()> poseToGoTo);
   frc2::CommandPtr GoToPose(std::function<frc::Pose2d()> poseToGoTo);
-  frc2::CommandPtr MoveAlongArc(std::function<double()> joystick);
+  frc2::CommandPtr MoveAlongArc(std::function<double()> joystick,
+                                std::function<units::radian_t()> startAngle);
 
  private:
   str::SwerveDrive swerveDrive{};
@@ -105,4 +106,5 @@ class DrivebaseSubsystem : public frc2::SubsystemBase {
   units::radian_t thruAngle{0};
   units::radian_t minArcAngle{0};
   units::radian_t maxArcAngle{0};
+  frc::Pose2d lastPoseInMoveToArc;
 };

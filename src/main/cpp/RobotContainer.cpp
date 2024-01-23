@@ -45,11 +45,17 @@ void RobotContainer::ConfigureBindings() {
             frc::Pose2d closestPoint =
                 driveSub.CalculateClosestGoodShooterPoint();
             return closestPoint;
-          })));
-
-  driverController.LeftBumper().WhileTrue(driveSub.MoveAlongArc([this] {
-    return frc::ApplyDeadband<double>(-driverController.GetLeftX(), .2);
-  }));
+          }))
+          .AndThen(driveSub.MoveAlongArc(
+              [this] {
+                return frc::ApplyDeadband<double>(-driverController.GetLeftX(),
+                                                  .2);
+              },
+              [this] {
+                return driveSub.CalculateClosestGoodShooterPoint()
+                    .Rotation()
+                    .Radians();
+              })));
 
   driveSub.SetDefaultCommand(driveSub.DriveFactory(
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
