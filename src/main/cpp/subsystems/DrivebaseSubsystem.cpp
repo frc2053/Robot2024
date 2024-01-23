@@ -410,7 +410,6 @@ frc2::CommandPtr DrivebaseSubsystem::MoveAlongArc(
                  }
                }
 
-               fmt::print("THRUANGLE: {}\n", thruAngle);
                thruAngle += joystick() * 10_deg;
                thruAngle = std::clamp(thruAngle, minArcAngle, maxArcAngle);
 
