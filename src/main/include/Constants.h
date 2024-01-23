@@ -252,6 +252,12 @@ inline frc::SwerveDriveKinematics<4> KINEMATICS{
     moduleLocations[0], moduleLocations[1], moduleLocations[2],
     moduleLocations[3]};
 }  // namespace physical
+
+namespace automation {
+inline constexpr frc::Translation2d BLUE_ALLIANCE_GOAL{0.5403_m, 5.419_m};
+inline constexpr frc::Translation2d RED_ALLIANCE_GOAL{16_m, 5.419_m};
+inline constexpr units::meter_t GOOD_DISTANCE_FOR_SHOOTER = 70_in;
+}  // namespace automation
 }  // namespace swerve
 
 namespace vision {

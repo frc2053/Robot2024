@@ -68,7 +68,7 @@
       "/SmartDashboard/VisionSystemSim-main/Sim Field": {
         "apriltag": {
           "arrows": false,
-          "image": "C:\\Users\\DrewW\\dev\\swerve\\img\\tag-blue.png",
+          "image": "/home/drew/dev/Robot2024/img/tag-blue.png",
           "length": 0.4000000059604645,
           "width": 0.5
         },
@@ -78,7 +78,7 @@
         "right": 2961,
         "top": 79,
         "visibleTargetPoses": {
-          "image": "C:\\Users\\DrewW\\dev\\swerve\\img\\tag-green.png",
+          "image": "/home/drew/dev/Robot2024/img/tag-green.png",
           "length": 0.4000000059604645,
           "width": 0.5
         },
