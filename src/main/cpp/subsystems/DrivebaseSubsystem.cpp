@@ -440,15 +440,25 @@ frc2::CommandPtr DrivebaseSubsystem::MoveAlongArc(
              },
              {this})
       .BeforeStarting(
-          [this] {
+          [this, startAngle] {
             fmt::print("lastPose: X: {}, Y: {}, ROT: {}\n",
                        lastPoseInMoveToArc.X(), lastPoseInMoveToArc.Y(),
                        lastPoseInMoveToArc.Rotation().Radians());
-            thruAngle = lastPoseInMoveToArc.Rotation().Radians();
+            fmt::print("startAngle: {}\n",
+                       startAngle().convert<units::degrees>());
+            thruAngle = frc::AngleModulus(startAngle());
+            fmt::print("thruAngle: {}\n", thruAngle.convert<units::degrees>());
             auto ally = frc::DriverStation::GetAlliance();
             if (ally) {
+              if (ally.value() == frc::DriverStation::Alliance::kBlue) {
+                thruAngle = frc::AngleModulus(thruAngle + 180_deg);
+                fmt::print("thruAngle blue: {}\n",
+                           thruAngle.convert<units::degrees>());
+              }
               if (ally.value() == frc::DriverStation::Alliance::kRed) {
                 thruAngle = thruAngle + 180_deg;
+                fmt::print("thruAngle red: {}\n",
+                           thruAngle.convert<units::degrees>());
               }
             }
           },
