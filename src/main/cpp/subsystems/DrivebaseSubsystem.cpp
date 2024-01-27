@@ -260,6 +260,9 @@ void DrivebaseSubsystem::AddVisionMeasurement(
 void DrivebaseSubsystem::AddVisionMeasurement(
     const frc::Pose2d& visionMeasurement, units::second_t timestamp,
     const Eigen::Vector3d& stdDevs) {
+  swerveDrive.GetField()
+      .GetObject("Vision Pose To Add")
+      ->SetPose(visionMeasurement);
   swerveDrive.AddVisionMeasurement(visionMeasurement, timestamp, stdDevs);
 }
 

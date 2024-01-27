@@ -24,8 +24,8 @@ void Robot::RobotPeriodic() {
     auto estPose = est.estimatedPose.ToPose2d();
     auto estStdDevs =
         m_container.GetVisionSystem().GetEstimationStdDevs(estPose);
-    // m_container.GetDrivebaseSubsystem().AddVisionMeasurement(
-    //     est.estimatedPose.ToPose2d(), est.timestamp, estStdDevs);
+    m_container.GetDrivebaseSubsystem().AddVisionMeasurement(
+        est.estimatedPose.ToPose2d(), est.timestamp, estStdDevs);
   }
 }
 

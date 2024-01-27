@@ -265,7 +265,7 @@ inline constexpr units::meter_t SAFE_ZONE_LINE_RED = 14.26_m;
 namespace vision {
 inline constexpr std::string_view kCameraName{"apriltagcam"};
 inline const frc::Transform3d kRobotToCam{
-    frc::Translation3d{0.5_m, 0.0_m, 0.5_m},
+    frc::Translation3d{16.5_in, 19_in, 18.75_in},
     frc::Rotation3d{0_rad, 0_rad, 0_rad}};
 inline const Eigen::Matrix<double, 3, 1> kSingleTagStdDevs{4, 4, 8};
 inline const Eigen::Matrix<double, 3, 1> kMultiTagStdDevs{0.5, 0.5, 1};
