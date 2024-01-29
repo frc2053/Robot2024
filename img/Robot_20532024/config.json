@@ -1,0 +1,62 @@
+{
+    "name": "20532024",
+    "rotations": [
+        {
+            "axis": "x",
+            "degrees": 90
+        },
+        {
+            "axis": "y",
+            "degrees": 0
+        },
+        {
+            "axis": "z",
+            "degrees": -90
+        }
+    ],
+    "position": [
+        0,
+        0,
+        0
+    ],
+    "cameras": [
+        {
+            "name": "apriltagcam",
+            "rotations": [
+                {
+                    "axis": "x",
+                    "degrees": 0
+                },
+                {
+                    "axis": "y",
+                    "degrees": 0
+                },
+                {
+                    "axis": "z",
+                    "degrees": 0
+                }
+            ],
+            "position": [
+                0.4191,
+                0.4826,
+                0.47625
+            ],
+            "resolution": [
+                1280,
+                720
+            ],
+            "fov": 75
+        }
+    ],
+    "components": [
+      {
+
+      },
+      {
+        
+      },
+      {
+
+      }
+    ]
+}
