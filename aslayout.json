@@ -119,8 +119,8 @@
           2
         ],
         "layouts": [
-          "None",
-          "None",
+          "Xbox Controller (White)",
+          "Xbox Controller (White)",
           "None"
         ]
       },
@@ -234,13 +234,13 @@
         ]
       ],
       "options": {
-        "game": "Evergreen",
+        "game": "2024 Field",
         "unitDistance": "meters",
         "unitRotation": "degrees",
         "origin": "right",
-        "size": 0.75,
+        "size": 0.879475,
         "allianceBumpers": "auto",
-        "allianceOrigin": "auto",
+        "allianceOrigin": "blue",
         "orientation": "blue left, red right"
       },
       "configHidden": false,

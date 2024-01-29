@@ -43,6 +43,7 @@
         },
         "Estimated Robot Modules": {
           "arrows": false,
+          "image": "C:\\Users\\DrewW\\dev\\swerve\\img\\swerve_module.png",
           "length": 0.20000000298023224,
           "style": "Box/Image",
           "width": 0.20000000298023224
