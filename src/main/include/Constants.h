@@ -270,4 +270,13 @@ inline const frc::Transform3d kRobotToCam{
 inline const Eigen::Matrix<double, 3, 1> kSingleTagStdDevs{4, 4, 8};
 inline const Eigen::Matrix<double, 3, 1> kMultiTagStdDevs{0.5, 0.5, 1};
 }  // namespace vision
+
+namespace ascope {
+inline const frc::Pose3d kdunkerWheelsOrigin{
+    -5.169876_in, 0_in, 19.425060_in, frc::Rotation3d{90_deg, 0_deg, -90_deg}};
+inline const frc::Pose3d kdunkerBottomArmOrigin{
+    5.519653_in, 0_in, 16.216243_in, frc::Rotation3d{0_deg, 90_deg, 90_deg}};
+inline const frc::Pose3d kdunkerTopArmOrigin{
+    9.029134_in, 0_in, 19.032899_in, frc::Rotation3d{0_deg, 90_deg, 90_deg}};
+}  // namespace ascope
 }  // namespace constants

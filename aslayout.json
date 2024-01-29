@@ -109,6 +109,82 @@
       "title": "Line Graph"
     },
     {
+      "type": 8,
+      "fields": [],
+      "listFields": [],
+      "options": {
+        "ids": [
+          0,
+          1,
+          2
+        ],
+        "layouts": [
+          "None",
+          "None",
+          "None"
+        ]
+      },
+      "configHidden": false,
+      "title": "Joysticks"
+    },
+    {
+      "type": 6,
+      "fields": [],
+      "listFields": [
+        [
+          {
+            "type": "Robot",
+            "key": "NT:/SmartDashboard/ascope/robotPose3d",
+            "sourceTypeIndex": 0,
+            "sourceType": 5
+          },
+          {
+            "type": "Component (Robot)",
+            "key": "NT:/SmartDashboard/ascope/dunkerWheelsPose",
+            "sourceTypeIndex": 0,
+            "sourceType": 5
+          },
+          {
+            "type": "Component (Robot)",
+            "key": "NT:/SmartDashboard/ascope/dunkerBottomArmPose",
+            "sourceTypeIndex": 0,
+            "sourceType": 5
+          },
+          {
+            "type": "Component (Robot)",
+            "key": "NT:/SmartDashboard/ascope/dunkerTopArmPose",
+            "sourceTypeIndex": 0,
+            "sourceType": 5
+          }
+        ],
+        [
+          {
+            "type": "Yellow Cone (Center)",
+            "key": "NT:/SmartDashboard/Field/Estimated Robot Modules",
+            "sourceTypeIndex": 0,
+            "sourceType": 5
+          },
+          {
+            "type": "Trajectory",
+            "key": "NT:/PathPlanner/activePath",
+            "sourceTypeIndex": 0,
+            "sourceType": 5
+          }
+        ]
+      ],
+      "options": {
+        "field": "2024 Field",
+        "alliance": "blue",
+        "robot": "20532024",
+        "unitDistance": "meters",
+        "unitRotation": "degrees",
+        "cameraIndex": -1,
+        "fov": 50
+      },
+      "configHidden": false,
+      "title": "3D Field"
+    },
+    {
       "type": 5,
       "fields": [],
       "listFields": [

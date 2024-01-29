@@ -97,9 +97,6 @@
           }
         }
       },
-      "PathPlanner": {
-        "open": true
-      },
       "SmartDashboard": {
         "Drivebase": {
           "Module 3": {
@@ -121,7 +118,13 @@
         },
         "open": true
       },
-      "photonvision": {
+      "ascope": {
+        "Pose3d##v_/ascope/bottomDunkerPivotPose": {
+          "open": true
+        },
+        "Pose3d##v_/ascope/robot3dPose": {
+          "open": true
+        },
         "open": true
       }
     }

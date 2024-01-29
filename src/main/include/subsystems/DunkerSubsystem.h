@@ -28,6 +28,7 @@ class DunkerSubsystem : public frc2::SubsystemBase {
 
   void Periodic() override;
   void SimulationPeriodic() override;
+  units::radian_t GetPivotAngle();
   frc2::CommandPtr PivotDunkNotesOut();
   frc2::CommandPtr PivotDunkNotesIn();
   frc2::CommandPtr DunkTheNotes();
@@ -42,7 +43,6 @@ class DunkerSubsystem : public frc2::SubsystemBase {
   constants::dunker::DunkerGains GetGains();
 
   void SetDunkSpeed(double speed);
-  units::radian_t GetPivotAngle();
   void SetPivotGoal(units::radian_t angleGoal);
   bool IsPivotAtGoal();
 

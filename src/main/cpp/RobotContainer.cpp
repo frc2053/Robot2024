@@ -131,6 +131,10 @@ ShooterSubsystem& RobotContainer::GetShooterSubsystem() {
   return shooterSub;
 }
 
+DunkerSubsystem& RobotContainer::GetDunkerSubsystem() {
+  return dunkSub;
+}
+
 Vision& RobotContainer::GetVisionSystem() {
   return vision;
 }

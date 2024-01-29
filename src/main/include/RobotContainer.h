@@ -27,6 +27,7 @@ class RobotContainer {
   frc2::Command* GetAutonomousCommand();
   DrivebaseSubsystem& GetDrivebaseSubsystem();
   ShooterSubsystem& GetShooterSubsystem();
+  DunkerSubsystem& GetDunkerSubsystem();
   Vision& GetVisionSystem();
 
  private:
