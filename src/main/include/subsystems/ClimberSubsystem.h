@@ -5,7 +5,6 @@
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
-#include <rev/CANSparkLowLevel.h>
 #include <rev/CANSparkMax.h>
 
 #include "Constants.h"
@@ -15,19 +14,17 @@ class ClimberSubsystem : public frc2::SubsystemBase {
   ClimberSubsystem();
 
   void Periodic() override;
-
-  bool IsAtHeight() {}
-
-  void SetCLimbHeight() {}
-
-  void GoDown() {}
+  bool IsAtHeight();
+  void SetClimbHeight();
+  void GoDown();
 
  private:
-  ctre::rev::hardware::CANSparkMax mainClimbMotor{
-      constants::climber::MAIN_CLIMBER_CAN_ID};
+  rev::CANSparkMax mainClimbMotor{constants::climber::MAIN_CLIMBER_CAN_ID,
+                                  rev::CANSparkLowLevel::MotorType::kBrushless};
 
-  ctre::rev::hardware::CANSparkMax followClimbMotor{
-      constants::climber::FOLLOW_CLIMBER_CAN_ID};
+  rev::CANSparkMax followClimbMotor{
+      constants::climber::FOLLOW_CLIMBER_CAN_ID,
+      rev::CANSparkLowLevel::MotorType::kBrushless};
 
   units::meter_t currentSetpoint{0};
   units::meter_t currentPosition{0};

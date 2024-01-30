@@ -9,4 +9,6 @@ ClimberSubsystem::ClimberSubsystem() = default;
 // This method will be called once per scheduler run
 void ClimberSubsystem::Periodic() {}
 
-bool IsAtHeight() {}
+bool ClimberSubsystem::IsAtHeight() {
+  return false;
+}
