@@ -21,6 +21,11 @@
 
 namespace constants {
 
+namespace climber {
+inline constexpr int MAIN_CLIMBER_CAN_ID = 22;
+inline constexpr int FOLLOW_CLIMBER_CAN_ID = 23;
+}  // namespace climber
+
 namespace intake {
 inline constexpr int INTAKE_CAN_ID = 19;
 }  // namespace intake
