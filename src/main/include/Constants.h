@@ -24,6 +24,8 @@ namespace constants {
 namespace climber {
 inline constexpr int MAIN_CLIMBER_CAN_ID = 22;
 inline constexpr int FOLLOW_CLIMBER_CAN_ID = 23;
+inline constexpr units::scalar_t CLIMBER_RATIO = 9.0 / 1.0;
+
 }  // namespace climber
 
 namespace intake {

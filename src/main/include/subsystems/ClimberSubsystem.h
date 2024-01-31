@@ -17,6 +17,9 @@ class ClimberSubsystem : public frc2::SubsystemBase {
   bool IsAtHeight();
   void SetClimbHeight();
   void GoDown();
+  units::meter_t ConvertMotorPositionToClimberPositon(units::radian_t position);
+  units::meters_per_second_t ConvertMotorVelToClimberVel(
+      units::radians_per_second_t vel);
 
  private:
   rev::CANSparkMax mainClimbMotor{constants::climber::MAIN_CLIMBER_CAN_ID,

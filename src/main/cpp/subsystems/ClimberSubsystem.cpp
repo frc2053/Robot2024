@@ -9,6 +9,21 @@ ClimberSubsystem::ClimberSubsystem() = default;
 // This method will be called once per scheduler run
 void ClimberSubsystem::Periodic() {}
 
-bool ClimberSubsystem::IsAtHeight() {
-  return false;
+units::meter_t ConvertMotorPositionToClimberPositon(units::radian_t position) {
+  units::meter_t climbpos = 1_in;
+  return climbpos
 }
+
+units::meters_per_second_t ConvertMotorVelToClimberVel(
+    units::radians_per_second_t vel) {}
+
+bool ClimberSubsystem::IsAtHeight() {
+  if (currentPosition > currentSetpoint + 1_in ||
+      currentPosition < currentSetpoint - 1_in)
+    return false;
+
+  else
+    return true;
+}
+
+void SetClimbHeight() {}
