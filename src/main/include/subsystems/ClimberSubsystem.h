@@ -13,13 +13,13 @@ class ClimberSubsystem : public frc2::SubsystemBase {
  public:
   ClimberSubsystem();
 
+  void ConfigureMotor();
+
   void Periodic() override;
   bool IsAtHeight();
-  void SetClimbHeight();
+  void SetClimbHeight(units::meter_t newSetpoint);
   void GoDown();
-  units::meter_t ConvertMotorPositionToClimberPositon(units::radian_t position);
-  units::meters_per_second_t ConvertMotorVelToClimberVel(
-      units::radians_per_second_t vel);
+  units::meter_t GetClimberHeight();
 
  private:
   rev::CANSparkMax mainClimbMotor{constants::climber::MAIN_CLIMBER_CAN_ID,
@@ -29,7 +29,14 @@ class ClimberSubsystem : public frc2::SubsystemBase {
       constants::climber::FOLLOW_CLIMBER_CAN_ID,
       rev::CANSparkLowLevel::MotorType::kBrushless};
 
-  units::meter_t currentSetpoint{0};
-  units::meter_t currentPosition{0};
-  units::meters_per_second_t currentVelocity{0};
+  rev::SparkPIDController m_pidController = mainClimbMotor.GetPIDController();
+  rev::SparkRelativeEncoder m_encoder =
+      mainClimbMotor.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor);
+
+  void InitSendable(wpi::SendableBuilder& builder) override;
+  void SetGains(const constants::climber::ClimberGains newGains);
+  constants::climber::ClimberGains GetGains();
+
+  constants::climber::ClimberGains currentGains = constants::climber::GAINS;
+  units::meter_t currentSetpoint;
 };

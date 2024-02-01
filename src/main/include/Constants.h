@@ -7,6 +7,7 @@
 #include <frc/apriltag/AprilTagFieldLayout.h>
 #include <frc/apriltag/AprilTagFields.h>
 #include <frc/controller/ArmFeedforward.h>
+#include <frc/controller/ElevatorFeedforward.h>
 #include <frc/controller/SimpleMotorFeedforward.h>
 #include <frc/geometry/Transform3d.h>
 #include <frc/geometry/Translation2d.h>
@@ -25,6 +26,38 @@ namespace climber {
 inline constexpr int MAIN_CLIMBER_CAN_ID = 22;
 inline constexpr int FOLLOW_CLIMBER_CAN_ID = 23;
 inline constexpr units::scalar_t CLIMBER_RATIO = 9.0 / 1.0;
+inline constexpr units::meter_t CLIMBER_SPOOL_RADIUS = 1.75_in;
+inline constexpr units::meter_t CLIMBER_TOLERANCE = 1_in;
+
+struct ClimberGains {
+  units::unit_t<frc::ElevatorFeedforward::ka_unit> kA{0};
+  units::unit_t<frc::ElevatorFeedforward::kv_unit> kV{0};
+  units::volt_t kS{0};
+  units::volt_t kG{0};
+  units::radian_volt_kp_unit_t kP{0};
+  units::radian_volt_ki_unit_t kI{0};
+  units::radian_volt_kd_unit_t kD{0};
+
+  bool operator==(const ClimberGains& rhs) const {
+    return units::essentiallyEqual(kA, rhs.kA, 1e-6) &&
+           units::essentiallyEqual(kV, rhs.kV, 1e-6) &&
+           units::essentiallyEqual(kS, rhs.kS, 1e-6) &&
+           units::essentiallyEqual(kG, rhs.kS, 1e-6) &&
+           units::essentiallyEqual(kP, rhs.kP, 1e-6) &&
+           units::essentiallyEqual(kI, rhs.kI, 1e-6) &&
+           units::essentiallyEqual(kD, rhs.kD, 1e-6);
+  }
+  bool operator!=(const ClimberGains& rhs) const { return !operator==(rhs); }
+};
+
+inline constexpr ClimberGains GAINS{
+    units::unit_t<frc::ElevatorFeedforward::ka_unit>{0},
+    units::unit_t<frc::ElevatorFeedforward::kv_unit>{0},
+    units::volt_t{0},
+    units::volt_t{0},
+    units::radian_volt_kp_unit_t{0.0},
+    units::radian_volt_ki_unit_t{0.0},
+    units::radian_volt_kd_unit_t{0.0}};
 
 }  // namespace climber
 
