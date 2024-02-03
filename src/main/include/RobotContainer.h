@@ -15,6 +15,7 @@
 #include "subsystems/DrivebaseSubsystem.h"
 #include "subsystems/DunkerSubsystem.h"
 #include "subsystems/IntakeSubsystem.h"
+#include "subsystems/LedSubsystem.h"
 #include "subsystems/ShooterSubsystem.h"
 
 namespace str {
@@ -41,6 +42,7 @@ class RobotContainer {
   IntakeSubsystem intakeSub;
   DunkerSubsystem dunkSub;
   ClimberSubsystem climbSub;
+  LedSubsystem ledSub;
 
   Vision vision;
 
@@ -61,6 +63,11 @@ class RobotContainer {
   frc2::CommandPtr tunePathPidCmd = driveSub.TunePathPid();
   frc2::CommandPtr donePathTuningCmd = driveSub.DoneTuningPathPids();
   frc2::CommandPtr zeroYawCMD = driveSub.ZeroYawCMD();
+
+  frc2::CommandPtr SpinUpShooter();
+  frc2::CommandPtr NotUsingShooter();
+
+  frc2::CommandPtr IntakeNote();
 
   std::function<frc2::CommandPtr()> GetAStarCmd();
 

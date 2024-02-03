@@ -6,6 +6,8 @@
 
 IntakeSubsystem::IntakeSubsystem() {
   ConfigureMotors();
+
+  intakeSensor.SetRangingMode(frc::TimeOfFlight::RangingMode::kShort, 24);
 }
 
 // This method will be called once per scheduler run
@@ -28,6 +30,15 @@ frc2::CommandPtr IntakeSubsystem::SuckInNotes() {
 frc2::CommandPtr IntakeSubsystem::SpitOutNotes() {
   return frc2::cmd::RunEnd([this] { SetIntakeSpeed(-1); },
                            [this] { SetIntakeSpeed(0); }, {this});
+}
+
+frc2::CommandPtr IntakeSubsystem::SuckInUntilNoteIsSeen() {
+  return SuckInNotes().Until([this] { return SeesNote(); });
+}
+
+bool IntakeSubsystem::SeesNote() {
+  return units::millimeter_t{intakeSensor.GetRange()} <=
+         constants::intake::INTAKE_SENSOR_DISTANCE;
 }
 
 void IntakeSubsystem::SetIntakeSpeed(double speed) {

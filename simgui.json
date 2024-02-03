@@ -1,5 +1,14 @@
 {
   "HALProvider": {
+    "Addressable LEDs": {
+      "0": {
+        "columns": 2,
+        "serpentine": true
+      },
+      "window": {
+        "visible": true
+      }
+    },
     "Other Devices": {
       " Talon FX (v6)[21]": {
         "header": {
@@ -43,7 +52,6 @@
         },
         "Estimated Robot Modules": {
           "arrows": false,
-          "image": "C:\\Users\\DrewW\\dev\\swerve\\img\\swerve_module.png",
           "length": 0.20000000298023224,
           "style": "Box/Image",
           "width": 0.20000000298023224
@@ -108,6 +116,9 @@
           "double[]##v_/SmartDashboard/Field/Estimated Robot Pose": {
             "open": true
           }
+        },
+        "Shooter Telemetry": {
+          "open": true
         },
         "VisionSystemSim-main": {
           "Sim Field": {

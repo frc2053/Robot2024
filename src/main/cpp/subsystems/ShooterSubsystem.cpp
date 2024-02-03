@@ -20,7 +20,7 @@ frc2::CommandPtr ShooterSubsystem::GoToSpeedCmd(std::function<double()> speed) {
 frc2::CommandPtr ShooterSubsystem::GoToVelocityCmd(
     std::function<units::radians_per_second_t()> speed) {
   return frc2::cmd::Run([this, speed] { GoToVelocity(speed()); }, {this})
-      .FinallyDo([this] { Set(0); });
+      .Until([this] { return IsShooterUpToSpeed(); });
 }
 
 frc2::CommandPtr ShooterSubsystem::SysIdQuasistatic(

@@ -7,6 +7,7 @@
 #include <frc2/command/Commands.h>
 #include <frc2/command/SubsystemBase.h>
 
+#include <TimeOfFlight.h>
 #include <ctre/phoenix6/TalonFX.hpp>
 
 #include "Constants.h"
@@ -17,6 +18,7 @@ class IntakeSubsystem : public frc2::SubsystemBase {
 
   frc2::CommandPtr SuckInNotes();
   frc2::CommandPtr SpitOutNotes();
+  frc2::CommandPtr SuckInUntilNoteIsSeen();
 
   void Periodic() override;
 
@@ -24,6 +26,9 @@ class IntakeSubsystem : public frc2::SubsystemBase {
   ctre::phoenix6::hardware::TalonFX intakeMotor{
       constants::intake::INTAKE_CAN_ID};
 
+  frc::TimeOfFlight intakeSensor{constants::intake::INTAKE_TOF_SENSOR};
+
   void ConfigureMotors();
   void SetIntakeSpeed(double speed);
+  bool SeesNote();
 };

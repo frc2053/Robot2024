@@ -16,7 +16,7 @@ void RobotContainer::ConfigureBindings() {
     return frc::ApplyDeadband<double>(operatorController.GetLeftY(), 0.2);
   }));
 
-  operatorController.B().WhileTrue(intakeSub.SuckInNotes());
+  operatorController.B().WhileTrue(IntakeNote());
 
   operatorController.X().WhileTrue(intakeSub.SpitOutNotes());
 
@@ -26,8 +26,8 @@ void RobotContainer::ConfigureBindings() {
   operatorController.RightBumper().WhileTrue(dunkSub.DunkTheNotes());
   operatorController.LeftBumper().WhileTrue(dunkSub.JammedDunkNotes());
 
-  operatorController.RightTrigger().WhileTrue(
-      shooterSub.GoToVelocityCmd([] { return 4500_rpm; }));
+  operatorController.RightTrigger().WhileTrue(SpinUpShooter());
+  operatorController.RightTrigger().OnFalse(NotUsingShooter());
 
   // operatorController.Start().WhileTrue(
   //     shooterSub.SysIdQuasistatic(frc2::sysid::Direction::kForward));
@@ -121,6 +121,25 @@ void RobotContainer::ConfigureBindings() {
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {
   return autos.GetSelectedAutoCmd.get();
+}
+
+frc2::CommandPtr RobotContainer::SpinUpShooter() {
+  return frc2::cmd::Sequence(
+      ledSub.SetBothToBlinkRed(),
+      shooterSub.GoToVelocityCmd([] { return 5000_rpm; }),
+      ledSub.SetBothToSolidGreen());
+}
+
+frc2::CommandPtr RobotContainer::NotUsingShooter() {
+  return frc2::cmd::Sequence(ledSub.SetBothToBlinkYellow(),
+                             shooterSub.GoToVelocityCmd([] { return 0_rpm; }),
+                             ledSub.SetBothToOff());
+}
+
+frc2::CommandPtr RobotContainer::IntakeNote() {
+  return frc2::cmd::Sequence(ledSub.SetBothToBlinkOrange(),
+                             intakeSub.SuckInUntilNoteIsSeen(),
+                             ledSub.SetBothToSolidOrange());
 }
 
 DrivebaseSubsystem& RobotContainer::GetDrivebaseSubsystem() {
