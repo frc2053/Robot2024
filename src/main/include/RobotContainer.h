@@ -69,6 +69,9 @@ class RobotContainer {
 
   frc2::CommandPtr IntakeNote();
 
+  frc2::CommandPtr RumbleDriver();
+  frc2::CommandPtr RumbleOperator();
+
   std::function<frc2::CommandPtr()> GetAStarCmd();
 
   str::DeadbandAndSquareFunc DeadbandAndSquare(

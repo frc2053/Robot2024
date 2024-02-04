@@ -127,19 +127,50 @@ frc2::CommandPtr RobotContainer::SpinUpShooter() {
   return frc2::cmd::Sequence(
       ledSub.SetBothToBlinkRed(),
       shooterSub.GoToVelocityCmd([] { return 5000_rpm; }),
-      ledSub.SetBothToSolidGreen());
+      ledSub.SetBothToSolidGreen(), RumbleOperator());
 }
 
 frc2::CommandPtr RobotContainer::NotUsingShooter() {
-  return frc2::cmd::Sequence(ledSub.SetBothToBlinkYellow(),
-                             shooterSub.GoToVelocityCmd([] { return 0_rpm; }),
-                             ledSub.SetBothToOff());
+  return frc2::cmd::Sequence(ledSub.SetBothToOff(),
+                             shooterSub.GoToVelocityCmd([] { return 0_rpm; }));
 }
 
 frc2::CommandPtr RobotContainer::IntakeNote() {
   return frc2::cmd::Sequence(ledSub.SetBothToBlinkOrange(),
                              intakeSub.SuckInUntilNoteIsSeen(),
                              ledSub.SetBothToSolidOrange());
+}
+
+frc2::CommandPtr RobotContainer::RumbleDriver() {
+  return frc2::cmd::Sequence(
+             frc2::cmd::RunOnce([this] {
+               driverController.SetRumble(
+                   frc::GenericHID::RumbleType::kBothRumble, 0.5);
+             }),
+             frc2::cmd::Wait(.5_s), frc2::cmd::RunOnce([this] {
+               driverController.SetRumble(
+                   frc::GenericHID::RumbleType::kBothRumble, 0.0);
+             }))
+      .FinallyDo([this] {
+        driverController.SetRumble(frc::GenericHID::RumbleType::kBothRumble,
+                                   0.0);
+      });
+}
+
+frc2::CommandPtr RobotContainer::RumbleOperator() {
+  return frc2::cmd::Sequence(
+             frc2::cmd::RunOnce([this] {
+               operatorController.SetRumble(
+                   frc::GenericHID::RumbleType::kBothRumble, 0.5);
+             }),
+             frc2::cmd::Wait(.5_s), frc2::cmd::RunOnce([this] {
+               operatorController.SetRumble(
+                   frc::GenericHID::RumbleType::kBothRumble, 0.0);
+             }))
+      .FinallyDo([this] {
+        operatorController.SetRumble(frc::GenericHID::RumbleType::kBothRumble,
+                                     0.0);
+      });
 }
 
 DrivebaseSubsystem& RobotContainer::GetDrivebaseSubsystem() {

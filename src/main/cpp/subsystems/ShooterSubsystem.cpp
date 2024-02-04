@@ -20,7 +20,9 @@ frc2::CommandPtr ShooterSubsystem::GoToSpeedCmd(std::function<double()> speed) {
 frc2::CommandPtr ShooterSubsystem::GoToVelocityCmd(
     std::function<units::radians_per_second_t()> speed) {
   return frc2::cmd::Run([this, speed] { GoToVelocity(speed()); }, {this})
-      .Until([this] { return IsShooterUpToSpeed(); });
+      .Until([this] { return IsShooterUpToSpeed(); })
+      .BeforeStarting([this, speed] { currentVelocitySetpoint = speed(); },
+                      {this});
 }
 
 frc2::CommandPtr ShooterSubsystem::SysIdQuasistatic(
@@ -91,12 +93,15 @@ units::radians_per_second_t ShooterSubsystem::GetRightShooterCurrentVelocity() {
 }
 
 bool ShooterSubsystem::IsShooterUpToSpeed() {
-  return (units::math::abs(currentVelocitySetpoint -
-                           GetLeftShooterCurrentVelocity()) <
-          constants::shooter::SHOOTER_TOLERANCE) &&
-         (units::math::abs(currentVelocitySetpoint -
-                           GetRightShooterCurrentVelocity()) <
-          constants::shooter::SHOOTER_TOLERANCE);
+  fmt::print("setpoint shooter: {}\n", currentVelocitySetpoint);
+  bool upToSpeed = (units::math::abs(currentVelocitySetpoint -
+                                     GetLeftShooterCurrentVelocity()) <
+                    constants::shooter::SHOOTER_TOLERANCE) &&
+                   (units::math::abs(currentVelocitySetpoint -
+                                     GetRightShooterCurrentVelocity()) <
+                    constants::shooter::SHOOTER_TOLERANCE);
+  fmt::print("Is up to speed: {}\n", upToSpeed);
+  return upToSpeed;
 }
 
 units::radians_per_second_t ShooterSubsystem::ConvertMotorVelToShooterVel(
