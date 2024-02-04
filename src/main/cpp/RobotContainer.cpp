@@ -4,6 +4,7 @@
 
 #include "RobotContainer.h"
 
+#include <frc/DriverStation.h>
 #include <frc/MathUtil.h>
 #include <frc2/command/Commands.h>
 
@@ -65,35 +66,36 @@ void RobotContainer::ConfigureBindings() {
   driverController.Y().OnTrue(driveSub.TurnToAngleFactory(
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
       DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
-      [] {
-        return frc::TrapezoidProfile<units::radians>::State{0_deg, 0_deg_per_s};
+      [this] {
+        return frc::TrapezoidProfile<units::radians>::State{
+            ShouldFlipAngleForDriver(0_deg), 0_deg_per_s};
       },
       [this] { return std::abs(driverController.GetRightX()) > 0.2; }));
 
   driverController.X().OnTrue(driveSub.TurnToAngleFactory(
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
       DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
-      [] {
-        return frc::TrapezoidProfile<units::radians>::State{90_deg,
-                                                            0_deg_per_s};
+      [this] {
+        return frc::TrapezoidProfile<units::radians>::State{
+            ShouldFlipAngleForDriver(90_deg), 0_deg_per_s};
       },
       [this] { return std::abs(driverController.GetRightX()) > 0.2; }));
 
   driverController.B().OnTrue(driveSub.TurnToAngleFactory(
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
       DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
-      [] {
-        return frc::TrapezoidProfile<units::radians>::State{-90_deg,
-                                                            0_deg_per_s};
+      [this] {
+        return frc::TrapezoidProfile<units::radians>::State{
+            ShouldFlipAngleForDriver(-90_deg), 0_deg_per_s};
       },
       [this] { return std::abs(driverController.GetRightX()) > 0.2; }));
 
   driverController.A().OnTrue(driveSub.TurnToAngleFactory(
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
       DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
-      [] {
-        return frc::TrapezoidProfile<units::radians>::State{180_deg,
-                                                            0_deg_per_s};
+      [this] {
+        return frc::TrapezoidProfile<units::radians>::State{
+            ShouldFlipAngleForDriver(180_deg), 0_deg_per_s};
       },
       [this] { return std::abs(driverController.GetRightX()) > 0.2; }));
 
@@ -124,10 +126,11 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
 }
 
 frc2::CommandPtr RobotContainer::SpinUpShooter() {
-  return frc2::cmd::Sequence(
-      ledSub.SetBothToBlinkRed(),
-      shooterSub.GoToVelocityCmd([] { return 5000_rpm; }),
-      ledSub.SetBothToSolidGreen(), RumbleOperator());
+  return frc2::cmd::Sequence(ledSub.SetBothToBlinkRed(),
+                             shooterSub.GoToVelocityCmd([] {
+                               return constants::shooter::SHOOTER_SPEED;
+                             }),
+                             ledSub.SetBothToSolidGreen(), RumbleOperator());
 }
 
 frc2::CommandPtr RobotContainer::NotUsingShooter() {
@@ -138,7 +141,7 @@ frc2::CommandPtr RobotContainer::NotUsingShooter() {
 frc2::CommandPtr RobotContainer::IntakeNote() {
   return frc2::cmd::Sequence(ledSub.SetBothToBlinkOrange(),
                              intakeSub.SuckInUntilNoteIsSeen(),
-                             ledSub.SetBothToSolidOrange());
+                             ledSub.SetBothToSolidOrange(), RumbleDriver());
 }
 
 frc2::CommandPtr RobotContainer::RumbleDriver() {
@@ -171,6 +174,17 @@ frc2::CommandPtr RobotContainer::RumbleOperator() {
         operatorController.SetRumble(frc::GenericHID::RumbleType::kBothRumble,
                                      0.0);
       });
+}
+
+units::radian_t RobotContainer::ShouldFlipAngleForDriver(
+    units::radian_t targetAngle) {
+  auto ally = frc::DriverStation::GetAlliance();
+  if (ally.has_value()) {
+    if (ally.value() == frc::DriverStation::Alliance::kRed) {
+      return targetAngle + 180_deg;
+    }
+  }
+  return targetAngle;
 }
 
 DrivebaseSubsystem& RobotContainer::GetDrivebaseSubsystem() {

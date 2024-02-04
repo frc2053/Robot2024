@@ -76,4 +76,6 @@ class RobotContainer {
 
   str::DeadbandAndSquareFunc DeadbandAndSquare(
       std::function<double()> joystickValue);
+
+  units::radian_t ShouldFlipAngleForDriver(units::radian_t targetAngle);
 };
