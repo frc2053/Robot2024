@@ -24,11 +24,11 @@ void RobotContainer::ConfigureBindings() {
   operatorController.Y().WhileTrue(dunkSub.PivotDunkNotesOut());
   operatorController.Y().OnFalse(dunkSub.PivotDunkNotesIn());
 
-  operatorController.RightBumper().WhileTrue(dunkSub.DunkTheNotes());
+  // operatorController.RightBumper().WhileTrue(dunkSub.DunkTheNotes());
   operatorController.LeftBumper().WhileTrue(dunkSub.JammedDunkNotes());
 
-  operatorController.RightTrigger().WhileTrue(SpinUpShooter());
-  operatorController.RightTrigger().OnFalse(NotUsingShooter());
+  operatorController.RightBumper().WhileTrue(DunkNote());
+  operatorController.RightBumper().OnFalse(StopDunk());
 
   // operatorController.Start().WhileTrue(
   //     shooterSub.SysIdQuasistatic(frc2::sysid::Direction::kForward));
@@ -143,7 +143,13 @@ frc2::CommandPtr RobotContainer::IntakeNote() {
                              intakeSub.SuckInUntilNoteIsSeen(),
                              ledSub.SetBothToSolidOrange(), RumbleDriver());
 }
-
+frc2::CommandPtr RobotContainer::DunkNote() {
+  return frc2::cmd::Sequence(dunkSub.PivotDunkNotesOut(),
+                             dunkSub.DunkTheNotes());
+}
+frc2::CommandPtr RobotContainer::StopDunk() {
+  return frc2::cmd::Sequence(dunkSub.StopDunking(), dunkSub.PivotDunkNotesIn());
+}
 frc2::CommandPtr RobotContainer::RumbleDriver() {
   return frc2::cmd::Sequence(
              frc2::cmd::RunOnce([this] {

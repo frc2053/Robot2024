@@ -67,6 +67,9 @@ class RobotContainer {
   frc2::CommandPtr SpinUpShooter();
   frc2::CommandPtr NotUsingShooter();
 
+  frc2::CommandPtr DunkNote();
+  frc2::CommandPtr StopDunk();
+
   frc2::CommandPtr IntakeNote();
 
   frc2::CommandPtr RumbleDriver();

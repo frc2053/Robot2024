@@ -32,6 +32,7 @@ class DunkerSubsystem : public frc2::SubsystemBase {
   frc2::CommandPtr PivotDunkNotesOut();
   frc2::CommandPtr PivotDunkNotesIn();
   frc2::CommandPtr DunkTheNotes();
+  frc2::CommandPtr StopDunking();
   frc2::CommandPtr JammedDunkNotes();
   frc2::CommandPtr SysIdQuasistatic(frc2::sysid::Direction direction);
   frc2::CommandPtr SysIdDynamic(frc2::sysid::Direction direction);

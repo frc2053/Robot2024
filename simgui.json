@@ -45,6 +45,11 @@
           "visible": true
         }
       },
+      "/SmartDashboard/Dunker Mechanism Vis": {
+        "window": {
+          "visible": true
+        }
+      },
       "/SmartDashboard/Field": {
         "CurrentChoreoTrajectory": {
           "arrowSize": 8,
@@ -111,6 +116,9 @@
           "Module 3": {
             "open": true
           }
+        },
+        "Dunker Telemetry": {
+          "open": true
         },
         "Field": {
           "double[]##v_/SmartDashboard/Field/Estimated Robot Pose": {

@@ -33,6 +33,9 @@ frc2::CommandPtr DunkerSubsystem::DunkTheNotes() {
   return frc2::cmd::RunEnd([this] { SetDunkSpeed(1); },
                            [this] { SetDunkSpeed(0); }, {this});
 }
+frc2::CommandPtr DunkerSubsystem::StopDunking() {
+  return frc2::cmd::RunOnce([this] { SetDunkSpeed(0); }, {this});
+}
 
 frc2::CommandPtr DunkerSubsystem::JammedDunkNotes() {
   return frc2::cmd::RunEnd([this] { SetDunkSpeed(-1); },
@@ -114,6 +117,7 @@ units::radian_t DunkerSubsystem::GetPivotAngle() {
 }
 
 void DunkerSubsystem::SetDunkSpeed(double speed) {
+  fmt::print("speed: {}\n", speed);
   dunkMotor.SetVoltage(speed * 12_V);
 }
 
