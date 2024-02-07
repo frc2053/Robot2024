@@ -7,6 +7,7 @@
 #include <ctre/phoenix/StatusCodes.h>
 #include <frc/kinematics/SwerveModulePosition.h>
 #include <frc/kinematics/SwerveModuleState.h>
+#include <frc2/command/sysid/SysIdRoutine.h>
 #include <units/angle.h>
 #include <units/angular_acceleration.h>
 #include <units/angular_velocity.h>
@@ -91,6 +92,21 @@ class SwerveModule {
   ConvertOutputShaftVelocityToMotorShaftVelocity(
       units::radians_per_second_t outputShaftVelocity);
 
+  void UpdateSteerSysIdLog(frc::sysid::SysIdRoutineLog* log) {
+    log->Motor("swerve-steer")
+        // you can use amps as volts for sysid (see:
+        // https://www.chiefdelphi.com/t/sysid-with-ctre-swerve-characterization/452631/9?u=jreneew2)
+        .voltage(units::volt_t{steerCurrentSignal.GetValueAsDouble()})
+        .position(currentPosition.angle.Radians().convert<units::turns>())
+        .velocity(steerAngleVelocitySignal.GetValue()
+                      .convert<units::turns_per_second>());
+  }
+
+  void SetSteerMotorToCurrent(units::volt_t voltsToSend) {
+    steerMotor.SetControl(
+        steerTorqueSetter.WithOutput(units::ampere_t{voltsToSend.value()}));
+  }
+
  private:
   ctre::phoenix::StatusCode ConfigureDriveMotor(bool invertDrive);
   ctre::phoenix::StatusCode ConfigureSteerMotor(bool invertSteer);
@@ -106,6 +122,8 @@ class SwerveModule {
       steerAngleVelocitySignal = steerMotor.GetVelocity();
   ctre::phoenix6::StatusSignal<units::volt_t> steerVoltageSignal =
       steerMotor.GetMotorVoltage();
+  ctre::phoenix6::StatusSignal<units::ampere_t> steerCurrentSignal =
+      steerMotor.GetTorqueCurrent();
 
   ctre::phoenix6::StatusSignal<units::turn_t> drivePositionSignal =
       driveMotor.GetPosition();
@@ -121,6 +139,8 @@ class SwerveModule {
   ctre::phoenix6::controls::MotionMagicExpoVoltage steerAngleSetter{0_rad};
 #endif
   ctre::phoenix6::controls::VoltageOut steerVoltageSetter{0_V};
+
+  ctre::phoenix6::controls::TorqueCurrentFOC steerTorqueSetter{0_A};
 
 #if defined(__FRC_ROBORIO__)
   ctre::phoenix6::controls::VelocityTorqueCurrentFOC driveVelocitySetter{

@@ -62,6 +62,7 @@ SwerveModule::SwerveModule(const SwerveModuleConstants& moduleConstants)
   driveVoltageSetter.UpdateFreqHz = 0_Hz;
   steerAngleSetter.UpdateFreqHz = 0_Hz;
   steerVoltageSetter.UpdateFreqHz = 0_Hz;
+  steerTorqueSetter.UpdateFreqHz = 0_Hz;
 }
 
 void SwerveModule::SimulationUpdate(units::meter_t driveDistance,
@@ -91,7 +92,8 @@ frc::SwerveModulePosition SwerveModule::GetPosition(bool refresh) {
     ctre::phoenix::StatusCode status =
         ctre::phoenix6::BaseStatusSignal::WaitForAll(
             0_s, steerAngleSignal, steerAngleVelocitySignal, steerVoltageSignal,
-            drivePositionSignal, driveVelocitySignal, driveVoltageSignal);
+            steerCurrentSignal, drivePositionSignal, driveVelocitySignal,
+            driveVoltageSignal);
     if (!status.IsOK()) {
       frc::DataLogManager::Log(
           fmt::format("Swerve Module GetPosition WaitForAll() status wasn't ok "

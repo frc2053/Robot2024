@@ -14,6 +14,8 @@
 #include <string>
 #include <unordered_map>
 
+#include <ctre/phoenix6/SignalLogger.hpp>
+
 #include "Constants.h"
 #include "choreo/lib/Choreo.h"
 #include "choreo/lib/ChoreoTrajectory.h"
@@ -51,6 +53,8 @@ class DrivebaseSubsystem : public frc2::SubsystemBase {
   frc2::CommandPtr FollowChoreoTrajectory(
       std::function<std::string()> pathName);
   frc2::CommandPtr ZeroYawCMD();
+  frc2::CommandPtr SysIdQuasistatic(frc2::sysid::Direction direction);
+  frc2::CommandPtr SysIdDynamic(frc2::sysid::Direction direction);
 
   units::meter_t CalcDistanceFromSpeaker();
 
@@ -109,4 +113,21 @@ class DrivebaseSubsystem : public frc2::SubsystemBase {
   units::radian_t minArcAngle{0};
   units::radian_t maxArcAngle{0};
   frc::Pose2d lastPoseInMoveToArc;
+
+  frc2::sysid::SysIdRoutine sysIdRoutineSteer{
+      frc2::sysid::Config{
+          std::nullopt, std::nullopt, std::nullopt,
+          [this](frc::sysid::State state) {
+            ctre::phoenix6::SignalLogger().WriteString(
+                "state", frc::sysid::SysIdRoutineLog::StateEnumToString(state));
+          }},
+      frc2::sysid::Mechanism{
+          [this](units::volt_t voltsToSend) {
+            swerveDrive.GetFLModuleForChar().SetSteerMotorToCurrent(
+                voltsToSend);
+          },
+          [this](frc::sysid::SysIdRoutineLog* log) {
+            swerveDrive.GetFLModuleForChar().UpdateSteerSysIdLog(log);
+          },
+          this}};
 };

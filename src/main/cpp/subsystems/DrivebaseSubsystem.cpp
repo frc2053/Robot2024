@@ -491,3 +491,15 @@ frc2::CommandPtr DrivebaseSubsystem::MoveAlongArc(
           },
           {this});
 }
+
+frc2::CommandPtr DrivebaseSubsystem::SysIdQuasistatic(
+    frc2::sysid::Direction direction) {
+  return sysIdRoutineSteer.Quasistatic(direction).BeforeStarting(
+      [this] { ctre::phoenix6::SignalLogger::Start(); });
+}
+
+frc2::CommandPtr DrivebaseSubsystem::SysIdDynamic(
+    frc2::sysid::Direction direction) {
+  return sysIdRoutineSteer.Dynamic(direction).BeforeStarting(
+      [this] { ctre::phoenix6::SignalLogger::Start(); });
+}

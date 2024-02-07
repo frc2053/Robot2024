@@ -73,6 +73,8 @@ class SwerveDrive {
 
   frc::Field2d& GetField();
 
+  str::SwerveModule& GetFLModuleForChar() { return swerveModules[0]; }
+
   // Vision
   void AddVisionMeasurement(const frc::Pose2d& visionMeasurement,
                             units::second_t timestamp);
