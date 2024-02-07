@@ -53,8 +53,8 @@ class DrivebaseSubsystem : public frc2::SubsystemBase {
   frc2::CommandPtr FollowChoreoTrajectory(
       std::function<std::string()> pathName);
   frc2::CommandPtr ZeroYawCMD();
-  frc2::CommandPtr SysIdQuasistatic(frc2::sysid::Direction direction);
-  frc2::CommandPtr SysIdDynamic(frc2::sysid::Direction direction);
+  frc2::CommandPtr SysIdQuasistaticSteer(frc2::sysid::Direction direction);
+  frc2::CommandPtr SysIdDynamicSteer(frc2::sysid::Direction direction);
 
   units::meter_t CalcDistanceFromSpeaker();
 
@@ -116,7 +116,8 @@ class DrivebaseSubsystem : public frc2::SubsystemBase {
 
   frc2::sysid::SysIdRoutine sysIdRoutineSteer{
       frc2::sysid::Config{
-          std::nullopt, std::nullopt, std::nullopt,
+          // using amps here (10 A / s) and 65_A step
+          frc2::sysid::ramp_rate_t{10}, units::volt_t{65}, std::nullopt,
           [this](frc::sysid::State state) {
             ctre::phoenix6::SignalLogger().WriteString(
                 "state", frc::sysid::SysIdRoutineLog::StateEnumToString(state));
