@@ -103,7 +103,7 @@ void DrivebaseSubsystem::Periodic() {
 }
 
 void DrivebaseSubsystem::SimulationPeriodic() {
-  fmt::print(CalculateClosestGoodShooterPoint());
+  fmt::print("Distance to speaker: {}\n", CalcDistanceFromSpeaker());
 
   swerveDrive.SimulationUpdate();
 }
