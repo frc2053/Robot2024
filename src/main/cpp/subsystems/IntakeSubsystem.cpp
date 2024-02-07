@@ -22,12 +22,12 @@ void IntakeSubsystem::ConfigureMotors() {
   intakeMotor.GetConfigurator().Apply(mainConfig);
 }
 
-frc2::CommandPtr IntakeSubsystem::SuckInNotes() {
+frc2::CommandPtr IntakeSubsystem::FeedIntake() {
   return frc2::cmd::RunEnd([this] { SetIntakeSpeed(1); },
                            [this] { SetIntakeSpeed(0); }, {this});
 }
 
-frc2::CommandPtr IntakeSubsystem::SpitOutNotes() {
+frc2::CommandPtr IntakeSubsystem::IntakeJammed() {
   return frc2::cmd::RunEnd([this] { SetIntakeSpeed(-1); },
                            [this] { SetIntakeSpeed(0); }, {this});
 }
