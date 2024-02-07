@@ -16,8 +16,8 @@ class IntakeSubsystem : public frc2::SubsystemBase {
  public:
   IntakeSubsystem();
 
-  frc2::CommandPtr SuckInNotes();
-  frc2::CommandPtr SpitOutNotes();
+  frc2::CommandPtr FeedIntake();
+  frc2::CommandPtr IntakeJammed();
   frc2::CommandPtr SuckInUntilNoteIsSeen();
 
   void Periodic() override;

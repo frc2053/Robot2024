@@ -33,7 +33,7 @@ frc2::CommandPtr IntakeSubsystem::IntakeJammed() {
 }
 
 frc2::CommandPtr IntakeSubsystem::SuckInUntilNoteIsSeen() {
-  return SuckInNotes().Until([this] { return SeesNote(); });
+  return FeedIntake().Until([this] { return SeesNote(); });
 }
 
 bool IntakeSubsystem::SeesNote() {

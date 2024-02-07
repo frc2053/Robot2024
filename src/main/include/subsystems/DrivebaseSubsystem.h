@@ -52,6 +52,8 @@ class DrivebaseSubsystem : public frc2::SubsystemBase {
       std::function<std::string()> pathName);
   frc2::CommandPtr ZeroYawCMD();
 
+  units::meter_t CalcDistanceFromSpeaker();
+
   void SetTranslationPIDs(double p, double i, double d);
   void SetRotationPIDs(double p, double i, double d);
   void SetPathTuning(bool onOff);

@@ -98,10 +98,13 @@ void DrivebaseSubsystem::Periodic() {
       SetRotationPIDs(newRotP, newRotI, newRotD);
     }
   }
+  units::meter_t distance = CalcDistanceFromSpeaker();
   swerveDrive.Log();
 }
 
 void DrivebaseSubsystem::SimulationPeriodic() {
+  fmt::print(CalculateClosestGoodShooterPoint());
+
   swerveDrive.SimulationUpdate();
 }
 
@@ -301,6 +304,27 @@ frc::Pose2d DrivebaseSubsystem::CalculateClosestGoodShooterPoint() {
                                            pointToLookAt.X() - pointOnCircleX)};
   frc::Pose2d retVal = frc::Pose2d{pointOnCircleX, pointOnCircleY, angle};
   return retVal;
+}
+
+units::meter_t DrivebaseSubsystem::CalcDistanceFromSpeaker() {
+  frc::Translation2d pointToLookAt =
+      constants::swerve::automation::BLUE_ALLIANCE_GOAL;
+  auto allyValue = frc::DriverStation::GetAlliance();
+  if (allyValue) {
+    if (allyValue.value() == frc::DriverStation::Alliance::kRed) {
+      pointToLookAt = constants::swerve::automation::RED_ALLIANCE_GOAL;
+    } else {
+      pointToLookAt = constants::swerve::automation::BLUE_ALLIANCE_GOAL;
+    }
+  }
+
+  frc::Translation2d robotPt = swerveDrive.GetPose().Translation();
+
+  units::meter_t distance =
+      (units::math::sqrt(units::math::pow<2>(robotPt.X() - pointToLookAt.X()) +
+                         units::math::pow<2>(robotPt.Y() - pointToLookAt.Y())));
+
+  return distance;
 }
 
 bool DrivebaseSubsystem::InSafeZone() {
