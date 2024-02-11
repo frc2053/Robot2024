@@ -157,7 +157,7 @@ void SwerveModule::GoToState(const frc::SwerveModuleState& state, bool openLoop,
     cosineScalar = 0.0;
   }
   velocityToGoTo = velocityToGoTo * cosineScalar;
-  velocityToGoTo = velocityToGoTo - driveRateBackout;
+  velocityToGoTo = velocityToGoTo + driveRateBackout;
 
   steerMotor.SetControl(
       steerAngleSetter.WithPosition(stateToGoTo.angle.Radians()));
