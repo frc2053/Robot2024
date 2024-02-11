@@ -58,7 +58,9 @@ SwerveModule::SwerveModule(const SwerveModuleConstants& moduleConstants)
         steerEncoderCode.GetName(), steerEncoderCode.GetDescription()));
   }
 
+#if defined(__FRC_ROBORIO__)
   driveVelocitySetter = driveVelocitySetter.WithOverrideCoastDurNeutral(true);
+#endif
 
   driveVelocitySetter.UpdateFreqHz = 0_Hz;
   driveVoltageSetter.UpdateFreqHz = 0_Hz;
@@ -211,12 +213,18 @@ void SwerveModule::SetModuleSteerGains(
     const constants::swerve::ModuleSteerGains& newGains) {
   currentSteeringGains = newGains;
   ctre::phoenix6::configs::Slot0Configs steerSlotConfig{};
-  steerSlotConfig.kV = currentSteeringGains.kV.value();
-  steerSlotConfig.kA = currentSteeringGains.kA.value();
-  steerSlotConfig.kS = currentSteeringGains.kS.value();
-  steerSlotConfig.kP = currentSteeringGains.kP;
-  steerSlotConfig.kI = currentSteeringGains.kI;
-  steerSlotConfig.kD = currentSteeringGains.kD;
+  steerSlotConfig.kV =
+      frc::RobotBase::IsReal() ? currentSteeringGains.kV.value() : 0.0;
+  steerSlotConfig.kA =
+      frc::RobotBase::IsReal() ? currentSteeringGains.kA.value() : 0.0;
+  steerSlotConfig.kS =
+      frc::RobotBase::IsReal() ? currentSteeringGains.kS.value() : 0.0;
+  steerSlotConfig.kP =
+      frc::RobotBase::IsReal() ? currentSteeringGains.kP : units::scalar_t{30};
+  steerSlotConfig.kI =
+      frc::RobotBase::IsReal() ? currentSteeringGains.kI : units::scalar_t{0};
+  steerSlotConfig.kD = frc::RobotBase::IsReal() ? currentSteeringGains.kD
+                                                : units::scalar_t{0.25};
   ctre::phoenix::StatusCode status =
       steerMotor.GetConfigurator().Apply(steerSlotConfig);
   if (!status.IsOK()) {
@@ -235,12 +243,18 @@ void SwerveModule::SetModuleDriveGains(
     const constants::swerve::ModuleDriveGains& newGains) {
   currentDrivingGains = newGains;
   ctre::phoenix6::configs::Slot0Configs driveSlotConfig{};
-  driveSlotConfig.kV = currentDrivingGains.kV.value();
-  driveSlotConfig.kA = currentDrivingGains.kA.value();
-  driveSlotConfig.kS = currentDrivingGains.kS.value();
-  driveSlotConfig.kP = currentDrivingGains.kP;
-  driveSlotConfig.kI = currentDrivingGains.kI;
-  driveSlotConfig.kD = currentDrivingGains.kD;
+  driveSlotConfig.kV =
+      frc::RobotBase::IsReal() ? currentDrivingGains.kV.value() : 0.1;
+  driveSlotConfig.kA =
+      frc::RobotBase::IsReal() ? currentDrivingGains.kA.value() : 0.01;
+  driveSlotConfig.kS =
+      frc::RobotBase::IsReal() ? currentDrivingGains.kS.value() : 0.0;
+  driveSlotConfig.kP =
+      frc::RobotBase::IsReal() ? currentDrivingGains.kP : units::scalar_t{.25};
+  driveSlotConfig.kI =
+      frc::RobotBase::IsReal() ? currentDrivingGains.kI : units::scalar_t{0};
+  driveSlotConfig.kD =
+      frc::RobotBase::IsReal() ? currentDrivingGains.kD : units::scalar_t{0};
   ctre::phoenix::StatusCode status =
       driveMotor.GetConfigurator().Apply(driveSlotConfig);
   if (!status.IsOK()) {
