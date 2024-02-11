@@ -60,9 +60,6 @@ class SwerveModule {
 
   void ResetPosition();
 
-  void SetSteerVoltage(units::volt_t volts);
-  void SetDriveVoltage(units::volt_t volts);
-
   void LockSteerAtZero();
   void PushMode(bool onOff);
   units::radian_t GetMotorRotations();
@@ -107,6 +104,11 @@ class SwerveModule {
         steerTorqueSetter.WithOutput(units::ampere_t{voltsToSend.value()}));
   }
 
+  void SetDriveMotorToCurrent(units::volt_t voltsToSend) {
+    driveMotor.SetControl(
+        driveTorqueSetter.WithOutput(units::ampere_t{voltsToSend.value()}));
+  }
+
  private:
   ctre::phoenix::StatusCode ConfigureDriveMotor(bool invertDrive);
   ctre::phoenix::StatusCode ConfigureSteerMotor(bool invertSteer);
@@ -120,8 +122,6 @@ class SwerveModule {
       steerMotor.GetPosition();
   ctre::phoenix6::StatusSignal<units::turns_per_second_t>
       steerAngleVelocitySignal = steerMotor.GetVelocity();
-  ctre::phoenix6::StatusSignal<units::volt_t> steerVoltageSignal =
-      steerMotor.GetMotorVoltage();
   ctre::phoenix6::StatusSignal<units::ampere_t> steerCurrentSignal =
       steerMotor.GetTorqueCurrent();
 
@@ -129,20 +129,17 @@ class SwerveModule {
       driveMotor.GetPosition();
   ctre::phoenix6::StatusSignal<units::turns_per_second_t> driveVelocitySignal =
       driveMotor.GetVelocity();
-  ctre::phoenix6::StatusSignal<units::volt_t> driveVoltageSignal =
-      driveMotor.GetMotorVoltage();
+  ctre::phoenix6::StatusSignal<units::ampere_t> driveCurrentSignal =
+      driveMotor.GetTorqueCurrent();
 
   ctre::phoenix6::controls::MotionMagicExpoTorqueCurrentFOC steerAngleSetter{
       0_rad};
-
-  ctre::phoenix6::controls::VoltageOut steerVoltageSetter{0_V};
-
   ctre::phoenix6::controls::TorqueCurrentFOC steerTorqueSetter{0_A};
 
   ctre::phoenix6::controls::VelocityTorqueCurrentFOC driveVelocitySetter{
       0_rad_per_s};
-
   ctre::phoenix6::controls::VoltageOut driveVoltageSetter{0_V};
+  ctre::phoenix6::controls::TorqueCurrentFOC driveTorqueSetter{0_A};
 
   frc::SwerveModuleState currentState{};
   frc::SwerveModulePosition currentPosition{};

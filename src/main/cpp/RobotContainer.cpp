@@ -30,14 +30,14 @@ void RobotContainer::ConfigureBindings() {
   operatorController.RightBumper().WhileTrue(DunkNote());
   operatorController.RightBumper().OnFalse(StopDunk());
 
-  // operatorController.Start().WhileTrue(
-  //     shooterSub.SysIdQuasistatic(frc2::sysid::Direction::kForward));
-  // operatorController.Back().WhileTrue(
-  //     shooterSub.SysIdQuasistatic(frc2::sysid::Direction::kReverse));
-  // operatorController.RightTrigger().WhileTrue(
-  //     shooterSub.SysIdDynamic(frc2::sysid::Direction::kForward));
-  // operatorController.LeftTrigger().WhileTrue(
-  //     shooterSub.SysIdDynamic(frc2::sysid::Direction::kReverse));
+  testController.Back().WhileTrue(
+      driveSub.SysIdQuasistaticSteer(frc2::sysid::Direction::kForward));
+  testController.Start().WhileTrue(
+      driveSub.SysIdQuasistaticSteer(frc2::sysid::Direction::kReverse));
+  testController.LeftBumper().WhileTrue(
+      driveSub.SysIdDynamicSteer(frc2::sysid::Direction::kForward));
+  testController.RightBumper().WhileTrue(
+      driveSub.SysIdDynamicSteer(frc2::sysid::Direction::kReverse));
 
   driverController.RightBumper().WhileTrue(
       frc2::cmd::Defer(GetAStarCmd(), {&driveSub})

@@ -62,8 +62,8 @@ SwerveModule::SwerveModule(const SwerveModuleConstants& moduleConstants)
 
   driveVelocitySetter.UpdateFreqHz = 0_Hz;
   driveVoltageSetter.UpdateFreqHz = 0_Hz;
+  driveTorqueSetter.UpdateFreqHz = 0_Hz;
   steerAngleSetter.UpdateFreqHz = 0_Hz;
-  steerVoltageSetter.UpdateFreqHz = 0_Hz;
   steerTorqueSetter.UpdateFreqHz = 0_Hz;
 }
 
@@ -93,9 +93,8 @@ frc::SwerveModulePosition SwerveModule::GetPosition(bool refresh) {
   if (refresh) {
     ctre::phoenix::StatusCode status =
         ctre::phoenix6::BaseStatusSignal::WaitForAll(
-            0_s, steerAngleSignal, steerAngleVelocitySignal, steerVoltageSignal,
-            steerCurrentSignal, drivePositionSignal, driveVelocitySignal,
-            driveVoltageSignal);
+            0_s, steerAngleSignal, steerAngleVelocitySignal, steerCurrentSignal,
+            drivePositionSignal, driveVelocitySignal, driveCurrentSignal);
     if (!status.IsOK()) {
       frc::DataLogManager::Log(
           fmt::format("Swerve Module GetPosition WaitForAll() status wasn't ok "
@@ -260,17 +259,9 @@ void SwerveModule::ResetPosition() {
   driveMotor.SetPosition(0_rad);
 }
 
-void SwerveModule::SetSteerVoltage(units::volt_t volts) {
-  steerMotor.SetControl(steerVoltageSetter.WithOutput(volts));
-}
-
-void SwerveModule::SetDriveVoltage(units::volt_t volts) {
-  driveMotor.SetControl(driveVoltageSetter.WithOutput(volts));
-}
-
 std::array<ctre::phoenix6::BaseStatusSignal*, 6> SwerveModule::GetSignals() {
-  return {&steerAngleSignal,    &steerAngleVelocitySignal, &steerVoltageSignal,
-          &drivePositionSignal, &driveVelocitySignal,      &driveVoltageSignal};
+  return {&steerAngleSignal,    &steerAngleVelocitySignal, &steerCurrentSignal,
+          &drivePositionSignal, &driveVelocitySignal,      &driveCurrentSignal};
 }
 
 void SwerveModule::OptimizeBusSignals() {

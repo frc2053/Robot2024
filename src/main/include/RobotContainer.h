@@ -36,6 +36,7 @@ class RobotContainer {
   void ConfigureBindings();
   frc2::CommandXboxController driverController{0};
   frc2::CommandXboxController operatorController{1};
+  frc2::CommandXboxController testController{2};
 
   DrivebaseSubsystem driveSub;
   ShooterSubsystem shooterSub;
@@ -58,6 +59,12 @@ class RobotContainer {
   frc2::CommandPtr tuneDriveCmd = driveSub.TuneDrivePID([] {
     return frc::SmartDashboard::GetBoolean("Drivebase/DoneWithStep", false);
   });
+
+  frc2::CommandPtr charSwerveDSteerFwd =
+      driveSub.SysIdDynamicSteer(frc2::sysid::Direction::kForward);
+  frc2::CommandPtr charSwerveDSteerRev =
+      driveSub.SysIdDynamicSteer(frc2::sysid::Direction::kReverse);
+
   frc2::CommandPtr resetPositionCmd =
       driveSub.ResetPosition([] { return frc::Pose2d{}; });
   frc2::CommandPtr tunePathPidCmd = driveSub.TunePathPid();
