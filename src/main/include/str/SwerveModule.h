@@ -144,20 +144,12 @@ class SwerveModule {
   ctre::phoenix6::StatusSignal<units::ampere_t> driveCurrentSignal =
       driveMotor.GetTorqueCurrent();
 
-#if defined(__FRC_ROBORIO__)
   ctre::phoenix6::controls::MotionMagicExpoTorqueCurrentFOC steerAngleSetter{
       0_rad};
-#else
-  ctre::phoenix6::controls::MotionMagicExpoVoltage steerAngleSetter{0_rad};
-#endif
   ctre::phoenix6::controls::TorqueCurrentFOC steerTorqueSetter{0_A};
 
-#if defined(__FRC_ROBORIO__)
   ctre::phoenix6::controls::VelocityTorqueCurrentFOC driveVelocitySetter{
       0_rad_per_s};
-#else
-  ctre::phoenix6::controls::VelocityVoltage driveVelocitySetter{0_rad_per_s};
-#endif
   ctre::phoenix6::controls::VoltageOut driveVoltageSetter{0_V};
   ctre::phoenix6::controls::TorqueCurrentFOC driveTorqueSetter{0_A};
 
