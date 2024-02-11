@@ -68,7 +68,7 @@ class SwerveModule {
   void SetModuleDriveGains(const constants::swerve::ModuleDriveGains& newGains);
   constants::swerve::ModuleDriveGains GetCurrentDriveGains() const;
 
-  std::array<ctre::phoenix6::BaseStatusSignal*, 6> GetSignals();
+  std::array<ctre::phoenix6::BaseStatusSignal*, 8> GetSignals();
   void OptimizeBusSignals();
 
   void Log(int moduleIndex);
@@ -134,6 +134,8 @@ class SwerveModule {
       steerMotor.GetPosition();
   ctre::phoenix6::StatusSignal<units::turns_per_second_t>
       steerAngleVelocitySignal = steerMotor.GetVelocity();
+  ctre::phoenix6::StatusSignal<units::volt_t> steerVoltageSignal =
+      steerMotor.GetMotorVoltage();
   ctre::phoenix6::StatusSignal<units::ampere_t> steerCurrentSignal =
       steerMotor.GetTorqueCurrent();
 
@@ -141,6 +143,8 @@ class SwerveModule {
       driveMotor.GetPosition();
   ctre::phoenix6::StatusSignal<units::turns_per_second_t> driveVelocitySignal =
       driveMotor.GetVelocity();
+  ctre::phoenix6::StatusSignal<units::volt_t> driveVoltageSignal =
+      driveMotor.GetMotorVoltage();
   ctre::phoenix6::StatusSignal<units::ampere_t> driveCurrentSignal =
       driveMotor.GetTorqueCurrent();
 

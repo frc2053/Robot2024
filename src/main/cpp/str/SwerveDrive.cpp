@@ -40,12 +40,14 @@ SwerveDrive::SwerveDrive() {
 
   for (int i = 0; i < 4; i++) {
     const auto& moduleSignals = swerveModules[i].GetSignals();
-    allModuleSignals[(i * 6) + 0] = moduleSignals[0];  // steer pos
-    allModuleSignals[(i * 6) + 1] = moduleSignals[1];  // steer vel
-    allModuleSignals[(i * 6) + 2] = moduleSignals[2];  // steer vol
-    allModuleSignals[(i * 6) + 3] = moduleSignals[3];  // drive pos
-    allModuleSignals[(i * 6) + 4] = moduleSignals[4];  // drive vel
-    allModuleSignals[(i * 6) + 5] = moduleSignals[5];  // drive vol
+    allModuleSignals[(i * 8) + 0] = moduleSignals[0];  // steer pos
+    allModuleSignals[(i * 8) + 1] = moduleSignals[1];  // steer vel
+    allModuleSignals[(i * 8) + 2] = moduleSignals[2];  // steer vol
+    allModuleSignals[(i * 8) + 3] = moduleSignals[3];  // steer current
+    allModuleSignals[(i * 8) + 4] = moduleSignals[4];  // drive pos
+    allModuleSignals[(i * 8) + 5] = moduleSignals[5];  // drive vel
+    allModuleSignals[(i * 8) + 6] = moduleSignals[6];  // drive vol
+    allModuleSignals[(i * 8) + 7] = moduleSignals[7];  // drive current
   }
   allModuleSignals[allModuleSignals.size() - 2] = &imu.GetYaw();
   allModuleSignals[allModuleSignals.size() - 1] =
@@ -161,9 +163,9 @@ void SwerveDrive::SimulationUpdate() {
   std::array<units::volt_t, 4> steerInputs;
   for (int i = 0; i < 4; i++) {
     steerInputs[i] =
-        units::volt_t{allModuleSignals[(i * 6) + 2]->GetValueAsDouble()};
+        units::volt_t{allModuleSignals[(i * 8) + 2]->GetValueAsDouble()};
     driveInputs[i] =
-        units::volt_t{allModuleSignals[(i * 6) + 5]->GetValueAsDouble()};
+        units::volt_t{allModuleSignals[(i * 8) + 6]->GetValueAsDouble()};
   }
 
   swerveSim.SetDriveInputs(driveInputs);

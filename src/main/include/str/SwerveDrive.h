@@ -120,7 +120,7 @@ class SwerveDrive {
   units::radians_per_second_t imuRate{};
   units::radian_t fieldRelativeOffset{};
 
-  std::array<ctre::phoenix6::BaseStatusSignal*, 26> allModuleSignals;
+  std::array<ctre::phoenix6::BaseStatusSignal*, 34> allModuleSignals;
 
   // Simulation
   SwerveDriveSim swerveSim{};

@@ -259,9 +259,10 @@ void SwerveModule::ResetPosition() {
   driveMotor.SetPosition(0_rad);
 }
 
-std::array<ctre::phoenix6::BaseStatusSignal*, 6> SwerveModule::GetSignals() {
-  return {&steerAngleSignal,    &steerAngleVelocitySignal, &steerCurrentSignal,
-          &drivePositionSignal, &driveVelocitySignal,      &driveCurrentSignal};
+std::array<ctre::phoenix6::BaseStatusSignal*, 8> SwerveModule::GetSignals() {
+  return {&steerAngleSignal,   &steerAngleVelocitySignal, &steerVoltageSignal,
+          &steerCurrentSignal, &drivePositionSignal,      &driveVelocitySignal,
+          &driveVoltageSignal, &driveCurrentSignal};
 }
 
 void SwerveModule::OptimizeBusSignals() {
