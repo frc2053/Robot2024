@@ -501,3 +501,15 @@ frc2::CommandPtr DrivebaseSubsystem::SysIdDynamicSteer(
   return sysIdRoutineSteer.Dynamic(direction).BeforeStarting(
       [this] { ctre::phoenix6::SignalLogger::Start(); });
 }
+
+frc2::CommandPtr DrivebaseSubsystem::SysIdQuasistaticDrive(
+    frc2::sysid::Direction direction) {
+  return sysIdRoutineDrive.Quasistatic(direction).BeforeStarting(
+      [this] { ctre::phoenix6::SignalLogger::Start(); });
+}
+
+frc2::CommandPtr DrivebaseSubsystem::SysIdDynamicDrive(
+    frc2::sysid::Direction direction) {
+  return sysIdRoutineDrive.Dynamic(direction).BeforeStarting(
+      [this] { ctre::phoenix6::SignalLogger::Start(); });
+}

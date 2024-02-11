@@ -75,6 +75,8 @@ class SwerveDrive {
 
   str::SwerveModule& GetFLModuleForChar() { return swerveModules[0]; }
 
+  void SetAllModulesToCurrent(units::volt_t voltsToSend);
+
   // Vision
   void AddVisionMeasurement(const frc::Pose2d& visionMeasurement,
                             units::second_t timestamp);

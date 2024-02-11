@@ -352,14 +352,26 @@ frc2::CommandPtr SwerveDrive::TuneSteerPID(std::function<bool()> done,
   std::string tablePrefix = "Drivebase/steerGains/";
   return frc2::cmd::Sequence(
       frc2::cmd::RunOnce(
-          [tablePrefix] {
+          [tablePrefix, this] {
             frc::SmartDashboard::PutNumber(tablePrefix + "setpoint", 0);
-            frc::SmartDashboard::PutNumber(tablePrefix + "kA", 0);
-            frc::SmartDashboard::PutNumber(tablePrefix + "kV", 0);
-            frc::SmartDashboard::PutNumber(tablePrefix + "kS", 0);
-            frc::SmartDashboard::PutNumber(tablePrefix + "kP", 0);
-            frc::SmartDashboard::PutNumber(tablePrefix + "kI", 0);
-            frc::SmartDashboard::PutNumber(tablePrefix + "kD", 0);
+            frc::SmartDashboard::PutNumber(
+                tablePrefix + "kA", constants::swerve::steerGains.kA.value());
+            frc::SmartDashboard::PutNumber(
+                tablePrefix + "kV", constants::swerve::steerGains.kV.value());
+            frc::SmartDashboard::PutNumber(
+                tablePrefix + "kS", constants::swerve::steerGains.kS.value());
+            frc::SmartDashboard::PutNumber(
+                tablePrefix + "kP", constants::swerve::steerGains.kP.value());
+            frc::SmartDashboard::PutNumber(
+                tablePrefix + "kI", constants::swerve::steerGains.kI.value());
+            frc::SmartDashboard::PutNumber(
+                tablePrefix + "kD", constants::swerve::steerGains.kD.value());
+            for (int i = 0; i < 4; i++) {
+              swerveModules[i].GoToState(
+                  frc::SwerveModuleState{units::feet_per_second_t{0},
+                                         frc::Rotation2d{0_rad}},
+                  true, false);
+            }
           },
           reqs),
       frc2::cmd::Run(
@@ -461,6 +473,13 @@ frc2::CommandPtr SwerveDrive::TuneDrivePID(std::function<bool()> done,
 
 void SwerveDrive::ZeroYaw() {
   imu.SetYaw(0_deg);
+}
+
+void SwerveDrive::SetAllModulesToCurrent(units::volt_t voltsToSend) {
+  swerveModules[0].SetDriveMotorToCurrent(voltsToSend);
+  swerveModules[1].SetDriveMotorToCurrent(voltsToSend);
+  swerveModules[2].SetDriveMotorToCurrent(voltsToSend);
+  swerveModules[3].SetDriveMotorToCurrent(voltsToSend);
 }
 
 void SwerveDrive::AddVisionMeasurement(const frc::Pose2d& visionMeasurement,

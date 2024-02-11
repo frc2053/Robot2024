@@ -99,6 +99,18 @@ class SwerveModule {
                       .convert<units::turns_per_second>());
   }
 
+  void UpdateDriveSysIdLog(frc::sysid::SysIdRoutineLog* log) {
+    log->Motor("swerve-drive")
+        // you can use amps as volts for sysid (see:
+        // https://www.chiefdelphi.com/t/sysid-with-ctre-swerve-characterization/452631/9?u=jreneew2)
+        .voltage(units::volt_t{driveCurrentSignal.GetValueAsDouble()})
+        .position(
+            ConvertWheelDistanceToMotorShaftRotations(currentPosition.distance)
+                .convert<units::turns>())
+        .velocity(ConvertWheelVelocityToMotorVelocity(currentState.speed)
+                      .convert<units::turns_per_second>());
+  }
+
   void SetSteerMotorToCurrent(units::volt_t voltsToSend) {
     steerMotor.SetControl(
         steerTorqueSetter.WithOutput(units::ampere_t{voltsToSend.value()}));

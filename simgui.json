@@ -45,6 +45,11 @@
           "visible": true
         }
       },
+      "/SmartDashboard/Drivebase/TuneSteerCmd": {
+        "window": {
+          "visible": true
+        }
+      },
       "/SmartDashboard/Dunker Mechanism Vis": {
         "window": {
           "visible": true
@@ -104,7 +109,6 @@
   "NetworkTables": {
     "transitory": {
       "CameraPublisher": {
-        "open": true,
         "photonvision-processed": {
           "string[]##v_/CameraPublisher/photonvision-processed/streams": {
             "open": true
@@ -113,20 +117,15 @@
       },
       "SmartDashboard": {
         "Drivebase": {
-          "Module 3": {
+          "open": true,
+          "steerGains": {
             "open": true
           }
-        },
-        "Dunker Telemetry": {
-          "open": true
         },
         "Field": {
           "double[]##v_/SmartDashboard/Field/Estimated Robot Pose": {
             "open": true
           }
-        },
-        "Shooter Telemetry": {
-          "open": true
         },
         "VisionSystemSim-main": {
           "Sim Field": {
@@ -176,7 +175,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 174,
+          "height": 173,
           "series": [
             {
               "color": [
@@ -210,7 +209,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 174,
+          "height": 173,
           "series": [
             {
               "color": [
@@ -244,7 +243,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 174,
+          "height": 173,
           "series": [
             {
               "color": [
@@ -278,7 +277,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 174,
+          "height": 173,
           "series": [
             {
               "color": [
@@ -302,8 +301,7 @@
         }
       ],
       "window": {
-        "name": "Drive Velocities",
-        "visible": false
+        "name": "Drive Velocities"
       }
     },
     "Plot <1>": {
@@ -320,7 +318,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 174,
+          "height": 173,
           "series": [
             {
               "color": [
@@ -354,7 +352,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 174,
+          "height": 173,
           "series": [
             {
               "color": [
@@ -388,7 +386,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 174,
+          "height": 173,
           "series": [
             {
               "color": [
@@ -422,7 +420,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 174,
+          "height": 173,
           "series": [
             {
               "color": [
@@ -446,8 +444,7 @@
         }
       ],
       "window": {
-        "name": "Steer Angles",
-        "visible": false
+        "name": "Steer Angles"
       }
     },
     "Plot <2>": {

@@ -60,11 +60,6 @@ class RobotContainer {
     return frc::SmartDashboard::GetBoolean("Drivebase/DoneWithStep", false);
   });
 
-  frc2::CommandPtr charSwerveDSteerFwd =
-      driveSub.SysIdDynamicSteer(frc2::sysid::Direction::kForward);
-  frc2::CommandPtr charSwerveDSteerRev =
-      driveSub.SysIdDynamicSteer(frc2::sysid::Direction::kReverse);
-
   frc2::CommandPtr resetPositionCmd =
       driveSub.ResetPosition([] { return frc::Pose2d{}; });
   frc2::CommandPtr tunePathPidCmd = driveSub.TunePathPid();
