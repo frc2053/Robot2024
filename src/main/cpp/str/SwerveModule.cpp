@@ -324,12 +324,18 @@ ctre::phoenix::StatusCode SwerveModule::ConfigureSteerMotor(bool invertSteer) {
   // Be careful here. Make sure we are controlling in volts as gains will be
   // different depending on control mode.
   ctre::phoenix6::configs::Slot0Configs steerSlotConfig{};
-  steerSlotConfig.kV = currentSteeringGains.kV.value();
-  steerSlotConfig.kA = currentSteeringGains.kA.value();
-  steerSlotConfig.kS = currentSteeringGains.kS.value();
-  steerSlotConfig.kP = currentSteeringGains.kP;
-  steerSlotConfig.kI = currentSteeringGains.kI;
-  steerSlotConfig.kD = currentSteeringGains.kD;
+  steerSlotConfig.kV =
+      frc::RobotBase::IsReal() ? currentSteeringGains.kV.value() : 0.0;
+  steerSlotConfig.kA =
+      frc::RobotBase::IsReal() ? currentSteeringGains.kA.value() : 0.0;
+  steerSlotConfig.kS =
+      frc::RobotBase::IsReal() ? currentSteeringGains.kS.value() : 0.0;
+  steerSlotConfig.kP =
+      frc::RobotBase::IsReal() ? currentSteeringGains.kP : units::scalar_t{300};
+  steerSlotConfig.kI =
+      frc::RobotBase::IsReal() ? currentSteeringGains.kI : units::scalar_t{0};
+  steerSlotConfig.kD =
+      frc::RobotBase::IsReal() ? currentSteeringGains.kD : units::scalar_t{50};
   steerConfig.Slot0 = steerSlotConfig;
 
   steerConfig.MotorOutput.NeutralMode =

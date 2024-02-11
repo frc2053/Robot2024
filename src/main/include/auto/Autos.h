@@ -44,7 +44,7 @@ class Autos {
         "IntakeNote", intakeSub.SuckInUntilNoteIsSeen());
 
     pathplanner::NamedCommands::registerCommand(
-        "FeedNote", intakeSub.FeedIntake().WithTimeout(1_s));
+        "FeedNote", intakeSub.SuckInNotes().WithTimeout(1_s));
 
     GetSelectedAutoCmd = frc2::cmd::Select<CommandSelector>(
         [this] { return chooser.GetSelected(); },

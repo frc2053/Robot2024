@@ -11,13 +11,14 @@
 #include <ctre/phoenix6/TalonFX.hpp>
 
 #include "Constants.h"
+#include "str/MockToF.h"
 
 class IntakeSubsystem : public frc2::SubsystemBase {
  public:
   IntakeSubsystem();
 
-  frc2::CommandPtr FeedIntake();
-  frc2::CommandPtr IntakeJammed();
+  frc2::CommandPtr SuckInNotes();
+  frc2::CommandPtr SpitOutNotes();
   frc2::CommandPtr SuckInUntilNoteIsSeen();
 
   void Periodic() override;
@@ -26,7 +27,13 @@ class IntakeSubsystem : public frc2::SubsystemBase {
   ctre::phoenix6::hardware::TalonFX intakeMotor{
       constants::intake::INTAKE_CAN_ID};
 
+#ifdef __FRC_ROBORIO__
   frc::TimeOfFlight intakeSensor{constants::intake::INTAKE_TOF_SENSOR};
+#else
+  MockToF intakeSensor{constants::intake::INTAKE_TOF_SENSOR};
+#endif
+
+  units::inch_t currentIntakeSensorReading = 0_in;
 
   void ConfigureMotors();
   void SetIntakeSpeed(double speed);

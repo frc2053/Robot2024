@@ -4,6 +4,8 @@
 
 #include "subsystems/IntakeSubsystem.h"
 
+#include <frc/RobotBase.h>
+
 IntakeSubsystem::IntakeSubsystem() {
   ConfigureMotors();
 
@@ -22,18 +24,29 @@ void IntakeSubsystem::ConfigureMotors() {
   intakeMotor.GetConfigurator().Apply(mainConfig);
 }
 
-frc2::CommandPtr IntakeSubsystem::FeedIntake() {
+frc2::CommandPtr IntakeSubsystem::SuckInNotes() {
   return frc2::cmd::RunEnd([this] { SetIntakeSpeed(1); },
-                           [this] { SetIntakeSpeed(0); }, {this});
+                           [this] { SetIntakeSpeed(0); }, {this})
+      .BeforeStarting(
+          [this] {
+            if (frc::RobotBase::IsSimulation()) {
+              if (SeesNote()) {
+                intakeSensor.SetDistance(12_in);
+              } else {
+                intakeSensor.SetDistance(0_in);
+              }
+            }
+          },
+          {this});
 }
 
-frc2::CommandPtr IntakeSubsystem::IntakeJammed() {
+frc2::CommandPtr IntakeSubsystem::SpitOutNotes() {
   return frc2::cmd::RunEnd([this] { SetIntakeSpeed(-1); },
                            [this] { SetIntakeSpeed(0); }, {this});
 }
 
 frc2::CommandPtr IntakeSubsystem::SuckInUntilNoteIsSeen() {
-  return FeedIntake().Until([this] { return SeesNote(); });
+  return SuckInNotes().Until([this] { return SeesNote(); });
 }
 
 bool IntakeSubsystem::SeesNote() {

@@ -19,7 +19,7 @@ void RobotContainer::ConfigureBindings() {
 
   operatorController.B().WhileTrue(IntakeNote());
 
-  operatorController.X().WhileTrue(intakeSub.IntakeJammed());
+  operatorController.X().WhileTrue(intakeSub.SpitOutNotes());
 
   operatorController.Y().WhileTrue(dunkSub.PivotDunkNotesOut());
   operatorController.Y().OnFalse(dunkSub.PivotDunkNotesIn());

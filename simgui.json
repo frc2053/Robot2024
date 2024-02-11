@@ -127,6 +127,12 @@
             "open": true
           }
         },
+        "Intake": {
+          "NoteSensor": {
+            "open": true
+          },
+          "open": true
+        },
         "VisionSystemSim-main": {
           "Sim Field": {
             "double[]##v_/SmartDashboard/VisionSystemSim-main/Sim Field/VisionEstimation": {
