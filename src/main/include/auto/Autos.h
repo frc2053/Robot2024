@@ -13,6 +13,7 @@
 #include "frc2/command/CommandPtr.h"
 #include "frc2/command/PrintCommand.h"
 #include "subsystems/DrivebaseSubsystem.h"
+#include "subsystems/IntakeSubsystem.h"
 #include "subsystems/ShooterSubsystem.h"
 
 namespace autos {
@@ -28,11 +29,22 @@ enum CommandSelector {
 
 class Autos {
  public:
-  explicit Autos(DrivebaseSubsystem& driveSub, ShooterSubsystem& shooterSub)
-      : m_driveSub(driveSub), m_shooterSub(shooterSub) {
+  explicit Autos(DrivebaseSubsystem& driveSub, ShooterSubsystem& shooterSub,
+                 IntakeSubsystem& intakeSub)
+      : m_driveSub(driveSub), m_shooterSub(shooterSub), m_intakeSub(intakeSub) {
     pathplanner::NamedCommands::registerCommand(
         "TestCommandPrint",
         frc2::PrintCommand("Test Print from PP Command").ToPtr());
+
+    pathplanner::NamedCommands::registerCommand(
+        "SpinUpShooter", shooterSub.GoToVelocityCmd(
+                             [] { return constants::shooter::SHOOTER_SPEED; }));
+
+    pathplanner::NamedCommands::registerCommand(
+        "IntakeNote", intakeSub.SuckInUntilNoteIsSeen());
+
+    pathplanner::NamedCommands::registerCommand(
+        "FeedNote", intakeSub.FeedIntake().WithTimeout(1_s));
 
     GetSelectedAutoCmd = frc2::cmd::Select<CommandSelector>(
         [this] { return chooser.GetSelected(); },
@@ -46,8 +58,7 @@ class Autos {
                   pathplanner::PathPlannerAuto{"PPTest"}.ToPtr()},
         std::pair{CHOREO_TEST, m_driveSub.FollowChoreoTrajectory(
                                    [] { return "ChoreoTestPath"; })},
-        std::pair{AMP_SIDE,
-                  m_driveSub.FollowChoreoTrajectory([] { return "AmpSide"; })});
+        std::pair{AMP_SIDE, pathplanner::PathPlannerAuto{"AmpSide"}.ToPtr()});
 
     chooser.SetDefaultOption("Do Nothing", CommandSelector::DO_NOTHING);
     chooser.AddOption("Three Feet Forward", CommandSelector::THREE_FT_FORWARD);
@@ -60,8 +71,9 @@ class Autos {
   }
 
   DrivebaseSubsystem& m_driveSub;
-
   ShooterSubsystem& m_shooterSub;
+  IntakeSubsystem& m_intakeSub;
+
   frc::SendableChooser<CommandSelector> chooser;
 
   frc2::CommandPtr GetSelectedAutoCmd{frc2::cmd::None()};

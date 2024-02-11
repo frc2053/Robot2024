@@ -214,6 +214,10 @@ DunkerSubsystem& RobotContainer::GetDunkerSubsystem() {
   return dunkSub;
 }
 
+IntakeSubsystem& RobotContainer::GetIntakeSubsystem() {
+  return intakeSub;
+}
+
 Vision& RobotContainer::GetVisionSystem() {
   return vision;
 }

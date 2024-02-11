@@ -18,7 +18,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "BringShooterToSpeed"
+                  "name": "SpinUpShooter"
                 }
               },
               {
@@ -37,7 +37,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "IntakeUntilNote"
+                  "name": "IntakeNote"
                 }
               },
               {
@@ -56,13 +56,32 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "BringShooterToSpeed"
+                  "name": "SpinUpShooter"
                 }
               },
               {
                 "type": "named",
                 "data": {
                   "name": "FeedNote"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeNote"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "AmpSide.2"
                 }
               }
             ]
