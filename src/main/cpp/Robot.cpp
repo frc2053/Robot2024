@@ -16,7 +16,7 @@ void Robot::RobotInit() {
 
 void Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
-  nt::NetworkTableInstance::GetDefault().Flush();
+  // nt::NetworkTableInstance::GetDefault().Flush();
 
   auto visionEst = m_container.GetVisionSystem().GetEstimatedGlobalPose();
   if (visionEst.has_value()) {

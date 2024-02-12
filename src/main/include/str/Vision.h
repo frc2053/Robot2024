@@ -16,6 +16,7 @@
 
 #include <limits>
 #include <memory>
+#include <utility>
 
 #include "Constants.h"
 
@@ -27,9 +28,10 @@ class Vision {
 
     photonEstimator = std::make_unique<photon::PhotonPoseEstimator>(
         layout, photon::PoseStrategy::MULTI_TAG_PNP_ON_COPROCESSOR,
-        photon::PhotonCamera(constants::vision::kCameraName),
+        std::move(photon::PhotonCamera(constants::vision::kCameraName)),
         constants::vision::kRobotToCam);
     camera = photonEstimator->GetCamera();
+    camera->SetVersionCheckEnabled(false);
 
     photonEstimator->SetMultiTagFallbackStrategy(
         photon::PoseStrategy::LOWEST_AMBIGUITY);

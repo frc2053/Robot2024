@@ -1,250 +1,510 @@
 {
-  "version": "3.0.2",
-  "layout": [
+  "hubs": [
     {
-      "type": 1,
-      "legends": {
-        "left": {
-          "lockedRange": null,
-          "unitConversion": {
-            "type": null,
-            "factor": 1
-          },
-          "fields": [
-            {
-              "key": "NT:/SmartDashboard/Drivebase/Module 0/Drive Velocity FPS",
-              "color": "#2b66a2",
-              "show": true
-            },
-            {
-              "key": "NT:/SmartDashboard/Drivebase/Module 0/Drive Velocity Target FPS",
-              "color": "#e5b31b",
-              "show": true
-            },
-            {
-              "key": "NT:/SmartDashboard/Drivebase/Module 1/Drive Velocity FPS",
-              "color": "#af2437",
-              "show": true
-            },
-            {
-              "key": "NT:/SmartDashboard/Drivebase/Module 1/Drive Velocity Target FPS",
-              "color": "#80588e",
-              "show": true
-            },
-            {
-              "key": "NT:/SmartDashboard/Drivebase/Module 2/Drive Velocity FPS",
-              "color": "#e48b32",
-              "show": true
-            },
-            {
-              "key": "NT:/SmartDashboard/Drivebase/Module 2/Drive Velocity Target FPS",
-              "color": "#aacaee",
-              "show": true
-            },
-            {
-              "key": "NT:/SmartDashboard/Drivebase/Module 3/Drive Velocity FPS",
-              "color": "#c0b487",
-              "show": true
-            },
-            {
-              "key": "NT:/SmartDashboard/Drivebase/Module 3/Drive Velocity Target FPS",
-              "color": "#858584",
-              "show": true
-            }
+      "x": -8,
+      "y": -8,
+      "width": 1936,
+      "height": 1048,
+      "state": {
+        "sidebar": {
+          "width": 300,
+          "expanded": [
+            "/photonvision/apriltagcam",
+            "/SmartDashboard/VisionSystemSim-main/Sim Field",
+            "/SmartDashboard/Intake",
+            "/SmartDashboard/Intake/NoteSensor",
+            "/SmartDashboard/Field",
+            "/SmartDashboard",
+            "/CameraPublisher/apriltagcam-raw"
           ]
         },
-        "discrete": {
-          "fields": []
-        },
-        "right": {
-          "lockedRange": null,
-          "unitConversion": {
-            "type": null,
-            "factor": 1
-          },
-          "fields": [
+        "tabs": {
+          "selected": 11,
+          "tabs": [
             {
-              "key": "NT:/SmartDashboard/Drivebase/Module 3/Steer Degrees",
-              "color": "#3b875a",
-              "show": true
+              "type": 0,
+              "path": "../docs/INDEX.md"
             },
             {
-              "key": "NT:/SmartDashboard/Drivebase/Module 3/Steer Target Degrees",
-              "color": "#d993aa",
-              "show": true
+              "type": 3,
+              "field": null,
+              "title": "Console"
             },
             {
-              "key": "NT:/SmartDashboard/Drivebase/Module 2/Steer Degrees",
-              "color": "#eb987e",
-              "show": true
+              "type": 1,
+              "legends": {
+                "left": {
+                  "lockedRange": null,
+                  "unitConversion": {
+                    "type": null,
+                    "factor": 1
+                  },
+                  "fields": [
+                    {
+                      "key": "NT:/SmartDashboard/Dunker Telemetry/Angle Goal (Degrees)",
+                      "color": "#2b66a2",
+                      "show": true
+                    },
+                    {
+                      "key": "NT:/SmartDashboard/Dunker Telemetry/Current Position (Degrees)",
+                      "color": "#e5b31b",
+                      "show": true
+                    }
+                  ]
+                },
+                "discrete": {
+                  "fields": []
+                },
+                "right": {
+                  "lockedRange": null,
+                  "unitConversion": {
+                    "type": null,
+                    "factor": 1
+                  },
+                  "fields": []
+                }
+              },
+              "title": "DunkerData"
             },
             {
-              "key": "NT:/SmartDashboard/Drivebase/Module 2/Steer Target Degrees",
-              "color": "#5d4f92",
-              "show": true
+              "type": 1,
+              "legends": {
+                "left": {
+                  "lockedRange": null,
+                  "unitConversion": {
+                    "type": null,
+                    "factor": 1
+                  },
+                  "fields": [
+                    {
+                      "key": "NT:/SmartDashboard/Intake/NoteSensor/Distance",
+                      "color": "#2b66a2",
+                      "show": true
+                    }
+                  ]
+                },
+                "discrete": {
+                  "fields": []
+                },
+                "right": {
+                  "lockedRange": null,
+                  "unitConversion": {
+                    "type": null,
+                    "factor": 1
+                  },
+                  "fields": []
+                }
+              },
+              "title": "IntakeSensor"
             },
             {
-              "key": "NT:/SmartDashboard/Drivebase/Module 1/Steer Degrees",
-              "color": "#a64b6b",
-              "show": true
+              "type": 1,
+              "legends": {
+                "left": {
+                  "lockedRange": null,
+                  "unitConversion": {
+                    "type": null,
+                    "factor": 1
+                  },
+                  "fields": [
+                    {
+                      "key": "NT:/SmartDashboard/Shooter Telemetry/Left Current Velocity (RPM)",
+                      "color": "#2b66a2",
+                      "show": true
+                    },
+                    {
+                      "key": "NT:/SmartDashboard/Shooter Telemetry/Right Current Velocity (RPM)",
+                      "color": "#e5b31b",
+                      "show": true
+                    },
+                    {
+                      "key": "NT:/SmartDashboard/Shooter Telemetry/Velocity Setpoint (RPM)",
+                      "color": "#af2437",
+                      "show": true
+                    }
+                  ]
+                },
+                "discrete": {
+                  "fields": []
+                },
+                "right": {
+                  "lockedRange": null,
+                  "unitConversion": {
+                    "type": null,
+                    "factor": 1
+                  },
+                  "fields": []
+                }
+              },
+              "title": "ShooterData"
             },
             {
-              "key": "NT:/SmartDashboard/Drivebase/Module 1/Steer Target Degrees",
-              "color": "#dbd345",
-              "show": true
+              "type": 1,
+              "legends": {
+                "left": {
+                  "lockedRange": null,
+                  "unitConversion": {
+                    "type": null,
+                    "factor": 1
+                  },
+                  "fields": [
+                    {
+                      "key": "NT:/SmartDashboard/Drivebase/Module 0/Drive Velocity FPS",
+                      "color": "#2b66a2",
+                      "show": true
+                    },
+                    {
+                      "key": "NT:/SmartDashboard/Drivebase/Module 0/Drive Velocity Target FPS",
+                      "color": "#e5b31b",
+                      "show": true
+                    },
+                    {
+                      "key": "NT:/SmartDashboard/Drivebase/Module 1/Drive Velocity FPS",
+                      "color": "#e48b32",
+                      "show": true
+                    },
+                    {
+                      "key": "NT:/SmartDashboard/Drivebase/Module 1/Drive Velocity Target FPS",
+                      "color": "#aacaee",
+                      "show": true
+                    },
+                    {
+                      "key": "NT:/SmartDashboard/Drivebase/Module 2/Drive Velocity FPS",
+                      "color": "#3b875a",
+                      "show": true
+                    },
+                    {
+                      "key": "NT:/SmartDashboard/Drivebase/Module 2/Drive Velocity Target FPS",
+                      "color": "#d993aa",
+                      "show": true
+                    },
+                    {
+                      "key": "NT:/SmartDashboard/Drivebase/Module 3/Drive Velocity FPS",
+                      "color": "#a64b6b",
+                      "show": true
+                    },
+                    {
+                      "key": "NT:/SmartDashboard/Drivebase/Module 3/Drive Velocity Target FPS",
+                      "color": "#dbd345",
+                      "show": true
+                    }
+                  ]
+                },
+                "discrete": {
+                  "fields": []
+                },
+                "right": {
+                  "lockedRange": null,
+                  "unitConversion": {
+                    "type": null,
+                    "factor": 1
+                  },
+                  "fields": [
+                    {
+                      "key": "NT:/SmartDashboard/Drivebase/Module 0/Steer Degrees",
+                      "color": "#af2437",
+                      "show": true
+                    },
+                    {
+                      "key": "NT:/SmartDashboard/Drivebase/Module 0/Steer Target Degrees",
+                      "color": "#80588e",
+                      "show": true
+                    },
+                    {
+                      "key": "NT:/SmartDashboard/Drivebase/Module 1/Steer Degrees",
+                      "color": "#c0b487",
+                      "show": true
+                    },
+                    {
+                      "key": "NT:/SmartDashboard/Drivebase/Module 1/Steer Target Degrees",
+                      "color": "#858584",
+                      "show": true
+                    },
+                    {
+                      "key": "NT:/SmartDashboard/Drivebase/Module 2/Steer Degrees",
+                      "color": "#eb987e",
+                      "show": true
+                    },
+                    {
+                      "key": "NT:/SmartDashboard/Drivebase/Module 2/Steer Target Degrees",
+                      "color": "#5d4f92",
+                      "show": true
+                    },
+                    {
+                      "key": "NT:/SmartDashboard/Drivebase/Module 3/Steer Degrees",
+                      "color": "#7e331f",
+                      "show": true
+                    },
+                    {
+                      "key": "NT:/SmartDashboard/Drivebase/Module 3/Steer Target Degrees",
+                      "color": "#96b637",
+                      "show": true
+                    }
+                  ]
+                }
+              },
+              "title": "SwerveModule"
             },
             {
-              "key": "NT:/SmartDashboard/Drivebase/Module 0/Steer Degrees",
-              "color": "#7e331f",
-              "show": true
+              "type": 10,
+              "uuid": "nkeouwhc2cf68gy7ppxh52mfwsa0pl1m",
+              "fields": [
+                {
+                  "key": "NT:/SmartDashboard/Dunker Mechanism Vis",
+                  "sourceTypeIndex": 0,
+                  "sourceType": "Mechanism2d"
+                },
+                null,
+                null
+              ],
+              "listFields": [],
+              "options": {},
+              "configHidden": false,
+              "visualizer": null,
+              "title": "DunkerMech"
             },
             {
-              "key": "NT:/SmartDashboard/Drivebase/Module 0/Steer Target Degrees",
-              "color": "#96b637",
-              "show": true
+              "type": 9,
+              "uuid": "gw8j76e7tn813nywpwwurzry6iorhh14",
+              "fields": [
+                null,
+                null,
+                {
+                  "key": "NT:/SmartDashboard/Field/Estimated Robot Pose/2",
+                  "sourceTypeIndex": 0,
+                  "sourceType": 2
+                }
+              ],
+              "listFields": [],
+              "options": {
+                "maxSpeed": 5.76072,
+                "rotationUnits": "degrees",
+                "arrangement": "0,1,2,3",
+                "sizeLeftRight": 0.879475,
+                "sizeFrontBack": 0.879475,
+                "forwardDirection": "up"
+              },
+              "configHidden": false,
+              "visualizer": null,
+              "title": "Swerve"
+            },
+            {
+              "type": 8,
+              "uuid": "62fnfn6it6z6ks6j0sh81bdxobajtd7r",
+              "fields": [],
+              "listFields": [],
+              "options": {
+                "ids": [
+                  0,
+                  1,
+                  2
+                ],
+                "layouts": [
+                  "Xbox Controller (White)",
+                  "Xbox Controller (White)",
+                  "Xbox Controller (Blue)"
+                ]
+              },
+              "configHidden": false,
+              "visualizer": null,
+              "title": "Joysticks"
+            },
+            {
+              "type": 2,
+              "fields": [],
+              "title": "Table"
+            },
+            {
+              "type": 4,
+              "fields": [
+                "NT:/SmartDashboard/Drivebase/Averge Odom Frequency",
+                null,
+                null
+              ],
+              "selectionType": "full",
+              "selectionRangeMin": 0,
+              "selectionRangeMax": 10,
+              "measurementType": "independent",
+              "measurementSampling": "fixed",
+              "measurementSamplingPeriod": 20,
+              "histogramMin": 0,
+              "histogramMax": 10,
+              "histogramStep": 1,
+              "title": "Statistics"
+            },
+            {
+              "type": 6,
+              "uuid": "k6i5dpez5xby8sypfqjh71eba019ad19",
+              "fields": [],
+              "listFields": [
+                [
+                  {
+                    "type": "Robot",
+                    "key": "NT:/SmartDashboard/ascope/robotPose3d",
+                    "sourceTypeIndex": 0,
+                    "sourceType": 5
+                  },
+                  {
+                    "type": "Component (Robot)",
+                    "key": "NT:/SmartDashboard/ascope/dunkerWheelsPose",
+                    "sourceTypeIndex": 0,
+                    "sourceType": 5
+                  },
+                  {
+                    "type": "Component (Robot)",
+                    "key": "NT:/SmartDashboard/ascope/dunkerBottomArmPose",
+                    "sourceTypeIndex": 0,
+                    "sourceType": 5
+                  },
+                  {
+                    "type": "Component (Robot)",
+                    "key": "NT:/SmartDashboard/ascope/dunkerTopArmPose",
+                    "sourceTypeIndex": 0,
+                    "sourceType": 5
+                  }
+                ],
+                [
+                  {
+                    "type": "Trajectory",
+                    "key": "NT:/PathPlanner/activePath",
+                    "sourceTypeIndex": 0,
+                    "sourceType": 5
+                  },
+                  {
+                    "type": "Yellow Cone (Center)",
+                    "key": "NT:/SmartDashboard/Field/Estimated Robot Modules",
+                    "sourceTypeIndex": 0,
+                    "sourceType": 5
+                  },
+                  {
+                    "type": "Green Ghost",
+                    "key": "NT:/SmartDashboard/Field/Vision Pose To Add",
+                    "sourceTypeIndex": 0,
+                    "sourceType": 5
+                  },
+                  {
+                    "type": "Yellow Ghost",
+                    "key": "NT:/PathPlanner/targetPose",
+                    "sourceTypeIndex": 0,
+                    "sourceType": 5
+                  },
+                  {
+                    "type": "Blue Cone (Front)",
+                    "key": "NT:/SmartDashboard/VisionSystemSim-main/Sim Field/cameras",
+                    "sourceTypeIndex": 0,
+                    "sourceType": 5
+                  },
+                  {
+                    "type": "Yellow Ghost",
+                    "key": "NT:/SmartDashboard/Field/Arc",
+                    "sourceTypeIndex": 0,
+                    "sourceType": 5
+                  },
+                  {
+                    "type": "Yellow Ghost",
+                    "key": "NT:/SmartDashboard/Field/Closest Safe Spot",
+                    "sourceTypeIndex": 0,
+                    "sourceType": 5
+                  },
+                  {
+                    "type": "Yellow Ghost",
+                    "key": "NT:/SmartDashboard/Field/Pose to go to",
+                    "sourceTypeIndex": 0,
+                    "sourceType": 5
+                  }
+                ]
+              ],
+              "options": {
+                "field": "2024 Field",
+                "alliance": "blue",
+                "robot": "20532024",
+                "unitDistance": "meters",
+                "unitRotation": "degrees"
+              },
+              "configHidden": false,
+              "visualizer": {
+                "cameraIndex": -1,
+                "orbitFov": 50,
+                "cameraPosition": [
+                  -6.044493176725459,
+                  3.0632243713161,
+                  -6.658567671210795
+                ],
+                "cameraTarget": [
+                  -5.659721859353401,
+                  -0.037700320768246726,
+                  -0.24644598035211374
+                ]
+              },
+              "title": "3D Field"
+            },
+            {
+              "type": 7,
+              "uuid": "my766u8atzi9qfetiyv2evmat3lngya8",
+              "fields": [],
+              "listFields": [],
+              "options": {},
+              "configHidden": false,
+              "visualizer": null,
+              "title": "Video"
+            },
+            {
+              "type": 5,
+              "uuid": "vmfd2s22p66k1wufjrs6uad3h5moj7ef",
+              "fields": [],
+              "listFields": [
+                [
+                  {
+                    "type": "Trajectory",
+                    "key": "NT:/PathPlanner/activePath",
+                    "sourceTypeIndex": 0,
+                    "sourceType": 5
+                  },
+                  {
+                    "type": "Ghost",
+                    "key": "NT:/PathPlanner/targetPose",
+                    "sourceTypeIndex": 0,
+                    "sourceType": 5
+                  },
+                  {
+                    "type": "Arrow (Center)",
+                    "key": "NT:/SmartDashboard/Field/Estimated Robot Modules",
+                    "sourceTypeIndex": 0,
+                    "sourceType": 5
+                  },
+                  {
+                    "type": "Robot",
+                    "key": "NT:/SmartDashboard/Field/Estimated Robot Pose",
+                    "sourceTypeIndex": 0,
+                    "sourceType": 5
+                  },
+                  {
+                    "type": "Ghost",
+                    "key": "NT:/SmartDashboard/Field/Vision Pose To Add",
+                    "sourceTypeIndex": 0,
+                    "sourceType": 5
+                  }
+                ]
+              ],
+              "options": {
+                "game": "2024 Field",
+                "unitDistance": "meters",
+                "unitRotation": "degrees",
+                "origin": "right",
+                "size": 0.879475,
+                "allianceBumpers": "auto",
+                "allianceOrigin": "blue",
+                "orientation": "blue left, red right"
+              },
+              "configHidden": false,
+              "visualizer": null,
+              "title": "Odometry"
             }
           ]
         }
-      },
-      "title": "Line Graph"
-    },
-    {
-      "type": 8,
-      "fields": [],
-      "listFields": [],
-      "options": {
-        "ids": [
-          0,
-          1,
-          2
-        ],
-        "layouts": [
-          "Xbox Controller (White)",
-          "Xbox Controller (White)",
-          "None"
-        ]
-      },
-      "configHidden": false,
-      "title": "Joysticks"
-    },
-    {
-      "type": 6,
-      "fields": [],
-      "listFields": [
-        [
-          {
-            "type": "Robot",
-            "key": "NT:/SmartDashboard/ascope/robotPose3d",
-            "sourceTypeIndex": 0,
-            "sourceType": 5
-          },
-          {
-            "type": "Component (Robot)",
-            "key": "NT:/SmartDashboard/ascope/dunkerWheelsPose",
-            "sourceTypeIndex": 0,
-            "sourceType": 5
-          },
-          {
-            "type": "Component (Robot)",
-            "key": "NT:/SmartDashboard/ascope/dunkerBottomArmPose",
-            "sourceTypeIndex": 0,
-            "sourceType": 5
-          },
-          {
-            "type": "Component (Robot)",
-            "key": "NT:/SmartDashboard/ascope/dunkerTopArmPose",
-            "sourceTypeIndex": 0,
-            "sourceType": 5
-          }
-        ],
-        [
-          {
-            "type": "Yellow Cone (Center)",
-            "key": "NT:/SmartDashboard/Field/Estimated Robot Modules",
-            "sourceTypeIndex": 0,
-            "sourceType": 5
-          },
-          {
-            "type": "Trajectory",
-            "key": "NT:/PathPlanner/activePath",
-            "sourceTypeIndex": 0,
-            "sourceType": 5
-          }
-        ]
-      ],
-      "options": {
-        "field": "2024 Field",
-        "alliance": "blue",
-        "robot": "20532024",
-        "unitDistance": "meters",
-        "unitRotation": "degrees",
-        "cameraIndex": -1,
-        "fov": 50
-      },
-      "configHidden": false,
-      "title": "3D Field"
-    },
-    {
-      "type": 5,
-      "fields": [],
-      "listFields": [
-        [
-          {
-            "type": "Arrow (Center)",
-            "key": "NT:/SmartDashboard/Field/Estimated Robot Modules",
-            "sourceTypeIndex": 0,
-            "sourceType": 5
-          },
-          {
-            "type": "Robot",
-            "key": "NT:/SmartDashboard/Field/Estimated Robot Pose",
-            "sourceTypeIndex": 0,
-            "sourceType": 5
-          },
-          {
-            "type": "Trajectory",
-            "key": "NT:/PathPlanner/activePath",
-            "sourceTypeIndex": 0,
-            "sourceType": 5
-          },
-          {
-            "type": "Ghost",
-            "key": "NT:/PathPlanner/targetPose",
-            "sourceTypeIndex": 0,
-            "sourceType": 5
-          },
-          {
-            "type": "Trajectory",
-            "key": "NT:/SmartDashboard/Field/CurrentChoreoTrajectory",
-            "sourceTypeIndex": 0,
-            "sourceType": 5
-          },
-          {
-            "type": "Ghost",
-            "key": "NT:/SmartDashboard/Field/Arc",
-            "sourceTypeIndex": 0,
-            "sourceType": 5
-          },
-          {
-            "type": "Ghost",
-            "key": "NT:/SmartDashboard/Field/Closest Safe Spot",
-            "sourceTypeIndex": 0,
-            "sourceType": 5
-          }
-        ]
-      ],
-      "options": {
-        "game": "2024 Field",
-        "unitDistance": "meters",
-        "unitRotation": "degrees",
-        "origin": "right",
-        "size": 0.879475,
-        "allianceBumpers": "auto",
-        "allianceOrigin": "blue",
-        "orientation": "blue left, red right"
-      },
-      "configHidden": false,
-      "title": "Odometry"
+      }
     }
-  ]
+  ],
+  "satellites": [],
+  "version": "3.1.0"
 }

@@ -111,23 +111,23 @@ void RobotContainer::ConfigureBindings() {
   frc::SmartDashboard::PutData("Drivebase/DonePathTuningCmd",
                                donePathTuningCmd.get());
 
-  testController.Back().WhileTrue(
-      driveSub.SysIdQuasistaticSteer(frc2::sysid::Direction::kForward));
-  testController.Start().WhileTrue(
-      driveSub.SysIdQuasistaticSteer(frc2::sysid::Direction::kReverse));
-  testController.LeftBumper().WhileTrue(
-      driveSub.SysIdDynamicSteer(frc2::sysid::Direction::kForward));
-  testController.RightBumper().WhileTrue(
-      driveSub.SysIdDynamicSteer(frc2::sysid::Direction::kReverse));
+  // testController.Back().WhileTrue(
+  //     driveSub.SysIdQuasistaticSteer(frc2::sysid::Direction::kForward));
+  // testController.Start().WhileTrue(
+  //     driveSub.SysIdQuasistaticSteer(frc2::sysid::Direction::kReverse));
+  // testController.LeftBumper().WhileTrue(
+  //     driveSub.SysIdDynamicSteer(frc2::sysid::Direction::kForward));
+  // testController.RightBumper().WhileTrue(
+  //     driveSub.SysIdDynamicSteer(frc2::sysid::Direction::kReverse));
 
-  testController.A().WhileTrue(
-      driveSub.SysIdQuasistaticDrive(frc2::sysid::Direction::kForward));
-  testController.B().WhileTrue(
-      driveSub.SysIdQuasistaticDrive(frc2::sysid::Direction::kReverse));
-  testController.X().WhileTrue(
-      driveSub.SysIdQuasistaticDrive(frc2::sysid::Direction::kForward));
-  testController.Y().WhileTrue(
-      driveSub.SysIdQuasistaticDrive(frc2::sysid::Direction::kReverse));
+  // testController.A().WhileTrue(
+  //     driveSub.SysIdQuasistaticDrive(frc2::sysid::Direction::kForward));
+  // testController.B().WhileTrue(
+  //     driveSub.SysIdQuasistaticDrive(frc2::sysid::Direction::kReverse));
+  // testController.X().WhileTrue(
+  //     driveSub.SysIdQuasistaticDrive(frc2::sysid::Direction::kForward));
+  // testController.Y().WhileTrue(
+  //     driveSub.SysIdQuasistaticDrive(frc2::sysid::Direction::kReverse));
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {
