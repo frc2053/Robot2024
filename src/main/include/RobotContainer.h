@@ -67,6 +67,8 @@ class RobotContainer {
   frc2::CommandPtr donePathTuningCmd = driveSub.DoneTuningPathPids();
   frc2::CommandPtr zeroYawCMD = driveSub.ZeroYawCMD();
 
+  frc2::CommandPtr SpinUpShooterBasedOnDist(
+      std::function<units::meter_t()> distToGoal);
   frc2::CommandPtr SpinUpShooter();
   frc2::CommandPtr NotUsingShooter();
 

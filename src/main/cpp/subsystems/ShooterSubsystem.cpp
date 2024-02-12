@@ -10,6 +10,9 @@
 ShooterSubsystem::ShooterSubsystem() {
   ConfigureMotors();
   frc::SmartDashboard::PutData("Shooter Telemetry", this);
+  // TODO insert actual values
+  lookupTable.insert(0_ft, 1000_rpm);
+  lookupTable.insert(10_ft, frc::DCMotor::Falcon500(1).freeSpeed);
 }
 
 frc2::CommandPtr ShooterSubsystem::GoToSpeedCmd(std::function<double()> speed) {
@@ -23,6 +26,12 @@ frc2::CommandPtr ShooterSubsystem::GoToVelocityCmd(
       .Until([this] { return IsShooterUpToSpeed(); })
       .BeforeStarting([this, speed] { currentVelocitySetpoint = speed(); },
                       {this});
+}
+
+frc2::CommandPtr ShooterSubsystem::GoToSpeedBasedOnGoal(
+    std::function<units::meter_t()> distanceToGoal) {
+  return GoToVelocityCmd(
+      [this, distanceToGoal] { return lookupTable[distanceToGoal()]; });
 }
 
 frc2::CommandPtr ShooterSubsystem::SysIdQuasistatic(

@@ -31,6 +31,10 @@ void RobotContainer::ConfigureBindings() {
   operatorController.A().WhileTrue(SpinUpShooter());
   operatorController.A().OnFalse(NotUsingShooter());
 
+  operatorController.B().WhileTrue(SpinUpShooterBasedOnDist(
+      [this] { return driveSub.CalcDistanceFromSpeaker(); }));
+  operatorController.B().OnFalse(NotUsingShooter());
+
   driverController.RightBumper().WhileTrue(
       frc2::cmd::Defer(GetAStarCmd(), {&driveSub})
           .Unless([this] { return driveSub.InSafeZone(); })
@@ -133,6 +137,13 @@ void RobotContainer::ConfigureBindings() {
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {
   return autos.GetSelectedAutoCmd.get();
+}
+
+frc2::CommandPtr RobotContainer::SpinUpShooterBasedOnDist(
+    std::function<units::meter_t()> distToGoal) {
+  return frc2::cmd::Sequence(ledSub.SetBothToBlinkRed(),
+                             shooterSub.GoToSpeedBasedOnGoal(distToGoal),
+                             ledSub.SetBothToSolidGreen(), RumbleOperator());
 }
 
 frc2::CommandPtr RobotContainer::SpinUpShooter() {

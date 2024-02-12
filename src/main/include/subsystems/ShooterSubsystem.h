@@ -7,6 +7,7 @@
 #include <frc/simulation/DCMotorSim.h>
 #include <frc2/command/SubsystemBase.h>
 #include <frc2/command/sysid/SysIdRoutine.h>
+#include <wpi/interpolating_map.h>
 
 #include <functional>
 
@@ -23,6 +24,8 @@ class ShooterSubsystem : public frc2::SubsystemBase {
       std::function<units::radians_per_second_t()> speed);
   frc2::CommandPtr SysIdQuasistatic(frc2::sysid::Direction direction);
   frc2::CommandPtr SysIdDynamic(frc2::sysid::Direction direction);
+  frc2::CommandPtr GoToSpeedBasedOnGoal(
+      std::function<units::meter_t()> distanceToGoal);
 
   /**
    * Will be called periodically whenever the CommandScheduler runs.
@@ -106,4 +109,7 @@ class ShooterSubsystem : public frc2::SubsystemBase {
           },
           this},
   };
+
+  wpi::interpolating_map<units::meter_t, units::radians_per_second_t>
+      lookupTable;
 };
