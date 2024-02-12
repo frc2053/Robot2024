@@ -12,6 +12,8 @@ void Robot::RobotInit() {
   str::DataUtils::LogGitInfo();
   AddPeriodic([this] { m_container.GetDrivebaseSubsystem().UpdateOdometry(); },
               1 / 250_Hz);
+
+  pdh.ClearStickyFaults();
 }
 
 void Robot::RobotPeriodic() {

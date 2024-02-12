@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <frc/PowerDistribution.h>
 #include <frc/TimedRobot.h>
 #include <frc2/command/CommandPtr.h>
 
@@ -35,4 +36,6 @@ class Robot : public frc::TimedRobot {
   RobotContainer m_container;
 
   units::radian_t prevAngle;
+
+  frc::PowerDistribution pdh{1, frc::PowerDistribution::ModuleType::kRev};
 };
