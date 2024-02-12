@@ -7,39 +7,91 @@
 #include "frc/smartdashboard/SmartDashboard.h"
 #include "wpi/sendable/SendableBuilder.h"
 
-ClimberSubsystem::ClimberSubsystem() = default;
+ClimberSubsystem::ClimberSubsystem() {
+  ConfigureMotor();
+
+  frc::SmartDashboard::PutData("ClimberTelemetry", this);
+  frc::SmartDashboard::PutData("Climber/ElevatorMech2d", &m_mech2d);
+}
 
 void ClimberSubsystem::ConfigureMotor() {
-  mainClimbMotor.RestoreFactoryDefaults();
-  followClimbMotor.RestoreFactoryDefaults();
+  leftClimberMotor.RestoreFactoryDefaults();
+  rightClimberMotor.RestoreFactoryDefaults();
 
-  m_encoder.SetPositionConversionFactor(
+  leftEncoder.SetPositionConversionFactor(
       constants::climber::CLIMBER_SPOOL_RADIUS.value() *
       constants::climber::CLIMBER_RATIO);
-  m_encoder.SetVelocityConversionFactor(
+  leftEncoder.SetVelocityConversionFactor(
       constants::climber::CLIMBER_SPOOL_RADIUS.value() *
       constants::climber::CLIMBER_RATIO);
 
-  // mainClimbMotor.SetP();
-  // mainClimbMotor.SetI(kI);
-  // mainClimbMotor.SetD(kD);
-  // mainClimbMotor.SetIZone(kIz);
-  // mainClimbMotor.SetFF(kFF);
-  // mainClimbMotor.SetOutputRange(kMinOutput, kMaxOutput);
+  rightEncoder.SetPositionConversionFactor(
+      constants::climber::CLIMBER_SPOOL_RADIUS.value() *
+      constants::climber::CLIMBER_RATIO);
+  rightEncoder.SetVelocityConversionFactor(
+      constants::climber::CLIMBER_SPOOL_RADIUS.value() *
+      constants::climber::CLIMBER_RATIO);
 
-  followClimbMotor.Follow(mainClimbMotor, true);
+  leftClimberMotor.BurnFlash();
+  rightClimberMotor.BurnFlash();
+
+  leftPIDController.SetP(currentGains.kP.value());
+  leftPIDController.SetI(currentGains.kI.value());
+  leftPIDController.SetD(currentGains.kD.value());
+
+  rightPIDController.SetP(currentGains.kP.value());
+  rightPIDController.SetI(currentGains.kI.value());
+  rightPIDController.SetD(currentGains.kD.value());
 }
 
 // This method will be called once per scheduler run
-void ClimberSubsystem::Periodic() {}
+void ClimberSubsystem::Periodic() {
+  auto nextLeft = leftProfile.Calculate(20_ms, m_goal, leftSetpoint);
+  auto nextRight = rightProfile.Calculate(20_ms, m_goal, rightSetpoint);
+  ffResultLeft =
+      ffLeft->Calculate(leftSetpoint.velocity, nextLeft.velocity, 20_ms);
+  ffResultRight =
+      ffRight->Calculate(rightSetpoint.velocity, nextRight.velocity, 20_ms);
 
-units::meter_t ClimberSubsystem::GetClimberHeight() {
-  return units::meter_t{m_encoder.GetPosition()};
+  leftSetpoint = nextLeft;
+  rightSetpoint = nextRight;
+
+  m_elevatorLeftMech2d->SetLength(leftEncoder.GetPosition());
+  m_elevatorRightMech2d->SetLength(rightEncoder.GetPosition());
 }
 
-bool ClimberSubsystem::IsAtHeight() {
-  if (units::math::abs(GetClimberHeight() - currentSetpoint) <
-      constants::climber::CLIMBER_TOLERANCE) {
+void ClimberSubsystem::SimulationPeriodic() {
+  leftElevatorSim.SetInput(
+      frc::Vectord<1>{leftClimberMotor.GetAppliedOutput() *
+                      frc::RobotController::GetInputVoltage()});
+
+  leftElevatorSim.Update(20_ms);
+
+  rightElevatorSim.SetInput(
+      frc::Vectord<1>{rightClimberMotor.GetAppliedOutput() *
+                      frc::RobotController::GetInputVoltage()});
+
+  leftElevatorSim.Update(20_ms);
+  rightElevatorSim.Update(20_ms);
+
+  // update sim encoders here
+  leftPos.Set(leftElevatorSim.GetPosition().value());
+  rightPos.Set(rightElevatorSim.GetPosition().value());
+}
+
+units::meter_t ClimberSubsystem::GetLeftClimberHeight() {
+  return units::meter_t{leftEncoder.GetPosition()};
+}
+
+units::meter_t ClimberSubsystem::GetRightClimberHeight() {
+  return units::meter_t{rightEncoder.GetPosition()};
+}
+
+bool ClimberSubsystem::AreBothAtHeight() {
+  if ((units::math::abs(GetLeftClimberHeight() - m_goal.position) <
+       constants::climber::CLIMBER_TOLERANCE) &&
+      (units::math::abs(GetRightClimberHeight() - m_goal.position) <
+       constants::climber::CLIMBER_TOLERANCE)) {
     return true;
   } else {
     return false;
@@ -47,43 +99,56 @@ bool ClimberSubsystem::IsAtHeight() {
 }
 
 void ClimberSubsystem::SetClimbHeight(units::meter_t newSetpoint) {
-  currentSetpoint = newSetpoint;
-  m_pidController.SetReference(currentSetpoint.value(),
-                               rev::ControlType::kPosition, 0, 0,
-                               rev::CANPIDController::ArbFFUnits::kVoltage);
+  m_goal.position = newSetpoint;
+  m_goal.velocity = 0_mps;
+
+  leftPIDController.SetReference(
+      leftSetpoint.position.value(), rev::ControlType::kPosition, 0,
+      ffResultLeft.value(), rev::CANPIDController::ArbFFUnits::kVoltage);
+  rightPIDController.SetReference(
+      rightSetpoint.position.value(), rev::ControlType::kPosition, 0,
+      ffResultRight.value(), rev::CANPIDController::ArbFFUnits::kVoltage);
 }
 
 void ClimberSubsystem::InitSendable(wpi::SendableBuilder& builder) {
   frc2::SubsystemBase::InitSendable(builder);
   builder.AddDoubleProperty(
       "Height Goal (Inches)",
-      [this] { return currentSetpoint.convert<units::inches>().value(); },
+      [this] { return m_goal.position.convert<units::inches>().value(); },
       [this](double newGoalInches) {
         SetClimbHeight(units::inch_t{newGoalInches});
       });
   builder.AddDoubleProperty(
-      "Height Position (Inches)",
-      [this] { return GetClimberHeight().convert<units::inches>().value(); },
+      "Left Height Position (Inches)",
+      [this] {
+        return GetLeftClimberHeight().convert<units::inches>().value();
+      },
+      nullptr);
+  builder.AddDoubleProperty(
+      "Right Height Position (Inches)",
+      [this] {
+        return GetRightClimberHeight().convert<units::inches>().value();
+      },
       nullptr);
   builder.AddDoubleProperty(
       "kP", [this] { return currentGains.kP.to<double>(); },
       [this](double newKp) {
         constants::climber::ClimberGains newGains = GetGains();
-        newGains.kP = units::radian_volt_kp_unit_t{newKp};
+        newGains.kP = units::meter_volt_kp_unit_t{newKp};
         SetGains(newGains);
       });
   builder.AddDoubleProperty(
       "kI", [this] { return currentGains.kI.to<double>(); },
       [this](double newKi) {
         constants::climber::ClimberGains newGains = GetGains();
-        newGains.kI = units::radian_volt_ki_unit_t{newKi};
+        newGains.kI = units::meter_volt_ki_unit_t{newKi};
         SetGains(newGains);
       });
   builder.AddDoubleProperty(
       "kD", [this] { return currentGains.kD.to<double>(); },
       [this](double newKd) {
         constants::climber::ClimberGains newGains = GetGains();
-        newGains.kD = units::radian_volt_kd_unit_t{newKd};
+        newGains.kD = units::meter_volt_kd_unit_t{newKd};
         SetGains(newGains);
       });
   builder.AddDoubleProperty(
@@ -119,11 +184,16 @@ void ClimberSubsystem::InitSendable(wpi::SendableBuilder& builder) {
 void ClimberSubsystem::SetGains(
     const constants::climber::ClimberGains newGains) {
   currentGains = newGains;
-  // pivotFeedfoward = frc::ArmFeedforward{newGains.kS, newGains.kG,
-  // newGains.kV, newGains.kA};
-  m_pidController.SetP(newGains.kP.value());
-  m_pidController.SetP(newGains.kI.value());
-  m_pidController.SetP(newGains.kD.value());
+  ffLeft = std::make_unique<frc::ElevatorFeedforward>(newGains.kS, newGains.kG,
+                                                      newGains.kV, newGains.kA);
+  ffRight = std::make_unique<frc::ElevatorFeedforward>(
+      newGains.kS, newGains.kG, newGains.kV, newGains.kA);
+  leftPIDController.SetP(newGains.kP.value());
+  leftPIDController.SetP(newGains.kI.value());
+  leftPIDController.SetP(newGains.kD.value());
+  rightPIDController.SetP(newGains.kP.value());
+  rightPIDController.SetP(newGains.kI.value());
+  rightPIDController.SetP(newGains.kD.value());
 }
 
 constants::climber::ClimberGains ClimberSubsystem::GetGains() {

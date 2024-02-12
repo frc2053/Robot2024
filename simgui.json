@@ -14,6 +14,21 @@
         "header": {
           "open": true
         }
+      },
+      "SPARK MAX [20]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [22]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [23]": {
+        "header": {
+          "open": true
+        }
       }
     }
   },
@@ -21,6 +36,8 @@
     "types": {
       "/FMSInfo": "FMSInfo",
       "/SmartDashboard/Auto Chooser": "String Chooser",
+      "/SmartDashboard/Climber/ElevatorMech2d": "Mechanism2d",
+      "/SmartDashboard/ClimberTelemetry": "Subsystem",
       "/SmartDashboard/Drivebase/CharacterizeDriveMotorsCmd": "Command",
       "/SmartDashboard/Drivebase/CharacterizeSteerMotorsCmd": "Command",
       "/SmartDashboard/Drivebase/DonePathTuningCmd": "Command",
@@ -42,6 +59,11 @@
     },
     "windows": {
       "/SmartDashboard/Auto Chooser": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/Climber/ElevatorMech2d": {
         "window": {
           "visible": true
         }
@@ -155,8 +177,7 @@
       "photonvision": {
         "apriltagcam": {
           "open": true
-        },
-        "open": true
+        }
       }
     }
   },

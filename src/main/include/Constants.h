@@ -23,20 +23,21 @@
 namespace constants {
 
 namespace climber {
-inline constexpr int MAIN_CLIMBER_CAN_ID = 22;
-inline constexpr int FOLLOW_CLIMBER_CAN_ID = 23;
+inline constexpr int LEFT_CLIMBER_CAN_ID = 22;
+inline constexpr int RIGHT_CLIMBER_CAN_ID = 23;
 inline constexpr units::scalar_t CLIMBER_RATIO = 9.0 / 1.0;
 inline constexpr units::meter_t CLIMBER_SPOOL_RADIUS = 1.75_in;
-inline constexpr units::meter_t CLIMBER_TOLERANCE = 1_in;
+inline constexpr units::meter_t CLIMBER_TOLERANCE = .25_in;
+inline constexpr units::kilogram_t CLIMBER_MASS = 2_lb;
 
 struct ClimberGains {
   units::unit_t<frc::ElevatorFeedforward::ka_unit> kA{0};
   units::unit_t<frc::ElevatorFeedforward::kv_unit> kV{0};
   units::volt_t kS{0};
   units::volt_t kG{0};
-  units::radian_volt_kp_unit_t kP{0};
-  units::radian_volt_ki_unit_t kI{0};
-  units::radian_volt_kd_unit_t kD{0};
+  units::meter_volt_kp_unit_t kP{0};
+  units::meter_volt_ki_unit_t kI{0};
+  units::meter_volt_kd_unit_t kD{0};
 
   bool operator==(const ClimberGains& rhs) const {
     return units::essentiallyEqual(kA, rhs.kA, 1e-6) &&
@@ -51,13 +52,13 @@ struct ClimberGains {
 };
 
 inline constexpr ClimberGains GAINS{
-    units::unit_t<frc::ElevatorFeedforward::ka_unit>{0},
-    units::unit_t<frc::ElevatorFeedforward::kv_unit>{0},
+    units::unit_t<frc::ElevatorFeedforward::ka_unit>{0.01},
+    units::unit_t<frc::ElevatorFeedforward::kv_unit>{0.1},
     units::volt_t{0},
-    units::volt_t{0},
-    units::radian_volt_kp_unit_t{0.0},
-    units::radian_volt_ki_unit_t{0.0},
-    units::radian_volt_kd_unit_t{0.0}};
+    units::volt_t{0.5},
+    units::meter_volt_kp_unit_t{10.0},
+    units::meter_volt_ki_unit_t{0},
+    units::meter_volt_kd_unit_t{0.0}};
 
 }  // namespace climber
 
