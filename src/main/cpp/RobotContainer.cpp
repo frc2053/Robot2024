@@ -13,22 +13,23 @@ RobotContainer::RobotContainer() {
 }
 
 void RobotContainer::ConfigureBindings() {
-  operatorController.A().WhileTrue(shooterSub.GoToSpeedCmd([this] {
+  operatorController.X().WhileTrue(shooterSub.GoToSpeedCmd([this] {
     return frc::ApplyDeadband<double>(operatorController.GetLeftY(), 0.2);
   }));
 
-  operatorController.B().WhileTrue(IntakeNote());
+  operatorController.RightTrigger().WhileTrue(intakeSub.SuckInNotes());
+  operatorController.LeftTrigger().WhileTrue(IntakeNote());
 
-  operatorController.X().WhileTrue(intakeSub.SpitOutNotes());
+  operatorController.Back().WhileTrue(intakeSub.SpitOutNotes());
 
-  operatorController.Y().WhileTrue(dunkSub.PivotDunkNotesOut());
-  operatorController.Y().OnFalse(dunkSub.PivotDunkNotesIn());
+  operatorController.Y().WhileTrue(
+      DunkNote().AlongWith(shooterSub.GoToVelocityCmd(
+          [] { return constants::shooter::SHOOTER_DUNK_SPEED; })));
+  operatorController.Y().OnFalse(
+      StopDunk().AlongWith(shooterSub.GoToVelocityCmd([] { return 0_rpm; })));
 
-  // operatorController.RightBumper().WhileTrue(dunkSub.DunkTheNotes());
-  operatorController.LeftBumper().WhileTrue(dunkSub.JammedDunkNotes());
-
-  operatorController.RightBumper().WhileTrue(DunkNote());
-  operatorController.RightBumper().OnFalse(StopDunk());
+  operatorController.A().WhileTrue(SpinUpShooter());
+  operatorController.A().OnFalse(NotUsingShooter());
 
   driverController.RightBumper().WhileTrue(
       frc2::cmd::Defer(GetAStarCmd(), {&driveSub})
@@ -152,13 +153,16 @@ frc2::CommandPtr RobotContainer::IntakeNote() {
                              intakeSub.SuckInUntilNoteIsSeen(),
                              ledSub.SetBothToSolidOrange(), RumbleDriver());
 }
+
 frc2::CommandPtr RobotContainer::DunkNote() {
   return frc2::cmd::Sequence(dunkSub.PivotDunkNotesOut(),
                              dunkSub.DunkTheNotes());
 }
+
 frc2::CommandPtr RobotContainer::StopDunk() {
   return frc2::cmd::Sequence(dunkSub.StopDunking(), dunkSub.PivotDunkNotesIn());
 }
+
 frc2::CommandPtr RobotContainer::RumbleDriver() {
   return frc2::cmd::Sequence(
              frc2::cmd::RunOnce([this] {
