@@ -43,7 +43,7 @@ class Vision {
 
       cameraProp = std::make_unique<photon::SimCameraProperties>();
 
-      cameraProp->SetCalibration(960, 720, frc::Rotation2d{90_deg});
+      cameraProp->SetCalibration(1600, 1200, frc::Rotation2d{90_deg});
       cameraProp->SetCalibError(.35, .10);
       cameraProp->SetFPS(45_Hz);
       cameraProp->SetAvgLatency(20_ms);
