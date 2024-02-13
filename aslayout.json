@@ -1,10 +1,10 @@
 {
   "hubs": [
     {
-      "x": -8,
-      "y": -8,
-      "width": 1936,
-      "height": 1048,
+      "x": -2568,
+      "y": -190,
+      "width": 2576,
+      "height": 1408,
       "state": {
         "sidebar": {
           "width": 300,
@@ -13,13 +13,13 @@
             "/SmartDashboard/VisionSystemSim-main/Sim Field",
             "/SmartDashboard/Intake",
             "/SmartDashboard/Intake/NoteSensor",
-            "/SmartDashboard/Field",
+            "/CameraPublisher/apriltagcam-raw",
             "/SmartDashboard",
-            "/CameraPublisher/apriltagcam-raw"
+            "/SmartDashboard/Drivebase"
           ]
         },
         "tabs": {
-          "selected": 11,
+          "selected": 7,
           "tabs": [
             {
               "type": 0,
@@ -160,32 +160,32 @@
                     },
                     {
                       "key": "NT:/SmartDashboard/Drivebase/Module 1/Drive Velocity FPS",
-                      "color": "#e48b32",
+                      "color": "#af2437",
                       "show": true
                     },
                     {
                       "key": "NT:/SmartDashboard/Drivebase/Module 1/Drive Velocity Target FPS",
-                      "color": "#aacaee",
+                      "color": "#80588e",
                       "show": true
                     },
                     {
                       "key": "NT:/SmartDashboard/Drivebase/Module 2/Drive Velocity FPS",
-                      "color": "#3b875a",
+                      "color": "#e48b32",
                       "show": true
                     },
                     {
                       "key": "NT:/SmartDashboard/Drivebase/Module 2/Drive Velocity Target FPS",
-                      "color": "#d993aa",
+                      "color": "#aacaee",
                       "show": true
                     },
                     {
                       "key": "NT:/SmartDashboard/Drivebase/Module 3/Drive Velocity FPS",
-                      "color": "#a64b6b",
+                      "color": "#c0b487",
                       "show": true
                     },
                     {
                       "key": "NT:/SmartDashboard/Drivebase/Module 3/Drive Velocity Target FPS",
-                      "color": "#dbd345",
+                      "color": "#858584",
                       "show": true
                     }
                   ]
@@ -202,32 +202,32 @@
                   "fields": [
                     {
                       "key": "NT:/SmartDashboard/Drivebase/Module 0/Steer Degrees",
-                      "color": "#af2437",
+                      "color": "#3b875a",
                       "show": true
                     },
                     {
                       "key": "NT:/SmartDashboard/Drivebase/Module 0/Steer Target Degrees",
-                      "color": "#80588e",
+                      "color": "#d993aa",
                       "show": true
                     },
                     {
                       "key": "NT:/SmartDashboard/Drivebase/Module 1/Steer Degrees",
-                      "color": "#c0b487",
-                      "show": true
-                    },
-                    {
-                      "key": "NT:/SmartDashboard/Drivebase/Module 1/Steer Target Degrees",
-                      "color": "#858584",
-                      "show": true
-                    },
-                    {
-                      "key": "NT:/SmartDashboard/Drivebase/Module 2/Steer Degrees",
                       "color": "#eb987e",
                       "show": true
                     },
                     {
-                      "key": "NT:/SmartDashboard/Drivebase/Module 2/Steer Target Degrees",
+                      "key": "NT:/SmartDashboard/Drivebase/Module 1/Steer Target Degrees",
                       "color": "#5d4f92",
+                      "show": true
+                    },
+                    {
+                      "key": "NT:/SmartDashboard/Drivebase/Module 2/Steer Degrees",
+                      "color": "#a64b6b",
+                      "show": true
+                    },
+                    {
+                      "key": "NT:/SmartDashboard/Drivebase/Module 2/Steer Target Degrees",
+                      "color": "#dbd345",
                       "show": true
                     },
                     {
@@ -267,8 +267,16 @@
               "type": 9,
               "uuid": "gw8j76e7tn813nywpwwurzry6iorhh14",
               "fields": [
-                null,
-                null,
+                {
+                  "key": "NT:/SmartDashboard/Drivebase/SwerveCurrentAScope",
+                  "sourceTypeIndex": 0,
+                  "sourceType": 5
+                },
+                {
+                  "key": "NT:/SmartDashboard/Drivebase/SwerveDesiredAScope",
+                  "sourceTypeIndex": 0,
+                  "sourceType": 5
+                },
                 {
                   "key": "NT:/SmartDashboard/Field/Estimated Robot Pose/2",
                   "sourceTypeIndex": 0,
@@ -308,11 +316,6 @@
               "configHidden": false,
               "visualizer": null,
               "title": "Joysticks"
-            },
-            {
-              "type": 2,
-              "fields": [],
-              "title": "Table"
             },
             {
               "type": 4,
@@ -426,14 +429,14 @@
                 "cameraIndex": -1,
                 "orbitFov": 50,
                 "cameraPosition": [
-                  -6.044493176725459,
-                  3.0632243713161,
-                  -6.658567671210795
+                  -7.277811707918161,
+                  2.39723464885489,
+                  -2.8119670153973555
                 ],
                 "cameraTarget": [
-                  -5.659721859353401,
-                  -0.037700320768246726,
-                  -0.24644598035211374
+                  -6.623187487531605,
+                  0.8215068498716573,
+                  0.21936337507812353
                 ]
               },
               "title": "3D Field"

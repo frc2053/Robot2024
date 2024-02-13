@@ -129,6 +129,19 @@ void SwerveDrive::SetModuleStates(
   frc::SwerveDriveKinematics<4>::DesaturateWheelSpeeds(
       static_cast<wpi::array<frc::SwerveModuleState, 4>*>(&desaturatedStates),
       maxSpeed);
+
+  std::array<double, 8> advantageScopeSwerveView{
+      desaturatedStates[0].angle.Degrees().value(),
+      desaturatedStates[0].speed.value(),
+      desaturatedStates[1].angle.Degrees().value(),
+      desaturatedStates[1].speed.value(),
+      desaturatedStates[2].angle.Degrees().value(),
+      desaturatedStates[2].speed.value(),
+      desaturatedStates[3].angle.Degrees().value(),
+      desaturatedStates[3].speed.value()};
+  frc::SmartDashboard::PutNumberArray("Drivebase/SwerveDesiredAScope",
+                                      advantageScopeSwerveView);
+
   for (size_t i = 0; i < swerveModules.size(); i++) {
     swerveModules[i].GoToState(desaturatedStates[i], openLoop, optimize);
   }
@@ -153,9 +166,19 @@ void SwerveDrive::Log() {
   ntField.GetObject("Estimated Robot Pose")->SetPose(GetPose());
   ntField.GetObject("Estimated Robot Modules")->SetPoses(GetModulePoses());
 
+  std::array<frc::SwerveModuleState, 4> moduleStates;
+
   for (size_t i = 0; i < swerveModules.size(); i++) {
-    swerveModules[i].Log(i);
+    moduleStates[i] = swerveModules[i].GetState();
   }
+
+  std::array<double, 8> advantageScopeSwerveView{
+      moduleStates[0].angle.Degrees().value(), moduleStates[0].speed.value(),
+      moduleStates[1].angle.Degrees().value(), moduleStates[1].speed.value(),
+      moduleStates[2].angle.Degrees().value(), moduleStates[2].speed.value(),
+      moduleStates[3].angle.Degrees().value(), moduleStates[3].speed.value()};
+  frc::SmartDashboard::PutNumberArray("Drivebase/SwerveCurrentAScope",
+                                      advantageScopeSwerveView);
 }
 
 void SwerveDrive::SimulationUpdate() {
