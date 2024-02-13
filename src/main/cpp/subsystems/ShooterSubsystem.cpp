@@ -102,14 +102,12 @@ units::radians_per_second_t ShooterSubsystem::GetRightShooterCurrentVelocity() {
 }
 
 bool ShooterSubsystem::IsShooterUpToSpeed() {
-  fmt::print("setpoint shooter: {}\n", currentVelocitySetpoint);
   bool upToSpeed = (units::math::abs(currentVelocitySetpoint -
                                      GetLeftShooterCurrentVelocity()) <
                     constants::shooter::SHOOTER_TOLERANCE) &&
                    (units::math::abs(currentVelocitySetpoint -
                                      GetRightShooterCurrentVelocity()) <
                     constants::shooter::SHOOTER_TOLERANCE);
-  fmt::print("Is up to speed: {}\n", upToSpeed);
   return upToSpeed;
 }
 

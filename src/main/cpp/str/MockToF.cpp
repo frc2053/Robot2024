@@ -9,9 +9,7 @@
 
 #include <iostream>
 
-MockToF::MockToF(int port) : portNum(port) {
-  frc::SmartDashboard::PutData("Intake/NoteSensor", this);
-}
+MockToF::MockToF(int port) : portNum(port) {}
 
 void MockToF::IdentifySensor() {
   std::cout << "I AM TOF SENSOR " << portNum << "\n";

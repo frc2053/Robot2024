@@ -14,12 +14,11 @@
             "/SmartDashboard/Intake",
             "/SmartDashboard/Intake/NoteSensor",
             "/CameraPublisher/apriltagcam-raw",
-            "/SmartDashboard",
-            "/SmartDashboard/Drivebase"
+            "/SmartDashboard"
           ]
         },
         "tabs": {
-          "selected": 7,
+          "selected": 3,
           "tabs": [
             {
               "type": 0,
@@ -77,7 +76,7 @@
                   },
                   "fields": [
                     {
-                      "key": "NT:/SmartDashboard/Intake/NoteSensor/Distance",
+                      "key": "NT:/SmartDashboard/Intake/Motor Speed",
                       "color": "#2b66a2",
                       "show": true
                     }
@@ -92,7 +91,13 @@
                     "type": null,
                     "factor": 1
                   },
-                  "fields": []
+                  "fields": [
+                    {
+                      "key": "NT:/SmartDashboard/Intake/Sensor Distance",
+                      "color": "#e5b31b",
+                      "show": true
+                    }
+                  ]
                 }
               },
               "title": "IntakeSensor"

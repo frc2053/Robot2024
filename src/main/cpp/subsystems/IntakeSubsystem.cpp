@@ -5,6 +5,7 @@
 #include "subsystems/IntakeSubsystem.h"
 
 #include <frc/RobotBase.h>
+#include <frc/smartdashboard/SmartDashboard.h>
 
 IntakeSubsystem::IntakeSubsystem() {
   ConfigureMotors();
@@ -13,7 +14,13 @@ IntakeSubsystem::IntakeSubsystem() {
 }
 
 // This method will be called once per scheduler run
-void IntakeSubsystem::Periodic() {}
+void IntakeSubsystem::Periodic() {
+  frc::SmartDashboard::PutNumber("Intake/Sensor Distance",
+                                 units::millimeter_t{intakeSensor.GetRange()}
+                                     .convert<units::inches>()
+                                     .value());
+  frc::SmartDashboard::PutNumber("Intake/Motor Speed", intakeMotor.Get());
+}
 
 void IntakeSubsystem::ConfigureMotors() {
   ctre::phoenix6::configs::TalonFXConfiguration mainConfig;
