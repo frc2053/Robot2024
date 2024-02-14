@@ -182,3 +182,15 @@ frc2::CommandPtr LedSubsystem::SetBothToBlinkOrange() {
       SetSectionToColor([] { return 1; }, [] { return 0.98; },
                         [] { return .46; }, [] { return 0.011; }));
 }
+
+frc2::CommandPtr LedSubsystem::SetBothToRainbow() {
+  return frc2::cmd::Sequence(SetSectionToRainbow([] { return 0; }),
+                             SetSectionToRainbow([] { return 1; }));
+}
+
+frc2::CommandPtr LedSubsystem::SetBothToTach(
+    std::function<double()> currentSpeed, std::function<double()> setpoint) {
+  return frc2::cmd::Sequence(
+      SetSectionToTachometer([] { return 0; }, currentSpeed, setpoint),
+      SetSectionToTachometer([] { return 1; }, currentSpeed, setpoint));
+}

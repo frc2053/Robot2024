@@ -147,11 +147,13 @@ frc2::CommandPtr RobotContainer::SpinUpShooterBasedOnDist(
 }
 
 frc2::CommandPtr RobotContainer::SpinUpShooter() {
-  return frc2::cmd::Sequence(ledSub.SetBothToBlinkRed(),
-                             shooterSub.GoToVelocityCmd([] {
-                               return constants::shooter::SHOOTER_SPEED;
-                             }),
-                             ledSub.SetBothToSolidGreen(), RumbleOperator());
+  return frc2::cmd::Sequence(
+      ledSub.SetBothToTach(
+          [this] { return shooterSub.GetLeftShooterCurrentVelocity().value(); },
+          [] { return constants::shooter::SHOOTER_SPEED.value(); }),
+      shooterSub.GoToVelocityCmd(
+          [] { return constants::shooter::SHOOTER_SPEED; }),
+      ledSub.SetBothToSolidGreen(), RumbleOperator());
 }
 
 frc2::CommandPtr RobotContainer::NotUsingShooter() {

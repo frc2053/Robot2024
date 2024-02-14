@@ -50,6 +50,9 @@ class LedSubsystem : public frc2::SubsystemBase {
   frc2::CommandPtr SetBothToSolidOrange();
   frc2::CommandPtr SetBothToBlinkOrange();
   frc2::CommandPtr SetBothToOff();
+  frc2::CommandPtr SetBothToRainbow();
+  frc2::CommandPtr SetBothToTach(std::function<double()> currentSpeed,
+                                 std::function<double()> setpoint);
 
  private:
   LedStrip ledStrip{};
