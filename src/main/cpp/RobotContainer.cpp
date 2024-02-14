@@ -57,7 +57,7 @@ void RobotContainer::ConfigureBindings() {
   driveSub.SetDefaultCommand(driveSub.DriveFactory(
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
       DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
-      DeadbandAndSquare([this] { return -driverController.GetRightX(); })));
+      DeadbandAndSquare([this] { return driverController.GetRightX(); })));
 
   driverController.Y().OnTrue(driveSub.TurnToAngleFactory(
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),

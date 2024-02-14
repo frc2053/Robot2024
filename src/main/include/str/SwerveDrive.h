@@ -90,7 +90,7 @@ class SwerveDrive {
       SwerveModule{SwerveModuleConstants{
           constants::swerve::can::FL_DRIVE, constants::swerve::can::FL_STEER,
           constants::swerve::can::FL_ENC,
-          constants::swerve::physical::FL_ENCODER_OFFSET, true, false}},
+          constants::swerve::physical::FL_ENCODER_OFFSET, false, false}},
       SwerveModule{SwerveModuleConstants{
           constants::swerve::can::FR_DRIVE, constants::swerve::can::FR_STEER,
           constants::swerve::can::FR_ENC,
@@ -98,7 +98,7 @@ class SwerveDrive {
       SwerveModule{SwerveModuleConstants{
           constants::swerve::can::BL_DRIVE, constants::swerve::can::BL_STEER,
           constants::swerve::can::BL_ENC,
-          constants::swerve::physical::BL_ENCODER_OFFSET, true, false}},
+          constants::swerve::physical::BL_ENCODER_OFFSET, false, false}},
       SwerveModule{SwerveModuleConstants{
           constants::swerve::can::BR_DRIVE, constants::swerve::can::BR_STEER,
           constants::swerve::can::BR_ENC,

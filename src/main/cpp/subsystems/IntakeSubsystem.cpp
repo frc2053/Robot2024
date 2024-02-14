@@ -36,13 +36,13 @@ frc2::CommandPtr IntakeSubsystem::SuckInNotes() {
                            [this] { SetIntakeSpeed(0); }, {this})
       .BeforeStarting(
           [this] {
-            if (frc::RobotBase::IsSimulation()) {
-              if (SeesNote()) {
-                intakeSensor.SetDistance(12_in);
-              } else {
-                intakeSensor.SetDistance(0_in);
-              }
+#ifndef __FRC_ROBORIO__
+            if (SeesNote()) {
+              intakeSensor.SetDistance(12_in);
+            } else {
+              intakeSensor.SetDistance(0_in);
             }
+#endif
           },
           {this});
 }

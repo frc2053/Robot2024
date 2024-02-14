@@ -67,6 +67,12 @@ SwerveDrive::SwerveDrive() {
   for (int i = 0; i < 4; i++) {
     swerveModules[i].OptimizeBusSignals();
   }
+
+  ctre::phoenix6::configs::Pigeon2Configuration imuConfig;
+  imuConfig.MountPose.MountPosePitch = 0;
+  imuConfig.MountPose.MountPoseRoll = 0;
+  imuConfig.MountPose.MountPoseYaw = 0;
+  imu.GetConfigurator().Apply(imuConfig);
 }
 
 void SwerveDrive::Drive(units::meters_per_second_t vx,
