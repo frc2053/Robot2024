@@ -33,6 +33,8 @@ class RobotContainer {
   IntakeSubsystem& GetIntakeSubsystem();
   Vision& GetVisionSystem();
 
+  void OpControllerPeriodic() { opControllerLoop.Poll(); }
+
  private:
   void ConfigureBindings();
   frc2::CommandXboxController driverController{0};
@@ -49,6 +51,8 @@ class RobotContainer {
   Vision vision;
 
   autos::Autos autos{driveSub, shooterSub, intakeSub};
+
+  frc::EventLoop opControllerLoop{};
 
   frc2::CommandPtr selfTestCmd = driveSub.SelfTest();
   frc2::CommandPtr measureWheelCmd = driveSub.MeasureWheelDiam([] {
