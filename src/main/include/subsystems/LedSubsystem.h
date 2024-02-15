@@ -29,7 +29,10 @@ class LedSubsystem : public frc2::SubsystemBase {
                                     std::function<double()> b);
   frc2::CommandPtr SetSectionToTachometer(std::function<int()> section,
                                           std::function<double()> speed,
-                                          std::function<double()> maxSpeed);
+                                          std::function<double()> maxSpeed,
+                                          frc::Color8Bit bottomColor,
+                                          frc::Color8Bit topColor,
+                                          bool reverse);
   frc2::CommandPtr SetSectionToKnightRider(std::function<int()> section,
                                            std::function<double()> r,
                                            std::function<double()> g,

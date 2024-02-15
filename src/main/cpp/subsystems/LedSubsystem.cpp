@@ -65,12 +65,14 @@ frc2::CommandPtr LedSubsystem::SetSectionToFade(std::function<int()> section,
 
 frc2::CommandPtr LedSubsystem::SetSectionToTachometer(
     std::function<int()> section, std::function<double()> speed,
-    std::function<double()> maxSpeed) {
+    std::function<double()> maxSpeed, frc::Color8Bit bottomColor,
+    frc::Color8Bit topColor, bool reverse) {
   return frc2::cmd::RunOnce(
-      [this, section, speed, maxSpeed] {
+      [this, section, speed, maxSpeed, bottomColor, topColor, reverse] {
         std::unique_ptr<LedPattern> pattern =
             std::make_unique<TachometerPattern>(TachometerPattern(
-                speed, maxSpeed(), ledStrip.GetSection(section()).GetLength()));
+                speed, maxSpeed(), ledStrip.GetSection(section()).GetLength(),
+                bottomColor, topColor, reverse));
         ledStrip.GetSection(section()).SetPattern(std::move(pattern));
       },
       {this});
@@ -190,6 +192,10 @@ frc2::CommandPtr LedSubsystem::SetBothToRainbow() {
 frc2::CommandPtr LedSubsystem::SetBothToTach(
     std::function<double()> currentSpeed, std::function<double()> setpoint) {
   return frc2::cmd::Sequence(
-      SetSectionToTachometer([] { return 0; }, currentSpeed, setpoint),
-      SetSectionToTachometer([] { return 1; }, currentSpeed, setpoint));
+      SetSectionToTachometer([] { return 0; }, currentSpeed, setpoint,
+                             frc::Color8Bit{255, 0, 0},
+                             frc::Color8Bit{0, 255, 0}, false),
+      SetSectionToTachometer([] { return 1; }, currentSpeed, setpoint,
+                             frc::Color8Bit{255, 0, 0},
+                             frc::Color8Bit{0, 255, 0}, true));
 }

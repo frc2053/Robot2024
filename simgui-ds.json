@@ -12,7 +12,8 @@
           "incKey": 68
         },
         {
-          "incKey": 83
+          "decKey": 78,
+          "incKey": 77
         },
         {
           "decayRate": 0.0,
@@ -38,7 +39,7 @@
         {
           "key0": 328,
           "key135": 323,
-          "key180": 322,
+          "key180": 39,
           "key225": 321,
           "key270": 324,
           "key315": 327,
@@ -60,7 +61,7 @@
       "axisCount": 2,
       "buttonCount": 4,
       "buttonKeys": [
-        77,
+        -1,
         44,
         46,
         47

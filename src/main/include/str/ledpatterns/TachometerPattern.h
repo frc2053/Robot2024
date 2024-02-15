@@ -14,36 +14,47 @@
 class TachometerPattern : public LedPattern {
  public:
   TachometerPattern(std::function<double()> speed, double maxSpeed,
-                    int sectionLength)
-      : LedPattern(sectionLength), speedMulti(speed), maxSpeedScale(maxSpeed) {
-    int idx = sectionLength + ((0.0 - sectionLength) / (maxSpeedScale - 0)) *
-                                  (speedMulti() - 0);
-    std::vector<frc::AddressableLED::LEDData> gradient;
-    for (size_t i = 0; i < buffer.size(); i++) {
-      int hue = 80 + ((0 - 80) / (sectionLength - 0)) * (i - 0);
-      frc::AddressableLED::LEDData rgb;
-      rgb.SetHSV(hue, 255, 255);
-      gradient.push_back(rgb);
-    }
-    std::copy(gradient.begin(), gradient.end() - idx, buffer.begin());
+                    int sectionLength, frc::Color8Bit bottomColor,
+                    frc::Color8Bit topColor, bool reverse)
+      : LedPattern(sectionLength),
+        currentSpeed(speed),
+        maxSpeed(maxSpeed),
+        bottomColor(bottomColor),
+        topColor(topColor),
+        reverse(reverse) {
+    slopeRedLine =
+        (topColor.red - bottomColor.red) / static_cast<double>(sectionLength);
+    slopeGreenLine = (topColor.green - bottomColor.green) /
+                     static_cast<double>(sectionLength);
+    slopeBlueLine =
+        (topColor.blue - bottomColor.blue) / static_cast<double>(sectionLength);
+
+    std::fill(buffer.begin(), buffer.end(),
+              frc::AddressableLED::LEDData(0.0, 0, 0.0));
   }
   ~TachometerPattern() {}
   const std::vector<frc::AddressableLED::LEDData>& GetCurrentPattern() {
     return LedPattern::buffer;
   }
   void Periodic() override {
-    int idx = size + ((0.0 - size) / (maxSpeedScale - 0)) * (speedMulti() - 0);
-    std::vector<frc::AddressableLED::LEDData> gradient;
-    for (size_t i = 0; i < buffer.size(); i++) {
-      int hue = 0 + ((80 - 0) / (size - 80)) * (i - 80);
-      frc::AddressableLED::LEDData rgb;
-      rgb.SetHSV(hue, 255, 255);
-      gradient.push_back(rgb);
+    double percentSpeed = currentSpeed() / maxSpeed;
+    int lastIdx = percentSpeed * buffer.size();
+
+    for (size_t i = 0; i < lastIdx; i++) {
+      int idx = reverse ? buffer.size() - i - 1 : i;
+      buffer[idx].SetRGB(slopeRedLine * i + bottomColor.red,
+                         slopeGreenLine * i + bottomColor.green,
+                         slopeBlueLine * i + bottomColor.blue);
     }
-    std::copy(gradient.begin(), gradient.end() - idx, buffer.begin());
   }
 
  private:
-  std::function<double()> speedMulti = 0;
-  double maxSpeedScale = 0;
+  std::function<double()> currentSpeed = 0;
+  frc::Color8Bit bottomColor{255, 0, 0};
+  frc::Color8Bit topColor{0, 255, 0};
+  double slopeRedLine = 0;
+  double slopeGreenLine = 0;
+  double slopeBlueLine = 0;
+  double maxSpeed = 0;
+  bool reverse{false};
 };
