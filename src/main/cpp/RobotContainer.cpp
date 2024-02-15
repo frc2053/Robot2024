@@ -14,13 +14,24 @@ RobotContainer::RobotContainer() {
 
 void RobotContainer::ConfigureBindings() {
   operatorController.X().WhileTrue(shooterSub.GoToSpeedCmd([this] {
-    return frc::ApplyDeadband<double>(operatorController.GetLeftY(), 0.2);
+    return frc::ApplyDeadband<double>(operatorController.GetLeftY(), 0.1);
   }));
 
   operatorController.RightTrigger().WhileTrue(intakeSub.SuckInNotes());
   operatorController.LeftTrigger().WhileTrue(IntakeNote());
 
   operatorController.Back().WhileTrue(intakeSub.SpitOutNotes());
+
+  frc2::Trigger climbManual =
+      operatorController.POVDown(&opControllerLoop).CastTo<frc2::Trigger>();
+
+  climbManual.WhileTrue(climbSub.ManualControl(
+      [this] {
+        return frc::ApplyDeadband<double>(operatorController.GetLeftY(), 0.1);
+      },
+      [this] {
+        return frc::ApplyDeadband<double>(operatorController.GetRightY(), 0.1);
+      }));
 
   operatorController.Y().WhileTrue(
       DunkNote().AlongWith(shooterSub.GoToVelocityCmd(
@@ -46,7 +57,7 @@ void RobotContainer::ConfigureBindings() {
           .AndThen(driveSub.MoveAlongArc(
               [this] {
                 return frc::ApplyDeadband<double>(-driverController.GetLeftX(),
-                                                  .2);
+                                                  .1);
               },
               [this] {
                 return driveSub.CalculateClosestGoodShooterPoint()
@@ -66,7 +77,7 @@ void RobotContainer::ConfigureBindings() {
         return frc::TrapezoidProfile<units::radians>::State{
             ShouldFlipAngleForDriver(0_deg), 0_deg_per_s};
       },
-      [this] { return std::abs(driverController.GetRightX()) > 0.2; }));
+      [this] { return std::abs(driverController.GetRightX()) > 0.1; }));
 
   driverController.X().OnTrue(driveSub.TurnToAngleFactory(
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
@@ -75,7 +86,7 @@ void RobotContainer::ConfigureBindings() {
         return frc::TrapezoidProfile<units::radians>::State{
             ShouldFlipAngleForDriver(90_deg), 0_deg_per_s};
       },
-      [this] { return std::abs(driverController.GetRightX()) > 0.2; }));
+      [this] { return std::abs(driverController.GetRightX()) > 0.1; }));
 
   driverController.B().OnTrue(driveSub.TurnToAngleFactory(
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
@@ -84,7 +95,7 @@ void RobotContainer::ConfigureBindings() {
         return frc::TrapezoidProfile<units::radians>::State{
             ShouldFlipAngleForDriver(-90_deg), 0_deg_per_s};
       },
-      [this] { return std::abs(driverController.GetRightX()) > 0.2; }));
+      [this] { return std::abs(driverController.GetRightX()) > 0.1; }));
 
   driverController.A().OnTrue(driveSub.TurnToAngleFactory(
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
@@ -93,7 +104,7 @@ void RobotContainer::ConfigureBindings() {
         return frc::TrapezoidProfile<units::radians>::State{
             ShouldFlipAngleForDriver(180_deg), 0_deg_per_s};
       },
-      [this] { return std::abs(driverController.GetRightX()) > 0.2; }));
+      [this] { return std::abs(driverController.GetRightX()) > 0.1; }));
 
   frc::SmartDashboard::PutBoolean("Drivebase/DoneWithStep", false);
 
@@ -245,7 +256,7 @@ Vision& RobotContainer::GetVisionSystem() {
 str::DeadbandAndSquareFunc RobotContainer::DeadbandAndSquare(
     std::function<double()> joystickValue) {
   return [joystickValue]() {
-    double deadband = frc::ApplyDeadband<double>(joystickValue(), 0.2);
+    double deadband = frc::ApplyDeadband<double>(joystickValue(), 0.1);
     return std::abs(deadband) * deadband;
   };
 }
