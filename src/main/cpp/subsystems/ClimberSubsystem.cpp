@@ -4,6 +4,8 @@
 
 #include "subsystems/ClimberSubsystem.h"
 
+#include <frc2/command/Commands.h>
+
 #include "frc/smartdashboard/SmartDashboard.h"
 #include "wpi/sendable/SendableBuilder.h"
 
@@ -42,6 +44,20 @@ void ClimberSubsystem::ConfigureMotor() {
   rightPIDController.SetP(currentGains.kP.value());
   rightPIDController.SetI(currentGains.kI.value());
   rightPIDController.SetD(currentGains.kD.value());
+}
+
+frc2::CommandPtr ClimberSubsystem::ManualControl(
+    std::function<double()> left, std::function<double()> right) {
+  return frc2::cmd::RunEnd(
+      [this, left, right] {
+        leftClimberMotor.Set(left());
+        rightClimberMotor.Set(right());
+      },
+      [this] {
+        leftClimberMotor.Set(0);
+        rightClimberMotor.Set(0);
+      },
+      {this});
 }
 
 // This method will be called once per scheduler run

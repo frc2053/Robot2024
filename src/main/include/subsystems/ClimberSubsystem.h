@@ -12,9 +12,11 @@
 #include <frc/smartdashboard/MechanismLigament2d.h>
 #include <frc/smartdashboard/MechanismRoot2d.h>
 #include <frc/trajectory/ExponentialProfile.h>
+#include <frc2/command/CommandPtr.h>
 #include <frc2/command/SubsystemBase.h>
 #include <rev/CANSparkMax.h>
 
+#include <functional>
 #include <memory>
 
 #include "Constants.h"
@@ -29,7 +31,8 @@ class ClimberSubsystem : public frc2::SubsystemBase {
   void SimulationPeriodic() override;
   bool AreBothAtHeight();
   void SetClimbHeight(units::meter_t newSetpoint);
-  void GoDown();
+  frc2::CommandPtr ManualControl(std::function<double()> left,
+                                 std::function<double()> right);
   units::meter_t GetLeftClimberHeight();
   units::meter_t GetRightClimberHeight();
 
