@@ -22,9 +22,6 @@ void RobotContainer::ConfigureBindings() {
 
   operatorController.Back().WhileTrue(intakeSub.SpitOutNotes());
 
-  frc2::Trigger climbManual =
-      operatorController.POVDown(&opControllerLoop).CastTo<frc2::Trigger>();
-
   climbManual.WhileTrue(climbSub.ManualControl(
       [this] {
         return frc::ApplyDeadband<double>(operatorController.GetLeftY(), 0.1);

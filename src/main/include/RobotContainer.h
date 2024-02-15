@@ -54,6 +54,9 @@ class RobotContainer {
 
   frc::EventLoop opControllerLoop{};
 
+  frc2::Trigger climbManual =
+      operatorController.POVDown(&opControllerLoop).CastTo<frc2::Trigger>();
+
   frc2::CommandPtr selfTestCmd = driveSub.SelfTest();
   frc2::CommandPtr measureWheelCmd = driveSub.MeasureWheelDiam([] {
     return frc::SmartDashboard::GetBoolean("Drivebase/DoneWithStep", false);
