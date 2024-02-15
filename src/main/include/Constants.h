@@ -26,7 +26,7 @@ namespace climber {
 inline constexpr int LEFT_CLIMBER_CAN_ID = 22;
 inline constexpr int RIGHT_CLIMBER_CAN_ID = 23;
 inline constexpr units::scalar_t CLIMBER_RATIO = 9.0 / 1.0;
-inline constexpr units::meter_t CLIMBER_SPOOL_RADIUS = 1.75_in;
+inline constexpr units::meter_t CLIMBER_SPOOL_RADIUS = .75_in;
 inline constexpr units::meter_t CLIMBER_TOLERANCE = .25_in;
 inline constexpr units::kilogram_t CLIMBER_MASS = 2_lb;
 

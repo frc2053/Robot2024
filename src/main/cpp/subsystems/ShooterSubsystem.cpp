@@ -138,6 +138,7 @@ void ShooterSubsystem::ConfigureMotors() {
   shooterRightMotor.GetConfigurator().Apply(mainConfig);
 
   // Disable all other signals we dont care about
+  // TODO: Make sure doing 250HZ update rate on rio is OK,
   leftShooterVoltageSignal.SetUpdateFrequency(250_Hz);
   leftShooterPosSignal.SetUpdateFrequency(250_Hz);
   leftShooterVelSignal.SetUpdateFrequency(250_Hz);

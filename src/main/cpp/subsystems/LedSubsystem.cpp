@@ -69,9 +69,8 @@ frc2::CommandPtr LedSubsystem::SetSectionToTachometer(
   return frc2::cmd::RunOnce(
       [this, section, speed, maxSpeed] {
         std::unique_ptr<LedPattern> pattern =
-            std::make_unique<TachometerPattern>(
-                TachometerPattern(speed(), maxSpeed(),
-                                  ledStrip.GetSection(section()).GetLength()));
+            std::make_unique<TachometerPattern>(TachometerPattern(
+                speed, maxSpeed(), ledStrip.GetSection(section()).GetLength()));
         ledStrip.GetSection(section()).SetPattern(std::move(pattern));
       },
       {this});
