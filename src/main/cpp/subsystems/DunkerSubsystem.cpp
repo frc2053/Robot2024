@@ -60,11 +60,12 @@ void DunkerSubsystem::Periodic() {
   pivotVelocity = (currentPivotPos - prevPivotPosition) / 0.02_s;
   prevPivotPosition = currentPivotPos;
 
+  auto ff = pivotFeedforward->Calculate(pivotController.GetSetpoint().position,
+                                        pivotController.GetSetpoint().velocity);
+
   if (!currentlyCharacterizing) {
     dunkPivotMotor.SetVoltage(
-        units::volt_t{pivotController.Calculate(currentPivotPos)} +
-        pivotFeedfoward.Calculate(pivotController.GetSetpoint().position,
-                                  pivotController.GetSetpoint().velocity));
+        units::volt_t{pivotController.Calculate(currentPivotPos)} + ff);
   }
 }
 
@@ -202,8 +203,8 @@ void DunkerSubsystem::InitSendable(wpi::SendableBuilder& builder) {
 
 void DunkerSubsystem::SetGains(const constants::dunker::DunkerGains newGains) {
   currentGains = newGains;
-  // pivotFeedfoward = frc::ArmFeedforward{newGains.kS, newGains.kG,
-  // newGains.kV, newGains.kA};
+  pivotFeedforward = std::make_unique<frc::ArmFeedforward>(
+      newGains.kS, newGains.kG, newGains.kV, newGains.kA);
   pivotController.SetPID(newGains.kP.value(), newGains.kI.value(),
                          newGains.kD.value());
 }

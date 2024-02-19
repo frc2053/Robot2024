@@ -18,6 +18,8 @@
 #include <frc2/command/sysid/SysIdRoutine.h>
 #include <rev/CANSparkMax.h>
 
+#include <memory>
+
 #include <ctre/phoenix6/TalonFX.hpp>
 
 #include "Constants.h"
@@ -56,9 +58,10 @@ class DunkerSubsystem : public frc2::SubsystemBase {
   frc::DigitalInput pivotEncoderPort{constants::dunker::PIVOT_ENCODER_PORT};
   frc::DutyCycle pivotEncoder{pivotEncoderPort};
 
-  frc::ArmFeedforward pivotFeedfoward{
-      constants::dunker::GAINS.kS, constants::dunker::GAINS.kG,
-      constants::dunker::GAINS.kV, constants::dunker::GAINS.kA};
+  std::unique_ptr<frc::ArmFeedforward> pivotFeedforward =
+      std::make_unique<frc::ArmFeedforward>(
+          constants::dunker::GAINS.kS, constants::dunker::GAINS.kG,
+          constants::dunker::GAINS.kV, constants::dunker::GAINS.kA);
   frc::ProfiledPIDController<units::radians> pivotController{
       constants::dunker::GAINS.kP.value(), constants::dunker::GAINS.kI.value(),
       constants::dunker::GAINS.kD.value(),

@@ -205,11 +205,11 @@ void ClimberSubsystem::SetGains(
   ffRight = std::make_unique<frc::ElevatorFeedforward>(
       newGains.kS, newGains.kG, newGains.kV, newGains.kA);
   leftPIDController.SetP(newGains.kP.value());
-  leftPIDController.SetP(newGains.kI.value());
-  leftPIDController.SetP(newGains.kD.value());
+  leftPIDController.SetI(newGains.kI.value());
+  leftPIDController.SetD(newGains.kD.value());
   rightPIDController.SetP(newGains.kP.value());
-  rightPIDController.SetP(newGains.kI.value());
-  rightPIDController.SetP(newGains.kD.value());
+  rightPIDController.SetI(newGains.kI.value());
+  rightPIDController.SetD(newGains.kD.value());
 }
 
 constants::climber::ClimberGains ClimberSubsystem::GetGains() {
