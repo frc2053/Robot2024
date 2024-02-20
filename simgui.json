@@ -65,11 +65,6 @@
           "visible": true
         }
       },
-      "/SmartDashboard/Climber/ElevatorMech2d": {
-        "window": {
-          "visible": true
-        }
-      },
       "/SmartDashboard/Drivebase/TuneSteerCmd": {
         "window": {
           "visible": true
@@ -104,10 +99,7 @@
         "left": 150,
         "right": 2961,
         "top": 79,
-        "width": 16.541748046875,
-        "window": {
-          "visible": true
-        }
+        "width": 16.541748046875
       },
       "/SmartDashboard/VisionSystemSim-main/Sim Field": {
         "apriltag": {
@@ -143,10 +135,12 @@
       },
       "SmartDashboard": {
         "Drivebase": {
-          "open": true,
           "steerGains": {
             "open": true
           }
+        },
+        "Dunker Telemetry": {
+          "open": true
         },
         "Field": {
           "double[]##v_/SmartDashboard/Field/Estimated Robot Pose": {
@@ -156,8 +150,7 @@
         "Intake": {
           "NoteSensor": {
             "open": true
-          },
-          "open": true
+          }
         },
         "VisionSystemSim-main": {
           "Sim Field": {
@@ -166,7 +159,8 @@
             },
             "open": true
           }
-        }
+        },
+        "open": true
       },
       "ascope": {
         "Pose3d##v_/ascope/bottomDunkerPivotPose": {
@@ -571,7 +565,8 @@
         }
       ],
       "window": {
-        "name": "ShooterInfo"
+        "name": "ShooterInfo",
+        "visible": false
       }
     }
   }

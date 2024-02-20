@@ -78,7 +78,7 @@ class ShooterSubsystem : public frc2::SubsystemBase {
 
   constants::shooter::ShooterGains currentGains = constants::shooter::GAINS;
 
-  frc::DCMotor shooterGearbox{frc::DCMotor::Falcon500FOC(1)};
+  frc::DCMotor shooterGearbox{frc::DCMotor::Falcon500(1)};
   frc::sim::DCMotorSim leftShooterSim{shooterGearbox,
                                       constants::shooter::SHOOTER_RATIO,
                                       constants::shooter::SHOOTER_MOI};

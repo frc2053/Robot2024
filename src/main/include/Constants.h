@@ -151,11 +151,10 @@ inline constexpr int RIGHT_SHOOTER_CAN_ID = 18;
 
 inline constexpr ShooterGains GAINS{
     units::unit_t<frc::SimpleMotorFeedforward<units::radians>::ka_unit>{
-        0.028843},
-    units::unit_t<frc::SimpleMotorFeedforward<units::radians>::kv_unit>{
-        0.11788},
-    units::volt_t{0.012179},
-    units::radian_volt_kp_unit_t{0.17882},
+        0.041055},
+    units::unit_t<frc::SimpleMotorFeedforward<units::radians>::kv_unit>{0.1121},
+    units::volt_t{0.029313},
+    units::radian_volt_kp_unit_t{0.19894},
     units::radian_volt_ki_unit_t{0},
     units::radian_volt_kd_unit_t{0}};
 

@@ -138,9 +138,27 @@ void RobotContainer::ConfigureBindings() {
   // testController.B().WhileTrue(
   //     driveSub.SysIdQuasistaticDrive(frc2::sysid::Direction::kReverse));
   // testController.X().WhileTrue(
-  //     driveSub.SysIdQuasistaticDrive(frc2::sysid::Direction::kForward));
+  //     driveSub.SysIdDynamicDrive(frc2::sysid::Direction::kForward));
   // testController.Y().WhileTrue(
-  //     driveSub.SysIdQuasistaticDrive(frc2::sysid::Direction::kReverse));
+  //     driveSub.SysIdDynamicDrive(frc2::sysid::Direction::kReverse));
+
+  // testController.A().WhileTrue(
+  //     shooterSub.SysIdQuasistatic(frc2::sysid::Direction::kForward));
+  // testController.B().WhileTrue(
+  //     shooterSub.SysIdQuasistatic(frc2::sysid::Direction::kReverse));
+  // testController.X().WhileTrue(
+  //     shooterSub.SysIdDynamic(frc2::sysid::Direction::kForward));
+  // testController.Y().WhileTrue(
+  //     shooterSub.SysIdDynamic(frc2::sysid::Direction::kReverse));
+
+  // testController.A().WhileTrue(
+  //     dunkSub.SysIdQuasistatic(frc2::sysid::Direction::kForward));
+  // testController.B().WhileTrue(
+  //     dunkSub.SysIdQuasistatic(frc2::sysid::Direction::kReverse));
+  // testController.X().WhileTrue(
+  //     dunkSub.SysIdDynamic(frc2::sysid::Direction::kForward));
+  // testController.Y().WhileTrue(
+  //     dunkSub.SysIdDynamic(frc2::sysid::Direction::kReverse));
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {
