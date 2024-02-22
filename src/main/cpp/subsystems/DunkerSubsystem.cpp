@@ -12,6 +12,8 @@ DunkerSubsystem::DunkerSubsystem() {
   frc::SmartDashboard::PutData("Dunker Mechanism Vis", &pivotMech);
   pivotController.SetTolerance(constants::dunker::DUNKER_PIVOT_ANGLE_TOLERANCE,
                                constants::dunker::DUNKER_PIVOT_VEL_TOLERANCE);
+
+  SetPivotGoal(22_deg);
 }
 
 frc2::CommandPtr DunkerSubsystem::PivotDunkNotesOut() {
