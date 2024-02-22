@@ -134,7 +134,11 @@ void ShooterSubsystem::ConfigureMotors() {
   mainConfig.Slot0.kA = currentGains.kA.to<double>();
   mainConfig.Slot0.kS = currentGains.kS.to<double>();
 
+  mainConfig.MotorOutput.Inverted = false;
+
   shooterLeftMotor.GetConfigurator().Apply(mainConfig);
+
+  mainConfig.MotorOutput.Inverted = true;
   shooterRightMotor.GetConfigurator().Apply(mainConfig);
 
   // Disable all other signals we dont care about

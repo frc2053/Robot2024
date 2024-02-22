@@ -55,7 +55,9 @@ frc2::CommandPtr DunkerSubsystem::SysIdDynamic(
 }
 
 void DunkerSubsystem::Periodic() {
-  currentPivotPos = ConvertEncoderToAngle(pivotEncoder.GetOutput());
+  double encReading = pivotEncoder.GetOutput();
+  frc::SmartDashboard::PutNumber("Dunker/EncoderPos", encReading);
+  currentPivotPos = ConvertEncoderToAngle(encReading);
 
   pivotVelocity = (currentPivotPos - prevPivotPosition) / 0.02_s;
   prevPivotPosition = currentPivotPos;
@@ -81,6 +83,7 @@ void DunkerSubsystem::ConfigureMotors() {
   dunkPivotMotor.RestoreFactoryDefaults();
   dunkPivotMotor.SetIdleMode(rev::CANSparkBase::IdleMode::kBrake);
   dunkPivotMotor.SetSmartCurrentLimit(40);
+  dunkPivotMotor.SetInverted(true);
   if (dunkPivotMotor.BurnFlash() == rev::REVLibError::kOk) {
     fmt::print("Successfully configured dunk pivot motor!\n");
   } else {

@@ -1,10 +1,10 @@
 {
   "hubs": [
     {
-      "x": -2568,
-      "y": -190,
-      "width": 2576,
-      "height": 1408,
+      "x": 0,
+      "y": 69,
+      "width": 2256,
+      "height": 1435,
       "state": {
         "sidebar": {
           "width": 300,
@@ -31,6 +31,7 @@
             },
             {
               "type": 1,
+              "legendHeight": null,
               "legends": {
                 "left": {
                   "lockedRange": null,
@@ -67,6 +68,7 @@
             },
             {
               "type": 1,
+              "legendHeight": null,
               "legends": {
                 "left": {
                   "lockedRange": null,
@@ -104,6 +106,7 @@
             },
             {
               "type": 1,
+              "legendHeight": null,
               "legends": {
                 "left": {
                   "lockedRange": null,
@@ -145,6 +148,7 @@
             },
             {
               "type": 1,
+              "legendHeight": null,
               "legends": {
                 "left": {
                   "lockedRange": null,
@@ -425,7 +429,7 @@
               "options": {
                 "field": "2024 Field",
                 "alliance": "blue",
-                "robot": "20532024",
+                "robot": "",
                 "unitDistance": "meters",
                 "unitRotation": "degrees"
               },
@@ -514,5 +518,5 @@
     }
   ],
   "satellites": [],
-  "version": "3.1.0"
+  "version": "3.2.0"
 }

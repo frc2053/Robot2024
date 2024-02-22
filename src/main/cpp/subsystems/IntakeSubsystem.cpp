@@ -28,6 +28,8 @@ void IntakeSubsystem::ConfigureMotors() {
   mainConfig.MotorOutput.NeutralMode =
       ctre::phoenix6::signals::NeutralModeValue::Brake;
 
+  mainConfig.MotorOutput.Inverted = true;
+
   intakeMotor.GetConfigurator().Apply(mainConfig);
 }
 

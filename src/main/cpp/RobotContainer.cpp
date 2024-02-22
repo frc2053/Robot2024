@@ -142,14 +142,14 @@ void RobotContainer::ConfigureBindings() {
   // testController.Y().WhileTrue(
   //     driveSub.SysIdDynamicDrive(frc2::sysid::Direction::kReverse));
 
-  // testController.A().WhileTrue(
-  //     shooterSub.SysIdQuasistatic(frc2::sysid::Direction::kForward));
-  // testController.B().WhileTrue(
-  //     shooterSub.SysIdQuasistatic(frc2::sysid::Direction::kReverse));
-  // testController.X().WhileTrue(
-  //     shooterSub.SysIdDynamic(frc2::sysid::Direction::kForward));
-  // testController.Y().WhileTrue(
-  //     shooterSub.SysIdDynamic(frc2::sysid::Direction::kReverse));
+  testController.A().WhileTrue(
+      shooterSub.SysIdQuasistatic(frc2::sysid::Direction::kForward));
+  testController.B().WhileTrue(
+      shooterSub.SysIdQuasistatic(frc2::sysid::Direction::kReverse));
+  testController.X().WhileTrue(
+      shooterSub.SysIdDynamic(frc2::sysid::Direction::kForward));
+  testController.Y().WhileTrue(
+      shooterSub.SysIdDynamic(frc2::sysid::Direction::kReverse));
 
   // testController.A().WhileTrue(
   //     dunkSub.SysIdQuasistatic(frc2::sysid::Direction::kForward));

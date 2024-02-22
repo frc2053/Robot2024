@@ -69,7 +69,7 @@ inline constexpr units::meter_t INTAKE_SENSOR_DISTANCE = 5_in;
 }  // namespace intake
 
 namespace dunker {
-inline constexpr int PIVOT_ENCODER_PORT = 1;
+inline constexpr int PIVOT_ENCODER_PORT = 0;
 inline constexpr int DUNKER_CAN_ID = 20;
 inline constexpr int PIVOT_DUNKER_CAN_ID = 21;
 
@@ -99,13 +99,13 @@ struct DunkerGains {
 };
 
 inline constexpr DunkerGains GAINS{
-    units::unit_t<frc::ArmFeedforward::ka_unit>{0.38299},
-    units::unit_t<frc::ArmFeedforward::kv_unit>{7.2702},
-    units::volt_t{0.44012},
-    units::volt_t{2.5792},
-    units::radian_volt_kp_unit_t{64.147},
+    units::unit_t<frc::ArmFeedforward::ka_unit>{0},
+    units::unit_t<frc::ArmFeedforward::kv_unit>{0},
+    units::volt_t{0.0},
+    units::volt_t{0.25},
+    units::radian_volt_kp_unit_t{3.5},
     units::radian_volt_ki_unit_t{0.0},
-    units::radian_volt_kd_unit_t{0.5}};
+    units::radian_volt_kd_unit_t{0.2}};
 
 inline constexpr units::radians_per_second_t MAX_ROTATION_SPEED = 900_deg_per_s;
 inline constexpr units::radians_per_second_squared_t MAX_ROTATION_ACCEL =
@@ -114,16 +114,16 @@ inline constexpr units::radians_per_second_squared_t MAX_ROTATION_ACCEL =
 extern const frc::TrapezoidProfile<units::radians>::Constraints
     PIVOT_CONTROLLER_CONSTRAINTS;
 
-inline constexpr double DUNKER_MIN_ENCODER = 0.1;
-inline constexpr double DUNKER_MAX_ENCODER = 0.7;
-inline constexpr units::radian_t DUNKER_MIN_ANGLE = 0_deg;
-inline constexpr units::radian_t DUNKER_MAX_ANGLE = 180_deg;
+inline constexpr double DUNKER_MIN_ENCODER = 0.067;
+inline constexpr double DUNKER_MAX_ENCODER = 0.330;
+inline constexpr units::radian_t DUNKER_MIN_ANGLE = 20_deg;
+inline constexpr units::radian_t DUNKER_MAX_ANGLE = 125_deg;
 
 inline constexpr units::radian_t DUNKER_PIVOT_ANGLE_TOLERANCE = 1_deg;
 inline constexpr units::radians_per_second_t DUNKER_PIVOT_VEL_TOLERANCE =
     1_deg_per_s;
 inline constexpr units::radian_t DUNKER_OUT_ANGLE = 120_deg;
-inline constexpr units::radian_t DUNKER_IN_ANGLE = 1_deg;
+inline constexpr units::radian_t DUNKER_IN_ANGLE = 22_deg;
 }  // namespace dunker
 
 namespace shooter {
@@ -150,11 +150,10 @@ inline constexpr int LEFT_SHOOTER_CAN_ID = 17;
 inline constexpr int RIGHT_SHOOTER_CAN_ID = 18;
 
 inline constexpr ShooterGains GAINS{
-    units::unit_t<frc::SimpleMotorFeedforward<units::radians>::ka_unit>{
-        0.041055},
-    units::unit_t<frc::SimpleMotorFeedforward<units::radians>::kv_unit>{0.1121},
-    units::volt_t{0.029313},
-    units::radian_volt_kp_unit_t{0.19894},
+    units::unit_t<frc::SimpleMotorFeedforward<units::radians>::ka_unit>{0.0},
+    units::unit_t<frc::SimpleMotorFeedforward<units::radians>::kv_unit>{0.15},
+    units::volt_t{0.0},
+    units::radian_volt_kp_unit_t{0.25},
     units::radian_volt_ki_unit_t{0},
     units::radian_volt_kd_unit_t{0}};
 
