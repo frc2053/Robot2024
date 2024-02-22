@@ -7,6 +7,8 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/Commands.h>
 
+#include <ctre/phoenix6/SignalLogger.hpp>
+
 ShooterSubsystem::ShooterSubsystem() {
   ConfigureMotors();
   frc::SmartDashboard::PutData("Shooter Telemetry", this);
@@ -36,12 +38,14 @@ frc2::CommandPtr ShooterSubsystem::GoToSpeedBasedOnGoal(
 
 frc2::CommandPtr ShooterSubsystem::SysIdQuasistatic(
     frc2::sysid::Direction direction) {
-  return sysIdRoutine.Quasistatic(direction);
+  return sysIdRoutine.Quasistatic(direction).BeforeStarting(
+      [this] { ctre::phoenix6::SignalLogger::Start(); });
 }
 
 frc2::CommandPtr ShooterSubsystem::SysIdDynamic(
     frc2::sysid::Direction direction) {
-  return sysIdRoutine.Dynamic(direction);
+  return sysIdRoutine.Dynamic(direction).BeforeStarting(
+      [this] { ctre::phoenix6::SignalLogger::Start(); });
 }
 
 // This method will be called once per scheduler run
@@ -90,7 +94,7 @@ void ShooterSubsystem::Set(double speed) {
   // it will spin in reverse, which we dont want
   currentVelocitySetpoint = 0_rpm;
   shooterLeftMotor.SetControl(voltageController.WithOutput(speed * 12_V));
-  shooterRightMotor.SetControl(voltageController.WithOutput(speed * -12_V));
+  shooterRightMotor.SetControl(voltageController.WithOutput(speed * 12_V));
 }
 
 units::radians_per_second_t ShooterSubsystem::GetLeftShooterCurrentVelocity() {
@@ -133,6 +137,9 @@ void ShooterSubsystem::ConfigureMotors() {
   mainConfig.Slot0.kV = currentGains.kV.to<double>();
   mainConfig.Slot0.kA = currentGains.kA.to<double>();
   mainConfig.Slot0.kS = currentGains.kS.to<double>();
+
+  // TODO: UNCOMMENT WHEN DONE RECHARACTERIZING
+  // mainConfig.MotorOutput.PeakReverseDutyCycle = 0;
 
   mainConfig.MotorOutput.Inverted = false;
 
