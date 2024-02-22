@@ -131,6 +131,9 @@ void ShooterSubsystem::ConfigureMotors() {
   mainConfig.MotorOutput.NeutralMode =
       ctre::phoenix6::signals::NeutralModeValue::Coast;
 
+  mainConfig.CurrentLimits.SupplyCurrentLimit = 40;
+  mainConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+
   mainConfig.Slot0.kP = currentGains.kP.to<double>();
   mainConfig.Slot0.kI = currentGains.kI.to<double>();
   mainConfig.Slot0.kD = currentGains.kD.to<double>();
