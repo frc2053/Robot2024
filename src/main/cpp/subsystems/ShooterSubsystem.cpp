@@ -93,8 +93,8 @@ void ShooterSubsystem::Set(double speed) {
   // This is because if we tell the motor to go to 0 rpm with velocity control,
   // it will spin in reverse, which we dont want
   currentVelocitySetpoint = 0_rpm;
-  shooterLeftMotor.SetControl(voltageController.WithOutput(speed * 12_V));
-  shooterRightMotor.SetControl(voltageController.WithOutput(speed * 12_V));
+  shooterLeftMotor.SetControl(dutyController.WithOutput(speed));
+  shooterRightMotor.SetControl(dutyController.WithOutput(speed));
 }
 
 units::radians_per_second_t ShooterSubsystem::GetLeftShooterCurrentVelocity() {

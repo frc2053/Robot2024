@@ -25,7 +25,7 @@ void IntakeSubsystem::Periodic() {
 void IntakeSubsystem::ConfigureMotors() {
   ctre::phoenix6::configs::TalonFXConfiguration mainConfig;
 
-  mainConfig.CurrentLimits.SupplyCurrentLimit = 30;
+  mainConfig.CurrentLimits.SupplyCurrentLimit = 40;
   mainConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
   mainConfig.MotorOutput.NeutralMode =

@@ -100,6 +100,17 @@ void DrivebaseSubsystem::Periodic() {
   }
   units::meter_t distance = CalcDistanceFromSpeaker();
   swerveDrive.Log();
+
+  frc::Pose3d camPose =
+      frc::Pose3d{GetRobotPose()}.TransformBy(constants::vision::kRobotToCam);
+  std::array<double, 7> camPoseArr = {camPose.X().value(),
+                                      camPose.Y().value(),
+                                      camPose.Z().value(),
+                                      camPose.Rotation().GetQuaternion().W(),
+                                      camPose.Rotation().GetQuaternion().X(),
+                                      camPose.Rotation().GetQuaternion().Y(),
+                                      camPose.Rotation().GetQuaternion().Z()};
+  frc::SmartDashboard::PutNumberArray("Drivebase/CameraLocation", camPoseArr);
 }
 
 void DrivebaseSubsystem::SimulationPeriodic() {

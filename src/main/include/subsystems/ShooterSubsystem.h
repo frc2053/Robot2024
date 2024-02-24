@@ -60,6 +60,7 @@ class ShooterSubsystem : public frc2::SubsystemBase {
 
   ctre::phoenix6::controls::VelocityVoltage velocityControl{0_rad_per_s};
   ctre::phoenix6::controls::VoltageOut voltageController{0_V};
+  ctre::phoenix6::controls::DutyCycleOut dutyController{0};
 
   ctre::phoenix6::StatusSignal<units::volt_t> leftShooterVoltageSignal{
       shooterLeftMotor.GetMotorVoltage()};

@@ -22,13 +22,8 @@ void RobotContainer::ConfigureBindings() {
 
   operatorController.Back().WhileTrue(intakeSub.SpitOutNotes());
 
-  climbSub.SetDefaultCommand(climbSub.ManualControl(
-      [this] {
-        return frc::ApplyDeadband<double>(operatorController.GetLeftY(), 0.1);
-      },
-      [this] {
-        return frc::ApplyDeadband<double>(operatorController.GetRightY(), 0.1);
-      }));
+  operatorController.Start().WhileTrue(
+      climbSub.ManualControl([] { return 1; }, [] { return 1; }));
 
   operatorController.Y().WhileTrue(
       DunkNote().AlongWith(shooterSub.GoToVelocityCmd(
@@ -65,7 +60,7 @@ void RobotContainer::ConfigureBindings() {
   driveSub.SetDefaultCommand(driveSub.DriveFactory(
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
       DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
-      DeadbandAndSquare([this] { return driverController.GetRightX(); })));
+      DeadbandAndSquare([this] { return -driverController.GetRightX(); })));
 
   driverController.Y().OnTrue(driveSub.TurnToAngleFactory(
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
@@ -178,8 +173,7 @@ frc2::CommandPtr RobotContainer::SpinUpShooterBasedOnDist(
 frc2::CommandPtr RobotContainer::SpinUpShooter() {
   return frc2::cmd::Sequence(
       frc2::cmd::Deadline(
-          shooterSub.GoToVelocityCmd(
-              [] { return constants::shooter::SHOOTER_SPEED; }),
+          shooterSub.GoToSpeedCmd([] { return 1; }),
           ledSub.SetBothToTach(
               [this] {
                 return shooterSub.GetLeftShooterCurrentVelocity().value();
@@ -191,7 +185,7 @@ frc2::CommandPtr RobotContainer::SpinUpShooter() {
 
 frc2::CommandPtr RobotContainer::NotUsingShooter() {
   return frc2::cmd::Sequence(ledSub.SetBothToOff(),
-                             shooterSub.GoToVelocityCmd([] { return 0_rpm; }));
+                             shooterSub.GoToSpeedCmd([] { return 0; }));
 }
 
 frc2::CommandPtr RobotContainer::IntakeNote() {

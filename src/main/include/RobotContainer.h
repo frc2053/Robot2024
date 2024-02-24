@@ -34,8 +34,6 @@ class RobotContainer {
   Vision& GetVisionSystem();
   LedSubsystem& GetLedSubsystem();
 
-  void OpControllerPeriodic() { opControllerLoop.Poll(); }
-
  private:
   void ConfigureBindings();
   frc2::CommandXboxController driverController{0};
@@ -52,11 +50,6 @@ class RobotContainer {
   Vision vision;
 
   autos::Autos autos{driveSub, shooterSub, intakeSub};
-
-  frc::EventLoop opControllerLoop{};
-
-  frc2::Trigger climbManual =
-      operatorController.POVDown(&opControllerLoop).CastTo<frc2::Trigger>();
 
   frc2::CommandPtr selfTestCmd = driveSub.SelfTest();
   frc2::CommandPtr measureWheelCmd = driveSub.MeasureWheelDiam([] {
