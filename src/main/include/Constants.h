@@ -109,7 +109,7 @@ inline constexpr DunkerGains GAINS{
 
 inline constexpr units::radians_per_second_t MAX_ROTATION_SPEED = 900_deg_per_s;
 inline constexpr units::radians_per_second_squared_t MAX_ROTATION_ACCEL =
-    10000_deg_per_s_sq;
+    5000_deg_per_s_sq;
 
 extern const frc::TrapezoidProfile<units::radians>::Constraints
     PIVOT_CONTROLLER_CONSTRAINTS;
@@ -119,9 +119,9 @@ inline constexpr double DUNKER_MAX_ENCODER = 0.330;
 inline constexpr units::radian_t DUNKER_MIN_ANGLE = 20_deg;
 inline constexpr units::radian_t DUNKER_MAX_ANGLE = 125_deg;
 
-inline constexpr units::radian_t DUNKER_PIVOT_ANGLE_TOLERANCE = 1_deg;
+inline constexpr units::radian_t DUNKER_PIVOT_ANGLE_TOLERANCE = 3_deg;
 inline constexpr units::radians_per_second_t DUNKER_PIVOT_VEL_TOLERANCE =
-    1_deg_per_s;
+    3_deg_per_s;
 inline constexpr units::radian_t DUNKER_OUT_ANGLE = 120_deg;
 inline constexpr units::radian_t DUNKER_IN_ANGLE = 22_deg;
 }  // namespace dunker

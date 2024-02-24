@@ -20,6 +20,9 @@ void ClimberSubsystem::ConfigureMotor() {
   leftClimberMotor.RestoreFactoryDefaults();
   rightClimberMotor.RestoreFactoryDefaults();
 
+  leftClimberMotor.SetIdleMode(rev::CANSparkBase::IdleMode::kBrake);
+  rightClimberMotor.SetIdleMode(rev::CANSparkBase::IdleMode::kBrake);
+
   leftEncoder.SetPositionConversionFactor(
       constants::climber::CLIMBER_SPOOL_RADIUS.value() *
       constants::climber::CLIMBER_RATIO);

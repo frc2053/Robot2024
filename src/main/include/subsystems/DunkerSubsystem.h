@@ -67,8 +67,8 @@ class DunkerSubsystem : public frc2::SubsystemBase {
       constants::dunker::GAINS.kD.value(),
       constants::dunker::PIVOT_CONTROLLER_CONSTRAINTS};
 
-  rev::CANSparkMax dunkMotor{constants::dunker::DUNKER_CAN_ID,
-                             rev::CANSparkLowLevel::MotorType::kBrushless};
+  ctre::phoenix6::hardware::TalonFX dunkMotor{constants::dunker::DUNKER_CAN_ID};
+  ctre::phoenix6::controls::DutyCycleOut dutyController{0};
 
   units::radian_t currentPivotPos = 0_rad;
   constants::dunker::DunkerGains currentGains = constants::dunker::GAINS;

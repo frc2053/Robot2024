@@ -92,15 +92,13 @@ void DunkerSubsystem::ConfigureMotors() {
     fmt::print("ERROR: Unable to configure dunk pivot motor!\n");
   }
 
-  dunkMotor.RestoreFactoryDefaults();
-  dunkMotor.SetIdleMode(rev::CANSparkBase::IdleMode::kCoast);
-  dunkMotor.SetSmartCurrentLimit(20);
-  dunkMotor.SetInverted(true);
-  if (dunkMotor.BurnFlash() == rev::REVLibError::kOk) {
-    fmt::print("Successfully configured dunk motor!\n");
-  } else {
-    fmt::print("ERROR: Unable to configure dunk motor!\n");
-  }
+  ctre::phoenix6::configs::TalonFXConfiguration dunkMotorConfig;
+  dunkMotorConfig.MotorOutput.NeutralMode =
+      ctre::phoenix6::signals::NeutralModeValue::Coast;
+  dunkMotorConfig.CurrentLimits.SupplyCurrentLimit = 30;
+  dunkMotorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+  dunkMotorConfig.MotorOutput.Inverted = true;
+  dunkMotor.GetConfigurator().Apply(dunkMotorConfig);
 }
 
 units::radian_t DunkerSubsystem::ConvertEncoderToAngle(double encoderReading) {
@@ -125,7 +123,7 @@ units::radian_t DunkerSubsystem::GetPivotAngle() {
 
 void DunkerSubsystem::SetDunkSpeed(double speed) {
   fmt::print("speed: {}\n", speed);
-  dunkMotor.SetVoltage(speed * 12_V);
+  dunkMotor.SetControl(dutyController.WithOutput(speed));
 }
 
 void DunkerSubsystem::SetPivotGoal(units::radian_t angleGoal) {

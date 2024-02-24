@@ -23,7 +23,9 @@ void RobotContainer::ConfigureBindings() {
   operatorController.Back().WhileTrue(intakeSub.SpitOutNotes());
 
   operatorController.Start().WhileTrue(
-      climbSub.ManualControl([] { return 1; }, [] { return 1; }));
+      climbSub.ManualControl([] { return 1; }, [] { return -1; }));
+
+  operatorController.LeftBumper().OnTrue(dunkSub.PivotDunkNotesOut());
 
   operatorController.Y().WhileTrue(
       DunkNote().AlongWith(shooterSub.GoToVelocityCmd(
