@@ -211,7 +211,7 @@ frc2::CommandPtr RobotContainer::RumbleDriver() {
   return frc2::cmd::Sequence(
              frc2::cmd::RunOnce([this] {
                driverController.SetRumble(
-                   frc::GenericHID::RumbleType::kBothRumble, 0.5);
+                   frc::GenericHID::RumbleType::kBothRumble, 1.0);
              }),
              frc2::cmd::Wait(.5_s), frc2::cmd::RunOnce([this] {
                driverController.SetRumble(
@@ -227,7 +227,7 @@ frc2::CommandPtr RobotContainer::RumbleOperator() {
   return frc2::cmd::Sequence(
              frc2::cmd::RunOnce([this] {
                operatorController.SetRumble(
-                   frc::GenericHID::RumbleType::kBothRumble, 0.5);
+                   frc::GenericHID::RumbleType::kBothRumble, 1.0);
              }),
              frc2::cmd::Wait(.5_s), frc2::cmd::RunOnce([this] {
                operatorController.SetRumble(
