@@ -169,9 +169,10 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
 
 frc2::CommandPtr RobotContainer::SpinUpShooterBasedOnDist(
     std::function<units::meter_t()> distToGoal) {
-  return frc2::cmd::Sequence(ledSub.SetBothToBlinkRed(),
-                             shooterSub.GoToSpeedBasedOnGoal(distToGoal),
-                             ledSub.SetBothToSolidGreen(), RumbleOperator());
+  return frc2::cmd::Sequence(
+      ledSub.SetBothToBlinkRed(), shooterSub.GoToSpeedBasedOnGoal(distToGoal),
+      ledSub.SetBothToSolidGreen(),
+      frc2::cmd::Parallel(RumbleDriver(), RumbleOperator()));
 }
 
 frc2::CommandPtr RobotContainer::SpinUpShooter() {
@@ -184,7 +185,8 @@ frc2::CommandPtr RobotContainer::SpinUpShooter() {
                 return shooterSub.GetLeftShooterCurrentVelocity().value();
               },
               [] { return constants::shooter::SHOOTER_SPEED.value(); })),
-      ledSub.SetBothToSolidGreen(), RumbleOperator());
+      ledSub.SetBothToSolidGreen(),
+      frc2::cmd::Parallel(RumbleDriver(), RumbleOperator()));
 }
 
 frc2::CommandPtr RobotContainer::NotUsingShooter() {
@@ -193,9 +195,10 @@ frc2::CommandPtr RobotContainer::NotUsingShooter() {
 }
 
 frc2::CommandPtr RobotContainer::IntakeNote() {
-  return frc2::cmd::Sequence(ledSub.SetBothToBlinkOrange(),
-                             intakeSub.SuckInUntilNoteIsSeen(),
-                             ledSub.SetBothToSolidOrange(), RumbleDriver());
+  return frc2::cmd::Sequence(
+      ledSub.SetBothToBlinkOrange(), intakeSub.SuckInUntilNoteIsSeen(),
+      ledSub.SetBothToSolidOrange(),
+      frc2::cmd::Parallel(RumbleDriver(), RumbleOperator()));
 }
 
 frc2::CommandPtr RobotContainer::DunkNote() {
