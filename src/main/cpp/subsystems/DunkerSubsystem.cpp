@@ -85,7 +85,7 @@ void DunkerSubsystem::ConfigureMotors() {
   dunkPivotMotor.RestoreFactoryDefaults();
   dunkPivotMotor.SetIdleMode(rev::CANSparkBase::IdleMode::kBrake);
   dunkPivotMotor.SetSmartCurrentLimit(40);
-  dunkPivotMotor.SetInverted(true);
+  dunkPivotMotor.SetInverted(false);
   if (dunkPivotMotor.BurnFlash() == rev::REVLibError::kOk) {
     fmt::print("Successfully configured dunk pivot motor!\n");
   } else {
@@ -95,6 +95,7 @@ void DunkerSubsystem::ConfigureMotors() {
   dunkMotor.RestoreFactoryDefaults();
   dunkMotor.SetIdleMode(rev::CANSparkBase::IdleMode::kCoast);
   dunkMotor.SetSmartCurrentLimit(20);
+  dunkMotor.SetInverted(true);
   if (dunkMotor.BurnFlash() == rev::REVLibError::kOk) {
     fmt::print("Successfully configured dunk motor!\n");
   } else {

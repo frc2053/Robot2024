@@ -32,6 +32,7 @@ class RobotContainer {
   DunkerSubsystem& GetDunkerSubsystem();
   IntakeSubsystem& GetIntakeSubsystem();
   Vision& GetVisionSystem();
+  LedSubsystem& GetLedSubsystem();
 
   void OpControllerPeriodic() { opControllerLoop.Poll(); }
 
@@ -73,6 +74,8 @@ class RobotContainer {
   frc2::CommandPtr tunePathPidCmd = driveSub.TunePathPid();
   frc2::CommandPtr donePathTuningCmd = driveSub.DoneTuningPathPids();
   frc2::CommandPtr zeroYawCMD = driveSub.ZeroYawCMD();
+
+  frc2::CommandPtr rainbowLed = ledSub.SetBothToRainbow();
 
   frc2::CommandPtr SpinUpShooterBasedOnDist(
       std::function<units::meter_t()> distToGoal);

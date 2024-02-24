@@ -73,7 +73,7 @@ inline constexpr int PIVOT_ENCODER_PORT = 0;
 inline constexpr int DUNKER_CAN_ID = 20;
 inline constexpr int PIVOT_DUNKER_CAN_ID = 21;
 
-inline constexpr double PIVOT_GEAR_RATIO = 60.0;
+inline constexpr double PIVOT_GEAR_RATIO = 46.67;
 inline constexpr units::meter_t PIVOT_ARM_LENGTH = 12_in;
 inline constexpr units::kilogram_t PIVOT_MASS = 15_lb;
 
@@ -102,10 +102,10 @@ inline constexpr DunkerGains GAINS{
     units::unit_t<frc::ArmFeedforward::ka_unit>{0},
     units::unit_t<frc::ArmFeedforward::kv_unit>{0},
     units::volt_t{0.0},
-    units::volt_t{0.25},
-    units::radian_volt_kp_unit_t{3.5},
+    units::volt_t{0.0},
+    units::radian_volt_kp_unit_t{10.0},
     units::radian_volt_ki_unit_t{0.0},
-    units::radian_volt_kd_unit_t{0.2}};
+    units::radian_volt_kd_unit_t{0.05}};
 
 inline constexpr units::radians_per_second_t MAX_ROTATION_SPEED = 900_deg_per_s;
 inline constexpr units::radians_per_second_squared_t MAX_ROTATION_ACCEL =

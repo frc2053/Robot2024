@@ -21,6 +21,6 @@ class LedStrip {
  private:
   void FillBufferFromSections();
   std::vector<LedSection> sections;
-  frc::AddressableLED leds{9};
+  frc::AddressableLED leds{0};
   std::array<frc::AddressableLED::LEDData, 96> ledBuffer;
 };

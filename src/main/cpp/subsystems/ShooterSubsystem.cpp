@@ -142,7 +142,7 @@ void ShooterSubsystem::ConfigureMotors() {
   mainConfig.Slot0.kS = currentGains.kS.to<double>();
 
   // TODO: UNCOMMENT WHEN DONE RECHARACTERIZING
-  // mainConfig.MotorOutput.PeakReverseDutyCycle = 0;
+  mainConfig.MotorOutput.PeakReverseDutyCycle = 0;
 
   mainConfig.MotorOutput.Inverted = false;
 

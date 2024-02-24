@@ -22,7 +22,7 @@ void RobotContainer::ConfigureBindings() {
 
   operatorController.Back().WhileTrue(intakeSub.SpitOutNotes());
 
-  climbManual.WhileTrue(climbSub.ManualControl(
+  climbSub.SetDefaultCommand(climbSub.ManualControl(
       [this] {
         return frc::ApplyDeadband<double>(operatorController.GetLeftY(), 0.1);
       },
@@ -159,6 +159,8 @@ void RobotContainer::ConfigureBindings() {
   //     dunkSub.SysIdDynamic(frc2::sysid::Direction::kForward));
   // testController.Y().WhileTrue(
   //     dunkSub.SysIdDynamic(frc2::sysid::Direction::kReverse));
+
+  rainbowLed.Schedule();
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {
@@ -266,6 +268,10 @@ IntakeSubsystem& RobotContainer::GetIntakeSubsystem() {
 
 Vision& RobotContainer::GetVisionSystem() {
   return vision;
+}
+
+LedSubsystem& RobotContainer::GetLedSubsystem() {
+  return ledSub;
 }
 
 str::DeadbandAndSquareFunc RobotContainer::DeadbandAndSquare(

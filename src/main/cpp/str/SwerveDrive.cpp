@@ -69,9 +69,9 @@ SwerveDrive::SwerveDrive() {
   }
 
   ctre::phoenix6::configs::Pigeon2Configuration imuConfig;
-  imuConfig.MountPose.MountPosePitch = 0;
-  imuConfig.MountPose.MountPoseRoll = 0;
-  imuConfig.MountPose.MountPoseYaw = 0;
+  imuConfig.MountPose.MountPosePitch = -0.4168;
+  imuConfig.MountPose.MountPoseRoll = -89.879;
+  imuConfig.MountPose.MountPoseYaw = 89.9885;
   imu.GetConfigurator().Apply(imuConfig);
 }
 
@@ -503,7 +503,17 @@ frc2::CommandPtr SwerveDrive::TuneDrivePID(std::function<bool()> done,
 }
 
 void SwerveDrive::ZeroYaw() {
-  imu.SetYaw(0_deg);
+  units::radian_t targetAngle = 0_rad;
+  auto ally = frc::DriverStation::GetAlliance();
+  if (ally.has_value()) {
+    if (ally.value() == frc::DriverStation::Alliance::kRed) {
+      targetAngle = 0_deg;
+    }
+    if (ally.value() == frc::DriverStation::Alliance::kBlue) {
+      targetAngle = 180_deg;
+    }
+  }
+  imu.SetYaw(targetAngle);
 }
 
 void SwerveDrive::SetAllModulesToCurrent(units::volt_t voltsToSend) {
