@@ -34,6 +34,16 @@ void IntakeSubsystem::ConfigureMotors() {
   mainConfig.MotorOutput.Inverted = true;
 
   intakeMotor.GetConfigurator().Apply(mainConfig);
+
+  ctre::phoenix6::configs::TalonFXConfiguration followConfig;
+
+  followConfig.CurrentLimits.SupplyCurrentLimit = 40;
+  followConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+
+  followConfig.MotorOutput.NeutralMode =
+      ctre::phoenix6::signals::NeutralModeValue::Brake;
+
+  intakeSecondMotor.GetConfigurator().Apply(followConfig);
 }
 
 frc2::CommandPtr IntakeSubsystem::SuckInNotes() {
@@ -68,4 +78,6 @@ bool IntakeSubsystem::SeesNote() {
 
 void IntakeSubsystem::SetIntakeSpeed(double speed) {
   intakeMotor.Set(speed);
+  intakeSecondMotor.SetControl(
+      ctre::phoenix6::controls::Follower(intakeMotor.GetDeviceID(), true));
 }

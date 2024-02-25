@@ -27,6 +27,9 @@ class IntakeSubsystem : public frc2::SubsystemBase {
   ctre::phoenix6::hardware::TalonFX intakeMotor{
       constants::intake::INTAKE_CAN_ID};
 
+  ctre::phoenix6::hardware::TalonFX intakeSecondMotor{
+      constants::intake::INTAKE_TWO_CAN_ID};
+
 #ifdef __FRC_ROBORIO__
   frc::TimeOfFlight intakeSensor{constants::intake::INTAKE_TOF_SENSOR};
 #else

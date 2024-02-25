@@ -45,11 +45,9 @@ class ClimberSubsystem : public frc2::SubsystemBase {
       constants::climber::RIGHT_CLIMBER_CAN_ID,
       rev::CANSparkLowLevel::MotorType::kBrushless};
 
-  rev::SparkRelativeEncoder leftEncoder =
-      leftClimberMotor.GetEncoder(rev::SparkRelativeEncoder::Type::kHallSensor);
+  rev::SparkRelativeEncoder leftEncoder = leftClimberMotor.GetEncoder();
 
-  rev::SparkRelativeEncoder rightEncoder = rightClimberMotor.GetEncoder(
-      rev::SparkRelativeEncoder::Type::kHallSensor);
+  rev::SparkRelativeEncoder rightEncoder = rightClimberMotor.GetEncoder();
 
   rev::SparkPIDController leftPIDController =
       leftClimberMotor.GetPIDController();
