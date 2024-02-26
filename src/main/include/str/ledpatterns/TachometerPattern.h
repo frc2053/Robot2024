@@ -38,7 +38,7 @@ class TachometerPattern : public LedPattern {
   }
   void Periodic() override {
     double percentSpeed = currentSpeed() / maxSpeed;
-    int lastIdx = percentSpeed * buffer.size();
+    int lastIdx = std::clamp(percentSpeed, 0.0, 1.0) * (buffer.size() - 1);
 
     for (size_t i = 0; i < lastIdx; i++) {
       int idx = reverse ? buffer.size() - i - 1 : i;
