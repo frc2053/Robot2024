@@ -142,9 +142,6 @@
             "open": true
           }
         },
-        "Dunker Telemetry": {
-          "open": true
-        },
         "Field": {
           "double[]##v_/SmartDashboard/Field/Estimated Robot Pose": {
             "open": true
@@ -154,6 +151,9 @@
           "NoteSensor": {
             "open": true
           }
+        },
+        "Shooter Telemetry": {
+          "open": true
         },
         "VisionSystemSim-main": {
           "Sim Field": {
@@ -208,7 +208,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 173,
+          "height": 3,
           "series": [
             {
               "color": [
@@ -242,7 +242,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 173,
+          "height": 3,
           "series": [
             {
               "color": [
@@ -276,7 +276,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 173,
+          "height": 3,
           "series": [
             {
               "color": [
@@ -310,7 +310,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 173,
+          "height": 3,
           "series": [
             {
               "color": [
@@ -351,7 +351,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 173,
+          "height": 3,
           "series": [
             {
               "color": [
@@ -385,7 +385,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 173,
+          "height": 3,
           "series": [
             {
               "color": [
@@ -419,7 +419,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 173,
+          "height": 3,
           "series": [
             {
               "color": [
@@ -453,7 +453,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 173,
+          "height": 3,
           "series": [
             {
               "color": [
@@ -535,26 +535,8 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 613,
+          "height": 610,
           "series": [
-            {
-              "color": [
-                0.2980392277240753,
-                0.44705885648727417,
-                0.6901960968971252,
-                1.0
-              ],
-              "id": "NT:/SmartDashboard/Shooter Telemetry/Left Current Position (RPM)"
-            },
-            {
-              "color": [
-                0.8666667342185974,
-                0.5176470875740051,
-                0.32156863808631897,
-                1.0
-              ],
-              "id": "NT:/SmartDashboard/Shooter Telemetry/Right Current Position (RPM)"
-            },
             {
               "color": [
                 0.3333333432674408,
@@ -563,13 +545,30 @@
                 1.0
               ],
               "id": "NT:/SmartDashboard/Shooter Telemetry/Velocity Setpoint (RPM)"
+            },
+            {
+              "color": [
+                0.8666667342185974,
+                0.5176470875740051,
+                0.32156863808631897,
+                1.0
+              ],
+              "id": "NT:/SmartDashboard/Shooter Telemetry/Left Current Velocity (RPM)"
+            },
+            {
+              "color": [
+                0.3333333432674408,
+                0.658823549747467,
+                0.4078431725502014,
+                1.0
+              ],
+              "id": "NT:/SmartDashboard/Shooter Telemetry/Right Current Velocity (RPM)"
             }
           ]
         }
       ],
       "window": {
-        "name": "ShooterInfo",
-        "visible": false
+        "name": "ShooterInfo"
       }
     }
   }

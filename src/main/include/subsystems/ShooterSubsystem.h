@@ -38,6 +38,10 @@ class ShooterSubsystem : public frc2::SubsystemBase {
   units::radians_per_second_t GetLeftShooterCurrentVelocity();
   units::radians_per_second_t GetRightShooterCurrentVelocity();
 
+  units::radians_per_second_t GetSetpoint() const {
+    return currentVelocitySetpoint;
+  }
+
  private:
   void ConfigureMotors();
   void InitSendable(wpi::SendableBuilder& builder) override;

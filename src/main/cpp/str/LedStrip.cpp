@@ -8,7 +8,7 @@
 
 LedStrip::LedStrip() {
   ledBuffer.fill(frc::AddressableLED::LEDData(255, 255, 255));
-  leds.SetLength(96);
+  leds.SetLength(44);
   leds.SetData(ledBuffer);
   leds.Start();
 }

@@ -92,7 +92,7 @@ void ShooterSubsystem::GoToVelocity(units::radians_per_second_t speed) {
 void ShooterSubsystem::Set(double speed) {
   // This is because if we tell the motor to go to 0 rpm with velocity control,
   // it will spin in reverse, which we dont want
-  currentVelocitySetpoint = 0_rpm;
+  currentVelocitySetpoint = speed * frc::DCMotor::Falcon500(1).freeSpeed;
   shooterLeftMotor.SetControl(dutyController.WithOutput(speed));
   shooterRightMotor.SetControl(dutyController.WithOutput(speed));
 }
