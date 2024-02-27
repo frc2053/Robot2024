@@ -66,7 +66,7 @@ namespace intake {
 inline constexpr int INTAKE_CAN_ID = 19;
 inline constexpr int INTAKE_TWO_CAN_ID = 25;
 inline constexpr int INTAKE_TOF_SENSOR = 24;
-inline constexpr units::meter_t INTAKE_SENSOR_DISTANCE = 5_in;
+inline constexpr units::meter_t INTAKE_SENSOR_DISTANCE = 7_in;
 }  // namespace intake
 
 namespace dunker {
