@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.479268193244934,
-      "y": 7.384650707244873
+      "x": 1.4935277700424194,
+      "y": 2.953
     },
-    "rotation": -179.21516326232498
+    "rotation": 178.26951507710592
   },
   "command": {
     "type": "sequential",
@@ -16,15 +16,15 @@
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "SpinUpShooter"
+                  "pathName": "MiddleOfDriverStation.1"
                 }
               },
               {
-                "type": "path",
+                "type": "named",
                 "data": {
-                  "pathName": "AmpSide.1"
+                  "name": "SpinUpShooter"
                 }
               }
             ]
@@ -37,38 +37,19 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "SpinUpShooter"
+                  "pathName": "MiddleOfDriverStation.2"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "FeedNote"
-                }
-              },
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "AmpSide.2"
-                      }
-                    },
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "AmpSide.3"
-                      }
-                    }
-                  ]
+                  "name": "IntakeNote"
                 }
               }
             ]
@@ -87,7 +68,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "FeedNote"
+                  "name": "IntakeNote"
                 }
               }
             ]

@@ -20,12 +20,10 @@ namespace autos {
 
 enum CommandSelector {
   DO_NOTHING,
-  THREE_FT_FORWARD,
   SQUARE,
-  PATHPLANNER_TEST,
   CHOREO_TEST,
   AMP_SIDE,
-  FOUR_NOTE
+  MIDDLE_OF_DRIVER_STATION
 };
 
 class Autos {
@@ -52,24 +50,20 @@ class Autos {
         std::pair{DO_NOTHING,
                   frc2::cmd::Print("ERROR: DO NOTHING AUTO SELECTED! YOU "
                                    "PROBABLY DIDNT MEAN THIS")},
-        std::pair{THREE_FT_FORWARD,
-                  pathplanner::PathPlannerAuto{"ThreeFeetForward"}.ToPtr()},
         std::pair{SQUARE, pathplanner::PathPlannerAuto{"Square"}.ToPtr()},
-        std::pair{PATHPLANNER_TEST,
-                  pathplanner::PathPlannerAuto{"PPTest"}.ToPtr()},
         std::pair{CHOREO_TEST, m_driveSub.FollowChoreoTrajectory(
                                    [] { return "ChoreoTestPath"; })},
         std::pair{AMP_SIDE, pathplanner::PathPlannerAuto{"AmpSide"}.ToPtr()},
-        std::pair{FOUR_NOTE,
-                  pathplanner::PathPlannerAuto{"FourNoteAuto"}.ToPtr()});
+        std::pair{
+            MIDDLE_OF_DRIVER_STATION,
+            pathplanner::PathPlannerAuto{"MiddleOfDriverStation"}.ToPtr()});
 
     chooser.SetDefaultOption("Do Nothing", CommandSelector::DO_NOTHING);
-    chooser.AddOption("Three Feet Forward", CommandSelector::THREE_FT_FORWARD);
     chooser.AddOption("Drive in Square", CommandSelector::SQUARE);
-    chooser.AddOption("Pathplanner Test", CommandSelector::PATHPLANNER_TEST);
     chooser.AddOption("Choreo Test", CommandSelector::CHOREO_TEST);
     chooser.AddOption("Amp Side", CommandSelector::AMP_SIDE);
-    chooser.AddOption("Four Note Auto", CommandSelector::FOUR_NOTE);
+    chooser.AddOption("Middle of Driver Station",
+                      CommandSelector::MIDDLE_OF_DRIVER_STATION);
 
     frc::SmartDashboard::PutData("Auto Chooser", &chooser);
   }
