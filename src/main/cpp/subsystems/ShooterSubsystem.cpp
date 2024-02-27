@@ -12,7 +12,6 @@
 ShooterSubsystem::ShooterSubsystem() {
   ConfigureMotors();
   frc::SmartDashboard::PutData("Shooter Telemetry", this);
-  // TODO insert actual values
   lookupTable.insert(0_ft, 1000_rpm);
   lookupTable.insert(10_ft, frc::DCMotor::Falcon500(1).freeSpeed);
 }
@@ -141,7 +140,6 @@ void ShooterSubsystem::ConfigureMotors() {
   mainConfig.Slot0.kA = currentGains.kA.to<double>();
   mainConfig.Slot0.kS = currentGains.kS.to<double>();
 
-  // TODO: UNCOMMENT WHEN DONE RECHARACTERIZING
   mainConfig.MotorOutput.PeakReverseDutyCycle = 0;
 
   mainConfig.MotorOutput.Inverted = false;
@@ -151,8 +149,6 @@ void ShooterSubsystem::ConfigureMotors() {
   mainConfig.MotorOutput.Inverted = true;
   shooterRightMotor.GetConfigurator().Apply(mainConfig);
 
-  // Disable all other signals we dont care about
-  // TODO: Make sure doing 250HZ update rate on rio is OK,
   leftShooterVoltageSignal.SetUpdateFrequency(100_Hz);
   leftShooterPosSignal.SetUpdateFrequency(100_Hz);
   leftShooterVelSignal.SetUpdateFrequency(100_Hz);

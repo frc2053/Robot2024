@@ -285,9 +285,6 @@ void SwerveModule::OptimizeBusSignals() {
 ctre::phoenix::StatusCode SwerveModule::ConfigureDriveMotor(bool invertDrive) {
   ctre::phoenix6::configs::TalonFXConfiguration driveConfig{};
 
-  // TODO: ALSO, KV AND KA UNITS ARE LINEAR HERE. MIGHT MATTER
-  // Be careful here. Make sure we are controlling in volts as gains will be
-  // different depending on control mode.
   ctre::phoenix6::configs::Slot0Configs driveSlotConfig{};
   driveSlotConfig.kV = currentDrivingGains.kV.value();
   driveSlotConfig.kA = currentDrivingGains.kA.value();

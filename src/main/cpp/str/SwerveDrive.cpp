@@ -114,7 +114,6 @@ void SwerveDrive::SeedFieldRelative(const frc::Pose2d& location) {
 
 void SwerveDrive::SetChassisSpeeds(const frc::ChassisSpeeds& newChassisSpeeds,
                                    bool openLoop) {
-  // TODO TUNE CONSTANT SCALAR FOR COMPENSATING FOR TWIST
   SetModuleStates(
       constants::swerve::physical::KINEMATICS.ToSwerveModuleStates(
           frc::ChassisSpeeds::Discretize(newChassisSpeeds, 0.02_s * 4)),
