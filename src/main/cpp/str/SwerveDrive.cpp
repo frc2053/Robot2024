@@ -154,7 +154,11 @@ void SwerveDrive::SetModuleStates(
 }
 
 frc::Rotation2d SwerveDrive::GetHeading() const {
-  return GetPose().Rotation();
+  if (frc::DriverStation::IsTeleop()) {
+    return GetGyroYaw();
+  } else {
+    return GetPose().Rotation();
+  }
 }
 
 frc::Rotation2d SwerveDrive::GetGyroYaw() const {
