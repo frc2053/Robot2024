@@ -73,6 +73,8 @@ SwerveDrive::SwerveDrive() {
   imuConfig.MountPose.MountPoseRoll = -89.879;
   imuConfig.MountPose.MountPoseYaw = 89.9885;
   imu.GetConfigurator().Apply(imuConfig);
+
+  imu.SetYaw(0_rad);
 }
 
 void SwerveDrive::Drive(units::meters_per_second_t vx,
@@ -105,6 +107,7 @@ void SwerveDrive::TareEverything() {
 
 void SwerveDrive::SeedFieldRelative() {
   fieldRelativeOffset = GetPose().Rotation().Radians();
+  fmt::print("field relative offset {}\n", fieldRelativeOffset.value());
 }
 
 void SwerveDrive::SeedFieldRelative(const frc::Pose2d& location) {
@@ -179,6 +182,7 @@ void SwerveDrive::Log() {
 
   for (size_t i = 0; i < swerveModules.size(); i++) {
     moduleStates[i] = swerveModules[i].GetState();
+    swerveModules[i].Log(i);
   }
 
   std::array<double, 8> advantageScopeSwerveView{

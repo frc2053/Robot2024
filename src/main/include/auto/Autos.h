@@ -36,8 +36,10 @@ class Autos {
         frc2::PrintCommand("Test Print from PP Command").ToPtr());
 
     pathplanner::NamedCommands::registerCommand(
-        "SpinUpShooter", shooterSub.GoToVelocityCmd(
-                             [] { return constants::shooter::SHOOTER_SPEED; }));
+        "SpinUpShooter",
+        shooterSub
+            .GoToVelocityCmd([] { return constants::shooter::SHOOTER_SPEED; })
+            .WithTimeout(2_s));
 
     pathplanner::NamedCommands::registerCommand(
         "IntakeNote", intakeSub.SuckInUntilNoteIsSeen());

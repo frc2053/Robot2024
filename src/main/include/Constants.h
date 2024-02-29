@@ -212,10 +212,10 @@ struct ModuleSteerGains {
 inline constexpr ModuleDriveGains driveGains{
     units::unit_t<frc::SimpleMotorFeedforward<units::meters>::ka_unit>{0.0},
     units::unit_t<frc::SimpleMotorFeedforward<units::meters>::kv_unit>{0.0},
-    3_V,
-    10.0,
+    1_V,
+    8.0,
     0.0,
-    0.05};
+    0.5};
 inline constexpr ModuleSteerGains steerGains{
     units::unit_t<frc::SimpleMotorFeedforward<units::radians>::ka_unit>{0},
     units::unit_t<frc::SimpleMotorFeedforward<units::radians>::kv_unit>{0.0},
@@ -263,7 +263,7 @@ inline constexpr frc::DCMotor SWERVE_MOTOR_FOC{frc::DCMotor::Falcon500FOC(1)};
 
 inline constexpr units::meter_t WHEELBASE_LENGTH = 22.75_in;
 inline constexpr units::meter_t WHEELBASE_WIDTH = 22.75_in;
-inline constexpr units::meter_t DRIVE_WHEEL_DIAMETER = 4_in;
+inline constexpr units::meter_t DRIVE_WHEEL_DIAMETER = 3.95_in;
 inline constexpr units::scalar_t DRIVE_GEARING =
     (50.0 / 16.0) * (17.0 / 27.0) * (45.0 / 15.0);  // SDS L2 with 16t pinion
 inline constexpr units::scalar_t STEER_GEARING = (50.0 / 14.0) * (60.0 / 10.0);
@@ -283,7 +283,7 @@ inline constexpr double FR_ENCODER_OFFSET = -.028076;
 inline constexpr double BL_ENCODER_OFFSET = -.126221;
 inline constexpr double BR_ENCODER_OFFSET = 0.112793;
 
-inline constexpr units::ampere_t SLIP_CURRENT = 400_A;
+inline constexpr units::ampere_t SLIP_CURRENT = 60_A;
 inline constexpr units::ampere_t SUPPLY_CURRENT_LIMIT = 60_A;
 
 inline constexpr std::array<frc::Translation2d, 4> moduleLocations{
