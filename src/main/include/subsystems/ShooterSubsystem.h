@@ -21,7 +21,8 @@ class ShooterSubsystem : public frc2::SubsystemBase {
 
   frc2::CommandPtr GoToSpeedCmd(std::function<double()> speed);
   frc2::CommandPtr GoToVelocityCmd(
-      std::function<units::radians_per_second_t()> speed);
+      std::function<units::radians_per_second_t()> speed,
+      std::function<bool()> dunk);
   frc2::CommandPtr SysIdQuasistatic(frc2::sysid::Direction direction);
   frc2::CommandPtr SysIdDynamic(frc2::sysid::Direction direction);
   frc2::CommandPtr GoToSpeedBasedOnGoal(
@@ -34,7 +35,7 @@ class ShooterSubsystem : public frc2::SubsystemBase {
 
   void Set(double speed);
 
-  void GoToVelocity(units::radians_per_second_t speed);
+  void GoToVelocity(units::radians_per_second_t speed, bool dunk);
   units::radians_per_second_t GetLeftShooterCurrentVelocity();
   units::radians_per_second_t GetRightShooterCurrentVelocity();
 

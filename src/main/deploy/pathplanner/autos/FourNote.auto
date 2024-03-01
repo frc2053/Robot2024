@@ -24,31 +24,6 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "SpinUpShooter"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "FeedNote"
-          }
-        },
-        {
-          "type": "deadline",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "FourNote.2"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
                   "name": "IntakeNote"
                 }
               }
@@ -69,6 +44,12 @@
                 "type": "named",
                 "data": {
                   "name": "FeedNote"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "StopShooter"
                 }
               }
             ]
@@ -108,6 +89,12 @@
                 "data": {
                   "name": "FeedNote"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "StopShooter"
+                }
               }
             ]
           }
@@ -145,6 +132,12 @@
                 "type": "named",
                 "data": {
                   "name": "FeedNote"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "StopShooter"
                 }
               }
             ]

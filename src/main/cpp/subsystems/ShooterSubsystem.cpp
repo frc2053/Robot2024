@@ -22,8 +22,10 @@ frc2::CommandPtr ShooterSubsystem::GoToSpeedCmd(std::function<double()> speed) {
 }
 
 frc2::CommandPtr ShooterSubsystem::GoToVelocityCmd(
-    std::function<units::radians_per_second_t()> speed) {
-  return frc2::cmd::Run([this, speed] { GoToVelocity(speed()); }, {this})
+    std::function<units::radians_per_second_t()> speed,
+    std::function<bool()> dunk) {
+  return frc2::cmd::Run([this, speed, dunk] { GoToVelocity(speed(), dunk()); },
+                        {this})
       .Until([this] { return IsShooterUpToSpeed(); })
       .BeforeStarting([this, speed] { currentVelocitySetpoint = speed(); },
                       {this});
@@ -32,7 +34,8 @@ frc2::CommandPtr ShooterSubsystem::GoToVelocityCmd(
 frc2::CommandPtr ShooterSubsystem::GoToSpeedBasedOnGoal(
     std::function<units::meter_t()> distanceToGoal) {
   return GoToVelocityCmd(
-      [this, distanceToGoal] { return lookupTable[distanceToGoal()]; });
+      [this, distanceToGoal] { return lookupTable[distanceToGoal()]; },
+      [] { return false; });
 }
 
 frc2::CommandPtr ShooterSubsystem::SysIdQuasistatic(
@@ -78,14 +81,20 @@ void ShooterSubsystem::SimulationPeriodic() {
       ConvertShooterVelToMotorVel(rightShooterSim.GetAngularVelocity()));
 }
 
-void ShooterSubsystem::GoToVelocity(units::radians_per_second_t speed) {
+void ShooterSubsystem::GoToVelocity(units::radians_per_second_t speed,
+                                    bool dunker) {
+  int slot = 0;
+  if (dunker) {
+    slot = 1;
+  }
+
   currentVelocitySetpoint = speed;
   units::radians_per_second_t motorSetpoint =
       ConvertShooterVelToMotorVel(speed);
   shooterLeftMotor.SetControl(
-      velocityControl.WithVelocity(motorSetpoint).WithSlot(0));
+      velocityControl.WithVelocity(motorSetpoint).WithSlot(slot));
   shooterRightMotor.SetControl(
-      velocityControl.WithVelocity(motorSetpoint).WithSlot(0));
+      velocityControl.WithVelocity(motorSetpoint).WithSlot(slot));
 }
 
 void ShooterSubsystem::Set(double speed) {
@@ -140,6 +149,13 @@ void ShooterSubsystem::ConfigureMotors() {
   mainConfig.Slot0.kA = currentGains.kA.to<double>();
   mainConfig.Slot0.kS = currentGains.kS.to<double>();
 
+  mainConfig.Slot1.kP = constants::shooter::GAINS_DUNK.kP.to<double>();
+  mainConfig.Slot1.kI = constants::shooter::GAINS_DUNK.kI.to<double>();
+  mainConfig.Slot1.kD = constants::shooter::GAINS_DUNK.kD.to<double>();
+  mainConfig.Slot1.kV = constants::shooter::GAINS_DUNK.kV.to<double>();
+  mainConfig.Slot1.kA = constants::shooter::GAINS_DUNK.kA.to<double>();
+  mainConfig.Slot1.kS = constants::shooter::GAINS_DUNK.kS.to<double>();
+
   mainConfig.MotorOutput.PeakReverseDutyCycle = 0;
 
   mainConfig.MotorOutput.Inverted = false;
@@ -166,7 +182,8 @@ void ShooterSubsystem::InitSendable(wpi::SendableBuilder& builder) {
             .value();
       },
       [this](double newSetpointRpm) {
-        GoToVelocity(units::revolutions_per_minute_t{newSetpointRpm});
+        GoToVelocity(units::revolutions_per_minute_t{newSetpointRpm},
+                     [] { return false; });
       });
   builder.AddDoubleProperty(
       "Left Current Velocity (RPM)",

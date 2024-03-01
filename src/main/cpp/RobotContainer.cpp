@@ -29,9 +29,10 @@ void RobotContainer::ConfigureBindings() {
 
   operatorController.Y().WhileTrue(
       DunkNote().AlongWith(shooterSub.GoToVelocityCmd(
-          [] { return constants::shooter::SHOOTER_DUNK_SPEED; })));
-  operatorController.Y().OnFalse(
-      StopDunk().AlongWith(shooterSub.GoToVelocityCmd([] { return 0_rpm; })));
+          [] { return constants::shooter::SHOOTER_DUNK_SPEED; },
+          [] { return true; })));
+  operatorController.Y().OnFalse(StopDunk().AlongWith(
+      shooterSub.GoToVelocityCmd([] { return 0_rpm; }, [] { return true; })));
 
   operatorController.A().WhileTrue(SpinUpShooter());
   operatorController.A().OnFalse(NotUsingShooter());
@@ -40,10 +41,22 @@ void RobotContainer::ConfigureBindings() {
       [this] { return driveSub.CalcDistanceFromSpeaker(); }));
   operatorController.B().OnFalse(NotUsingShooter());
 
-  driverController.RightBumper().WhileTrue(driveSub.GoToPose([this] {
-    frc::Pose2d closestPoint = driveSub.BestShooterPoint();
-    return closestPoint;
-  }));
+  driverController.RightBumper().WhileTrue(
+      driveSub
+          .GoToPose([this] {
+            frc::Pose2d closestPoint = driveSub.BestShooterPoint();
+            return closestPoint;
+          })
+          .AndThen(driveSub.MoveAlongArc(
+              [this] {
+                return frc::ApplyDeadband<double>(-driverController.GetLeftX(),
+                                                  .1);
+              },
+              [this] {
+                return driveSub.CalculateClosestGoodShooterPoint()
+                    .Rotation()
+                    .Radians();
+              })));
 
   driverController.Start().OnTrue(driveSub.ZeroYawCMD());
 
@@ -92,7 +105,7 @@ void RobotContainer::ConfigureBindings() {
   driverController.LeftBumper().WhileTrue(driveSub.DriveFactory(
       DeadbandAndSquare([this] { return driverController.GetLeftY(); }),
       DeadbandAndSquare([this] { return driverController.GetLeftX(); }),
-      DeadbandAndSquare([this] { return driverController.GetRightX(); }),
+      DeadbandAndSquare([this] { return -driverController.GetRightX(); }),
       [] { return false; }));
 
   frc::SmartDashboard::PutBoolean("Drivebase/DoneWithStep", false);
@@ -171,7 +184,8 @@ frc2::CommandPtr RobotContainer::SpinUpShooter() {
   return frc2::cmd::Sequence(
       frc2::cmd::Deadline(
           shooterSub.GoToVelocityCmd(
-              [] { return constants::shooter::SHOOTER_SPEED; }),
+              [] { return constants::shooter::SHOOTER_SPEED; },
+              [] { return false; }),
           ledSub.SetBothToTach(
               [this] {
                 return shooterSub.GetLeftShooterCurrentVelocity().value();

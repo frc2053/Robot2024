@@ -43,8 +43,13 @@ class Autos {
     pathplanner::NamedCommands::registerCommand(
         "SpinUpShooter",
         shooterSub
-            .GoToVelocityCmd([] { return constants::shooter::SHOOTER_SPEED; })
+            .GoToVelocityCmd([] { return constants::shooter::SHOOTER_SPEED; },
+                             [] { return false; })
             .WithTimeout(2_s));
+
+    pathplanner::NamedCommands::registerCommand(
+        "StopShooter",
+        shooterSub.GoToSpeedCmd([] { return 0; }).WithTimeout(.25_s));
 
     pathplanner::NamedCommands::registerCommand(
         "IntakeNote", intakeSub.SuckInUntilNoteIsSeen());

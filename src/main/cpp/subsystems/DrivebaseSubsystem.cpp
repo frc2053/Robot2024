@@ -505,7 +505,16 @@ frc2::CommandPtr DrivebaseSubsystem::MoveAlongArc(
                units::radians_per_second_t thetaOutput{
                    rotationController.Calculate(
                        currentPose.Rotation().Radians().value())};
-               swerveDrive.Drive(xOutput, yOutput, thetaOutput, false, false);
+               bool fieldOriented = true;
+               if (allyValue) {
+                 if (allyValue.value() == frc::DriverStation::Alliance::kRed) {
+                   fieldOriented = false;
+                 } else {
+                   fieldOriented = true;
+                 }
+               }
+               swerveDrive.Drive(xOutput, yOutput, thetaOutput, false,
+                                 fieldOriented);
              },
              {this})
       .BeforeStarting(

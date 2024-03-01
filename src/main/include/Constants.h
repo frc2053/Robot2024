@@ -152,6 +152,14 @@ inline constexpr int RIGHT_SHOOTER_CAN_ID = 18;
 
 inline constexpr ShooterGains GAINS{
     units::unit_t<frc::SimpleMotorFeedforward<units::radians>::ka_unit>{0.0},
+    units::unit_t<frc::SimpleMotorFeedforward<units::radians>::kv_unit>{0.133},
+    units::volt_t{0.0},
+    units::radian_volt_kp_unit_t{1.0},
+    units::radian_volt_ki_unit_t{0},
+    units::radian_volt_kd_unit_t{0}};
+
+inline constexpr ShooterGains GAINS_DUNK{
+    units::unit_t<frc::SimpleMotorFeedforward<units::radians>::ka_unit>{0.0},
     units::unit_t<frc::SimpleMotorFeedforward<units::radians>::kv_unit>{0.15},
     units::volt_t{0.0},
     units::radian_volt_kp_unit_t{0.25},
@@ -229,7 +237,7 @@ inline constexpr units::scalar_t TRANSLATION_P = 10.0;
 inline constexpr units::scalar_t TRANSLATION_I = 0.0;
 inline constexpr units::scalar_t TRANSLATION_D = 0.0;
 
-inline constexpr units::scalar_t ROTATION_P = 10.0;
+inline constexpr units::scalar_t ROTATION_P = 5.0;
 inline constexpr units::scalar_t ROTATION_I = 0.0;
 inline constexpr units::scalar_t ROTATION_D = 0.05;
 
@@ -300,7 +308,7 @@ inline frc::SwerveDriveKinematics<4> KINEMATICS{
 namespace automation {
 inline constexpr frc::Translation2d BLUE_ALLIANCE_GOAL{0.475_m, 5.55_m};
 inline constexpr frc::Translation2d RED_ALLIANCE_GOAL{16.05_m, 5.55_m};
-inline constexpr units::meter_t GOOD_DISTANCE_FOR_SHOOTER = 116_in;
+inline constexpr units::meter_t GOOD_DISTANCE_FOR_SHOOTER = 95.827_in;
 inline constexpr units::meter_t SAFE_ZONE_LINE_BLUE = 2.196_m;
 inline constexpr units::meter_t SAFE_ZONE_LINE_RED = 14.26_m;
 }  // namespace automation
