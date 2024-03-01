@@ -161,7 +161,7 @@ inline constexpr ShooterGains GAINS{
 inline constexpr units::scalar_t SHOOTER_RATIO = 1.0;
 inline constexpr units::kilogram_square_meter_t SHOOTER_MOI = 0.001_kg_sq_m;
 inline constexpr units::radians_per_second_t SHOOTER_TOLERANCE = 100_rpm;
-inline constexpr units::radians_per_second_t SHOOTER_SPEED = 6000_rpm;
+inline constexpr units::radians_per_second_t SHOOTER_SPEED = 5200_rpm;
 inline constexpr units::radians_per_second_t SHOOTER_DUNK_SPEED = 2000_rpm;
 }  // namespace shooter
 
