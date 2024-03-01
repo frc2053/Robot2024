@@ -2,51 +2,38 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.4909467697143557,
-      "y": 7.32099199295044
+      "x": 1.3483245372772217,
+      "y": 5.565273284912109
     },
-    "rotation": -179.22663483541484
+    "rotation": 179.9775026064942
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "FourNote.1"
+                }
+              },
               {
                 "type": "named",
                 "data": {
                   "name": "SpinUpShooter"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "AmpSide.1"
                 }
               }
             ]
           }
         },
         {
-          "type": "sequential",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "SpinUpShooter"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "FeedNote"
-                }
-              }
-            ]
+            "name": "FeedNote"
           }
         },
         {
@@ -56,7 +43,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "AmpSide.2"
+                  "pathName": "FourNote.2"
                 }
               },
               {
@@ -94,13 +81,70 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "AmpSide.3"
+                  "pathName": "FourNote.3"
                 }
               },
               {
                 "type": "named",
                 "data": {
                   "name": "IntakeNote"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "SpinUpShooter"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "FeedNote"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "FourNote.4"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeNote"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "SpinUpShooter"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "FeedNote"
                 }
               }
             ]

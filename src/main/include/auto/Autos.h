@@ -26,7 +26,9 @@ enum CommandSelector {
   MIDDLE_OF_DRIVER_STATION,
   MOVE_OUT,
   MIDDLE_SUB,
-  AMP_SIDE_SINGLE
+  AMP_SIDE_SINGLE,
+  FOUR_NOTE,
+  PODIUM_NOTE
 };
 
 class Autos {
@@ -66,7 +68,10 @@ class Autos {
         std::pair{MIDDLE_SUB,
                   pathplanner::PathPlannerAuto{"MiddleSub"}.ToPtr()},
         std::pair{AMP_SIDE_SINGLE,
-                  pathplanner::PathPlannerAuto("AmpSideSingle").ToPtr()});
+                  pathplanner::PathPlannerAuto("AmpSideSingle").ToPtr()},
+        std::pair{FOUR_NOTE, pathplanner::PathPlannerAuto("FourNote").ToPtr()},
+        std::pair{PODIUM_NOTE,
+                  pathplanner::PathPlannerAuto("PodiumNote").ToPtr()});
 
     chooser.SetDefaultOption("Do Nothing", CommandSelector::DO_NOTHING);
     chooser.AddOption("Drive in Square", CommandSelector::SQUARE);
@@ -77,6 +82,8 @@ class Autos {
     chooser.AddOption("Move Out", CommandSelector::MOVE_OUT);
     chooser.AddOption("Middle Sub", CommandSelector::MIDDLE_SUB);
     chooser.AddOption("Amp Side Single", CommandSelector::AMP_SIDE_SINGLE);
+    chooser.AddOption("Four Note", CommandSelector::FOUR_NOTE);
+    chooser.AddOption("Podium Note", CommandSelector::PODIUM_NOTE);
 
     frc::SmartDashboard::PutData("Auto Chooser", &chooser);
   }
