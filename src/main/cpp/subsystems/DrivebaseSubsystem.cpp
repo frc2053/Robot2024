@@ -419,8 +419,8 @@ frc2::CommandPtr DrivebaseSubsystem::GoToPose(
                rotationController.SetSetpoint(
                    poseToGoTo().Rotation().Radians().value());
                lastPoseInMoveToArc = poseToGoTo();
-               xTranslationController.SetTolerance(0.1524);
-               yTranslationController.SetTolerance(0.1524);
+               xTranslationController.SetTolerance(0.0762);
+               yTranslationController.SetTolerance(0.0762);
                rotationController.SetTolerance(0.0349066);
                swerveDrive.GetField()
                    .GetObject("Pose to go to")
