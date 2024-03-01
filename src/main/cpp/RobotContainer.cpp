@@ -59,6 +59,8 @@ void RobotContainer::ConfigureBindings() {
                     .Radians();
               })));
 
+  driverController.Start().OnTrue(driveSub.ZeroYawCMD());
+
   driveSub.SetDefaultCommand(driveSub.DriveFactory(
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
       DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
