@@ -49,7 +49,7 @@ void DrivebaseSubsystem::SetupAutoBuilder() {
               constants::swerve::pathplanning::ROTATION_D},
           constants::swerve::physical::MAX_LINEAR_SPEED_FOC,
           constants::swerve::physical::WHEELBASE_LENGTH / 2,
-          pathplanner::ReplanningConfig{false}),
+          pathplanner::ReplanningConfig{true, true, .25_m, .25_m}),
       [this] { return ShouldMirrorPath(); }, this);
 }
 
@@ -151,16 +151,16 @@ frc2::CommandPtr DrivebaseSubsystem::ResetPosition(
   });
 }
 
-frc2::CommandPtr DrivebaseSubsystem::DriveFactory(std::function<double()> fow,
-                                                  std::function<double()> side,
-                                                  std::function<double()> rot) {
+frc2::CommandPtr DrivebaseSubsystem::DriveFactory(
+    std::function<double()> fow, std::function<double()> side,
+    std::function<double()> rot, std::function<bool()> fieldOriented) {
   return frc2::RunCommand(
-             [this, fow, side, rot]() {
+             [this, fow, side, rot, fieldOriented]() {
                swerveDrive.Drive(
                    fow() * constants::swerve::physical::MAX_LINEAR_SPEED,
                    side() * constants::swerve::physical::MAX_LINEAR_SPEED,
                    rot() * constants::swerve::physical::MAX_ROTATION_SPEED,
-                   true);
+                   true, fieldOriented());
              },
              {this})
       .ToPtr()

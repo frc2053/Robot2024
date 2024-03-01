@@ -6,6 +6,7 @@
 
 #include <frc2/command/CommandScheduler.h>
 #include <str/DataUtils.h>
+#include <wpinet/PortForwarder.h>
 
 void Robot::RobotInit() {
   str::DataUtils::SetupDataLogging();
@@ -14,6 +15,7 @@ void Robot::RobotInit() {
               1 / 250_Hz);
 
   pdh.ClearStickyFaults();
+  wpi::PortForwarder::GetInstance().Add(5800, "10.20.53.54", 5800);
 }
 
 void Robot::RobotPeriodic() {

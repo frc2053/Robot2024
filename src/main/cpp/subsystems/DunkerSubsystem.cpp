@@ -17,11 +17,8 @@ DunkerSubsystem::DunkerSubsystem() {
 }
 
 frc2::CommandPtr DunkerSubsystem::PivotDunkNotesOut() {
-  return frc2::cmd::Sequence(
-      frc2::cmd::RunOnce(
-          [this] { SetPivotGoal(constants::dunker::DUNKER_OUT_ANGLE); },
-          {this}),
-      frc2::cmd::WaitUntil([this] { return IsPivotAtGoal(); }));
+  return frc2::cmd::Sequence(frc2::cmd::RunOnce(
+      [this] { SetPivotGoal(constants::dunker::DUNKER_OUT_ANGLE); }, {this}));
 }
 
 frc2::CommandPtr DunkerSubsystem::PivotDunkNotesIn() {

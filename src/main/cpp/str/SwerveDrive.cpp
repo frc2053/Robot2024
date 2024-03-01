@@ -90,10 +90,18 @@ void SwerveDrive::Drive(units::meters_per_second_t vx,
       rotationOffset = frc::Rotation2d{units::radian_t{std::numbers::pi}};
     }
   }
-  frc::ChassisSpeeds newChassisSpeeds =
-      frc::ChassisSpeeds::FromFieldRelativeSpeeds(
-          vx, vy, omega, GetHeading() + rotationOffset);
-  SetChassisSpeeds(newChassisSpeeds, openLoop);
+  if (fieldOriented) {
+    frc::ChassisSpeeds newChassisSpeeds =
+        frc::ChassisSpeeds::FromFieldRelativeSpeeds(
+            vx, vy, omega, GetHeading() + rotationOffset);
+    SetChassisSpeeds(newChassisSpeeds, openLoop);
+  } else {
+    frc::ChassisSpeeds robotSpeeds;
+    robotSpeeds.vx = vx;
+    robotSpeeds.vy = vy;
+    robotSpeeds.omega = omega;
+    SetChassisSpeeds(robotSpeeds, openLoop);
+  }
 }
 
 void SwerveDrive::TareEverything() {

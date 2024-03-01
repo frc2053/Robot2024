@@ -62,7 +62,8 @@ void RobotContainer::ConfigureBindings() {
   driveSub.SetDefaultCommand(driveSub.DriveFactory(
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
       DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
-      DeadbandAndSquare([this] { return -driverController.GetRightX(); })));
+      DeadbandAndSquare([this] { return -driverController.GetRightX(); }),
+      [] { return true; }));
 
   driverController.Y().OnTrue(driveSub.TurnToAngleFactory(
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
@@ -99,6 +100,12 @@ void RobotContainer::ConfigureBindings() {
             ShouldFlipAngleForDriver(180_deg), 0_deg_per_s};
       },
       [this] { return std::abs(driverController.GetRightX()) > 0.1; }));
+
+  driverController.LeftBumper().WhileTrue(driveSub.DriveFactory(
+      DeadbandAndSquare([this] { return driverController.GetLeftY(); }),
+      DeadbandAndSquare([this] { return driverController.GetLeftX(); }),
+      DeadbandAndSquare([this] { return driverController.GetRightX(); }),
+      [] { return false; }));
 
   frc::SmartDashboard::PutBoolean("Drivebase/DoneWithStep", false);
 
