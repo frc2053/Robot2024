@@ -73,6 +73,7 @@ class DrivebaseSubsystem : public frc2::SubsystemBase {
   bool InSafeZone();
   frc::Pose2d CalculateClosestGoodShooterPoint();
   frc::Pose2d CalculateClosestSafeSpot();
+  frc::Pose2d BestShooterPoint();
   frc2::CommandPtr PathfindToSafeSpot(std::function<frc::Pose2d()> poseToGoTo);
   frc2::CommandPtr GoToPose(std::function<frc::Pose2d()> poseToGoTo);
   frc2::CommandPtr MoveAlongArc(std::function<double()> joystick,

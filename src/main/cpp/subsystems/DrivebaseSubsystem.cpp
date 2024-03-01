@@ -371,6 +371,29 @@ frc::Pose2d DrivebaseSubsystem::CalculateClosestSafeSpot() {
   return closestSafeSpot;
 }
 
+frc::Pose2d DrivebaseSubsystem::BestShooterPoint() {
+  frc::Translation2d goodPoint;
+  frc::Pose2d retVal;
+  auto allyValue = frc::DriverStation::GetAlliance();
+  if (allyValue) {
+    if (allyValue.value() == frc::DriverStation::Alliance::kRed) {
+      goodPoint =
+          constants::swerve::automation::RED_ALLIANCE_GOAL -
+          frc::Translation2d{
+              constants::swerve::automation::GOOD_DISTANCE_FOR_SHOOTER, 0_m};
+      retVal = frc::Pose2d{goodPoint, frc::Rotation2d{0_deg}};
+    } else {
+      goodPoint =
+          constants::swerve::automation::BLUE_ALLIANCE_GOAL +
+          frc::Translation2d{
+              constants::swerve::automation::GOOD_DISTANCE_FOR_SHOOTER, 0_m};
+      retVal = frc::Pose2d{goodPoint, frc::Rotation2d{180_deg}};
+    }
+  }
+  swerveDrive.GetField().GetObject("Good shooting point")->SetPose(retVal);
+  return retVal;
+}
+
 frc2::CommandPtr DrivebaseSubsystem::PathfindToSafeSpot(
     std::function<frc::Pose2d()> poseToGoTo) {
   return pathplanner::AutoBuilder::pathfindToPose(
@@ -414,7 +437,17 @@ frc2::CommandPtr DrivebaseSubsystem::GoToPose(
             units::radians_per_second_t thetaOutput{
                 rotationController.Calculate(
                     currentPose.Rotation().Radians().value())};
-            swerveDrive.Drive(xOutput, yOutput, thetaOutput, false, false);
+            auto allyValue = frc::DriverStation::GetAlliance();
+            bool fieldOriented = true;
+            if (allyValue) {
+              if (allyValue.value() == frc::DriverStation::Alliance::kRed) {
+                fieldOriented = false;
+              } else {
+                fieldOriented = true;
+              }
+            }
+            swerveDrive.Drive(xOutput, yOutput, thetaOutput, false,
+                              fieldOriented);
           },
           {this}))
       .Until([this] {

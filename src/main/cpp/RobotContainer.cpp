@@ -40,24 +40,10 @@ void RobotContainer::ConfigureBindings() {
       [this] { return driveSub.CalcDistanceFromSpeaker(); }));
   operatorController.B().OnFalse(NotUsingShooter());
 
-  driverController.RightBumper().WhileTrue(
-      frc2::cmd::Defer(GetAStarCmd(), {&driveSub})
-          .Unless([this] { return driveSub.InSafeZone(); })
-          .AndThen(driveSub.GoToPose([this] {
-            frc::Pose2d closestPoint =
-                driveSub.CalculateClosestGoodShooterPoint();
-            return closestPoint;
-          }))
-          .AndThen(driveSub.MoveAlongArc(
-              [this] {
-                return frc::ApplyDeadband<double>(-driverController.GetLeftX(),
-                                                  .1);
-              },
-              [this] {
-                return driveSub.CalculateClosestGoodShooterPoint()
-                    .Rotation()
-                    .Radians();
-              })));
+  driverController.RightBumper().WhileTrue(driveSub.GoToPose([this] {
+    frc::Pose2d closestPoint = driveSub.BestShooterPoint();
+    return closestPoint;
+  }));
 
   driverController.Start().OnTrue(driveSub.ZeroYawCMD());
 
