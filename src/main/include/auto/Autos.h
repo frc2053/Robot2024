@@ -13,6 +13,7 @@
 #include "frc2/command/CommandPtr.h"
 #include "frc2/command/PrintCommand.h"
 #include "subsystems/DrivebaseSubsystem.h"
+#include "subsystems/DunkerSubsystem.h"
 #include "subsystems/IntakeSubsystem.h"
 #include "subsystems/ShooterSubsystem.h"
 
@@ -28,14 +29,18 @@ enum CommandSelector {
   MIDDLE_SUB,
   AMP_SIDE_SINGLE,
   FOUR_NOTE,
-  PODIUM_NOTE
+  PODIUM_NOTE,
+  RUIN_UR_DAY
 };
 
 class Autos {
  public:
   explicit Autos(DrivebaseSubsystem& driveSub, ShooterSubsystem& shooterSub,
-                 IntakeSubsystem& intakeSub)
-      : m_driveSub(driveSub), m_shooterSub(shooterSub), m_intakeSub(intakeSub) {
+                 IntakeSubsystem& intakeSub, DunkerSubsystem& dunkSub)
+      : m_driveSub(driveSub),
+        m_shooterSub(shooterSub),
+        m_intakeSub(intakeSub),
+        m_dunkerSub(dunkSub) {
     pathplanner::NamedCommands::registerCommand(
         "TestCommandPrint",
         frc2::PrintCommand("Test Print from PP Command").ToPtr());
@@ -57,6 +62,18 @@ class Autos {
     pathplanner::NamedCommands::registerCommand(
         "FeedNote", intakeSub.SuckInNotes().WithTimeout(1_s));
 
+    pathplanner::NamedCommands::registerCommand(
+        "ReadyToDunk",
+        shooterSub.GoToVelocityCmd([] { return 2000_rpm; }, [] { return true; })
+            .AlongWith(
+                dunkSub.PivotDunkNotesOut().AndThen(dunkSub.DunkTheNotes())));
+
+    pathplanner::NamedCommands::registerCommand(
+        "ResetDunker",
+        shooterSub.GoToVelocityCmd([] { return 0_rpm; }, [] { return true; })
+            .AlongWith(
+                dunkSub.StopDunking().AndThen(dunkSub.PivotDunkNotesIn())));
+
     GetSelectedAutoCmd = frc2::cmd::Select<CommandSelector>(
         [this] { return chooser.GetSelected(); },
         std::pair{DO_NOTHING,
@@ -76,7 +93,9 @@ class Autos {
                   pathplanner::PathPlannerAuto("AmpSideSingle").ToPtr()},
         std::pair{FOUR_NOTE, pathplanner::PathPlannerAuto("FourNote").ToPtr()},
         std::pair{PODIUM_NOTE,
-                  pathplanner::PathPlannerAuto("PodiumNote").ToPtr()});
+                  pathplanner::PathPlannerAuto("PodiumNote").ToPtr()},
+        std::pair{RUIN_UR_DAY,
+                  pathplanner::PathPlannerAuto("RuinUrDay").ToPtr()});
 
     chooser.SetDefaultOption("Do Nothing", CommandSelector::DO_NOTHING);
     chooser.AddOption("Drive in Square", CommandSelector::SQUARE);
@@ -89,6 +108,7 @@ class Autos {
     chooser.AddOption("Amp Side Single", CommandSelector::AMP_SIDE_SINGLE);
     chooser.AddOption("Four Note", CommandSelector::FOUR_NOTE);
     chooser.AddOption("Podium Note", CommandSelector::PODIUM_NOTE);
+    chooser.AddOption("Ruin Ur Day", CommandSelector::RUIN_UR_DAY);
 
     frc::SmartDashboard::PutData("Auto Chooser", &chooser);
   }
@@ -96,6 +116,7 @@ class Autos {
   DrivebaseSubsystem& m_driveSub;
   ShooterSubsystem& m_shooterSub;
   IntakeSubsystem& m_intakeSub;
+  DunkerSubsystem& m_dunkerSub;
 
   frc::SendableChooser<CommandSelector> chooser;
 
