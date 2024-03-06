@@ -182,8 +182,7 @@ void ShooterSubsystem::InitSendable(wpi::SendableBuilder& builder) {
             .value();
       },
       [this](double newSetpointRpm) {
-        GoToVelocity(units::revolutions_per_minute_t{newSetpointRpm},
-                     [] { return false; });
+        GoToVelocity(units::revolutions_per_minute_t{newSetpointRpm}, false);
       });
   builder.AddDoubleProperty(
       "Left Current Velocity (RPM)",
