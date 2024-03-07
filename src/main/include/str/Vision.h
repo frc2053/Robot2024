@@ -26,14 +26,40 @@ class Vision {
     frc::AprilTagFieldLayout layout =
         frc::LoadAprilTagLayoutField(frc::AprilTagField::k2024Crescendo);
 
-    photonEstimator = std::make_unique<photon::PhotonPoseEstimator>(
+    flPhotonEstimator = std::make_unique<photon::PhotonPoseEstimator>(
         layout, photon::PoseStrategy::MULTI_TAG_PNP_ON_COPROCESSOR,
-        std::move(photon::PhotonCamera(constants::vision::kCameraName)),
-        constants::vision::kRobotToCam);
-    camera = photonEstimator->GetCamera();
-    camera->SetVersionCheckEnabled(false);
+        std::move(photon::PhotonCamera(constants::vision::kflCameraName)),
+        constants::vision::kflRobotToCam);
+    flCamera = flPhotonEstimator->GetCamera();
+    flCamera->SetVersionCheckEnabled(false);
+    flPhotonEstimator->SetMultiTagFallbackStrategy(
+        photon::PoseStrategy::LOWEST_AMBIGUITY);
 
-    photonEstimator->SetMultiTagFallbackStrategy(
+    frPhotonEstimator = std::make_unique<photon::PhotonPoseEstimator>(
+        layout, photon::PoseStrategy::MULTI_TAG_PNP_ON_COPROCESSOR,
+        std::move(photon::PhotonCamera(constants::vision::kfrCameraName)),
+        constants::vision::kfrRobotToCam);
+    frCamera = frPhotonEstimator->GetCamera();
+    frCamera->SetVersionCheckEnabled(false);
+    frPhotonEstimator->SetMultiTagFallbackStrategy(
+        photon::PoseStrategy::LOWEST_AMBIGUITY);
+
+    blPhotonEstimator = std::make_unique<photon::PhotonPoseEstimator>(
+        layout, photon::PoseStrategy::MULTI_TAG_PNP_ON_COPROCESSOR,
+        std::move(photon::PhotonCamera(constants::vision::kblCameraName)),
+        constants::vision::kblRobotToCam);
+    blCamera = blPhotonEstimator->GetCamera();
+    blCamera->SetVersionCheckEnabled(false);
+    blPhotonEstimator->SetMultiTagFallbackStrategy(
+        photon::PoseStrategy::LOWEST_AMBIGUITY);
+
+    brPhotonEstimator = std::make_unique<photon::PhotonPoseEstimator>(
+        layout, photon::PoseStrategy::MULTI_TAG_PNP_ON_COPROCESSOR,
+        std::move(photon::PhotonCamera(constants::vision::kbrCameraName)),
+        constants::vision::kbrRobotToCam);
+    brCamera = brPhotonEstimator->GetCamera();
+    brCamera->SetVersionCheckEnabled(false);
+    brPhotonEstimator->SetMultiTagFallbackStrategy(
         photon::PoseStrategy::LOWEST_AMBIGUITY);
 
     if (frc::RobotBase::IsSimulation()) {
@@ -49,49 +75,234 @@ class Vision {
       cameraProp->SetAvgLatency(20_ms);
       cameraProp->SetLatencyStdDev(15_ms);
 
-      cameraSim = std::make_shared<photon::PhotonCameraSim>(camera.get(),
+      cameraSim = std::make_shared<photon::PhotonCameraSim>(flCamera.get(),
                                                             *cameraProp.get());
 
-      visionSim->AddCamera(cameraSim.get(), robotToCam);
+      visionSim->AddCamera(cameraSim.get(), constants::vision::kflRobotToCam);
       cameraSim->EnableDrawWireframe(true);
     }
   }
 
-  photon::PhotonPipelineResult GetLatestResult() {
-    return camera->GetLatestResult();
+  photon::PhotonPipelineResult GetLatestResultFL() {
+    return flCamera->GetLatestResult();
   }
 
-  std::optional<photon::EstimatedRobotPose> GetEstimatedGlobalPose() {
-    auto visionEst = photonEstimator->Update();
-    units::second_t latestTimestamp = camera->GetLatestResult().GetTimestamp();
+  std::optional<photon::EstimatedRobotPose> GetFLEstimatedGlobalPose() {
+    auto visionEst = flPhotonEstimator->Update();
+    units::second_t latestTimestamp =
+        flCamera->GetLatestResult().GetTimestamp();
     bool newResult =
-        units::math::abs(latestTimestamp - lastEstTimestamp) > 1e-5_s;
+        units::math::abs(latestTimestamp - fllastEstTimestamp) > 1e-5_s;
     if (frc::RobotBase::IsSimulation()) {
       if (visionEst.has_value()) {
         GetSimDebugField()
-            .GetObject("VisionEstimation")
+            .GetObject("FLVisionEstimation")
             ->SetPose(visionEst.value().estimatedPose.ToPose2d());
       } else {
         if (newResult) {
-          GetSimDebugField().GetObject("VisionEstimation")->SetPoses({});
+          GetSimDebugField().GetObject("FLVisionEstimation")->SetPoses({});
         }
       }
     }
     if (newResult) {
-      lastEstTimestamp = latestTimestamp;
+      fllastEstTimestamp = latestTimestamp;
     }
     return visionEst;
   }
 
-  Eigen::Matrix<double, 3, 1> GetEstimationStdDevs(frc::Pose2d estimatedPose) {
+  photon::PhotonPipelineResult GetLatestResultFR() {
+    return frCamera->GetLatestResult();
+  }
+
+  std::optional<photon::EstimatedRobotPose> GetFREstimatedGlobalPose() {
+    auto visionEst = frPhotonEstimator->Update();
+    units::second_t latestTimestamp =
+        frCamera->GetLatestResult().GetTimestamp();
+    bool newResult =
+        units::math::abs(latestTimestamp - frlastEstTimestamp) > 1e-5_s;
+    if (frc::RobotBase::IsSimulation()) {
+      if (visionEst.has_value()) {
+        GetSimDebugField()
+            .GetObject("FRVisionEstimation")
+            ->SetPose(visionEst.value().estimatedPose.ToPose2d());
+      } else {
+        if (newResult) {
+          GetSimDebugField().GetObject("FRVisionEstimation")->SetPoses({});
+        }
+      }
+    }
+    if (newResult) {
+      frlastEstTimestamp = latestTimestamp;
+    }
+    return visionEst;
+  }
+
+  photon::PhotonPipelineResult GetLatestResultBL() {
+    return blCamera->GetLatestResult();
+  }
+
+  std::optional<photon::EstimatedRobotPose> GetBLEstimatedGlobalPose() {
+    auto visionEst = blPhotonEstimator->Update();
+    units::second_t latestTimestamp =
+        blCamera->GetLatestResult().GetTimestamp();
+    bool newResult =
+        units::math::abs(latestTimestamp - bllastEstTimestamp) > 1e-5_s;
+    if (frc::RobotBase::IsSimulation()) {
+      if (visionEst.has_value()) {
+        GetSimDebugField()
+            .GetObject("BLVisionEstimation")
+            ->SetPose(visionEst.value().estimatedPose.ToPose2d());
+      } else {
+        if (newResult) {
+          GetSimDebugField().GetObject("BLVisionEstimation")->SetPoses({});
+        }
+      }
+    }
+    if (newResult) {
+      bllastEstTimestamp = latestTimestamp;
+    }
+    return visionEst;
+  }
+
+  photon::PhotonPipelineResult GetLatestResultBR() {
+    return brCamera->GetLatestResult();
+  }
+
+  std::optional<photon::EstimatedRobotPose> GetBREstimatedGlobalPose() {
+    auto visionEst = brPhotonEstimator->Update();
+    units::second_t latestTimestamp =
+        brCamera->GetLatestResult().GetTimestamp();
+    bool newResult =
+        units::math::abs(latestTimestamp - brlastEstTimestamp) > 1e-5_s;
+    if (frc::RobotBase::IsSimulation()) {
+      if (visionEst.has_value()) {
+        GetSimDebugField()
+            .GetObject("BRVisionEstimation")
+            ->SetPose(visionEst.value().estimatedPose.ToPose2d());
+      } else {
+        if (newResult) {
+          GetSimDebugField().GetObject("BRVisionEstimation")->SetPoses({});
+        }
+      }
+    }
+    if (newResult) {
+      brlastEstTimestamp = latestTimestamp;
+    }
+    return visionEst;
+  }
+
+  Eigen::Matrix<double, 3, 1> GetFLEstimationStdDevs(
+      frc::Pose2d estimatedPose) {
     Eigen::Matrix<double, 3, 1> estStdDevs =
         constants::vision::kSingleTagStdDevs;
-    auto targets = GetLatestResult().GetTargets();
+    auto targets = GetLatestResultFL().GetTargets();
     int numTags = 0;
     units::meter_t avgDist = 0_m;
     for (const auto& tgt : targets) {
       auto tagPose =
-          photonEstimator->GetFieldLayout().GetTagPose(tgt.GetFiducialId());
+          flPhotonEstimator->GetFieldLayout().GetTagPose(tgt.GetFiducialId());
+      if (tagPose.has_value()) {
+        numTags++;
+        avgDist += tagPose.value().ToPose2d().Translation().Distance(
+            estimatedPose.Translation());
+      }
+    }
+    if (numTags == 0) {
+      return estStdDevs;
+    }
+    avgDist /= numTags;
+    if (numTags > 1) {
+      estStdDevs = constants::vision::kMultiTagStdDevs;
+    }
+    if (numTags == 1 && avgDist > 4_m) {
+      estStdDevs = (Eigen::MatrixXd(3, 1) << std::numeric_limits<double>::max(),
+                    std::numeric_limits<double>::max(),
+                    std::numeric_limits<double>::max())
+                       .finished();
+    } else {
+      estStdDevs = estStdDevs * (1 + (avgDist.value() * avgDist.value() / 30));
+    }
+    return estStdDevs;
+  }
+
+  Eigen::Matrix<double, 3, 1> GetFREstimationStdDevs(
+      frc::Pose2d estimatedPose) {
+    Eigen::Matrix<double, 3, 1> estStdDevs =
+        constants::vision::kSingleTagStdDevs;
+    auto targets = GetLatestResultFR().GetTargets();
+    int numTags = 0;
+    units::meter_t avgDist = 0_m;
+    for (const auto& tgt : targets) {
+      auto tagPose =
+          frPhotonEstimator->GetFieldLayout().GetTagPose(tgt.GetFiducialId());
+      if (tagPose.has_value()) {
+        numTags++;
+        avgDist += tagPose.value().ToPose2d().Translation().Distance(
+            estimatedPose.Translation());
+      }
+    }
+    if (numTags == 0) {
+      return estStdDevs;
+    }
+    avgDist /= numTags;
+    if (numTags > 1) {
+      estStdDevs = constants::vision::kMultiTagStdDevs;
+    }
+    if (numTags == 1 && avgDist > 4_m) {
+      estStdDevs = (Eigen::MatrixXd(3, 1) << std::numeric_limits<double>::max(),
+                    std::numeric_limits<double>::max(),
+                    std::numeric_limits<double>::max())
+                       .finished();
+    } else {
+      estStdDevs = estStdDevs * (1 + (avgDist.value() * avgDist.value() / 30));
+    }
+    return estStdDevs;
+  }
+
+  Eigen::Matrix<double, 3, 1> GetBLEstimationStdDevs(
+      frc::Pose2d estimatedPose) {
+    Eigen::Matrix<double, 3, 1> estStdDevs =
+        constants::vision::kSingleTagStdDevs;
+    auto targets = GetLatestResultBL().GetTargets();
+    int numTags = 0;
+    units::meter_t avgDist = 0_m;
+    for (const auto& tgt : targets) {
+      auto tagPose =
+          blPhotonEstimator->GetFieldLayout().GetTagPose(tgt.GetFiducialId());
+      if (tagPose.has_value()) {
+        numTags++;
+        avgDist += tagPose.value().ToPose2d().Translation().Distance(
+            estimatedPose.Translation());
+      }
+    }
+    if (numTags == 0) {
+      return estStdDevs;
+    }
+    avgDist /= numTags;
+    if (numTags > 1) {
+      estStdDevs = constants::vision::kMultiTagStdDevs;
+    }
+    if (numTags == 1 && avgDist > 4_m) {
+      estStdDevs = (Eigen::MatrixXd(3, 1) << std::numeric_limits<double>::max(),
+                    std::numeric_limits<double>::max(),
+                    std::numeric_limits<double>::max())
+                       .finished();
+    } else {
+      estStdDevs = estStdDevs * (1 + (avgDist.value() * avgDist.value() / 30));
+    }
+    return estStdDevs;
+  }
+
+  Eigen::Matrix<double, 3, 1> GetBREstimationStdDevs(
+      frc::Pose2d estimatedPose) {
+    Eigen::Matrix<double, 3, 1> estStdDevs =
+        constants::vision::kSingleTagStdDevs;
+    auto targets = GetLatestResultBR().GetTargets();
+    int numTags = 0;
+    units::meter_t avgDist = 0_m;
+    for (const auto& tgt : targets) {
+      auto tagPose =
+          brPhotonEstimator->GetFieldLayout().GetTagPose(tgt.GetFiducialId());
       if (tagPose.has_value()) {
         numTags++;
         avgDist += tagPose.value().ToPose2d().Translation().Distance(
@@ -129,11 +340,19 @@ class Vision {
   frc::Field2d& GetSimDebugField() { return visionSim->GetDebugField(); }
 
  private:
-  frc::Transform3d robotToCam = constants::vision::kRobotToCam;
-  std::unique_ptr<photon::PhotonPoseEstimator> photonEstimator;
-  std::shared_ptr<photon::PhotonCamera> camera;
+  std::unique_ptr<photon::PhotonPoseEstimator> flPhotonEstimator;
+  std::unique_ptr<photon::PhotonPoseEstimator> frPhotonEstimator;
+  std::unique_ptr<photon::PhotonPoseEstimator> blPhotonEstimator;
+  std::unique_ptr<photon::PhotonPoseEstimator> brPhotonEstimator;
+  std::shared_ptr<photon::PhotonCamera> flCamera;
+  std::shared_ptr<photon::PhotonCamera> frCamera;
+  std::shared_ptr<photon::PhotonCamera> blCamera;
+  std::shared_ptr<photon::PhotonCamera> brCamera;
   std::unique_ptr<photon::VisionSystemSim> visionSim;
   std::unique_ptr<photon::SimCameraProperties> cameraProp;
   std::shared_ptr<photon::PhotonCameraSim> cameraSim;
-  units::second_t lastEstTimestamp{0_s};
+  units::second_t fllastEstTimestamp{0_s};
+  units::second_t frlastEstTimestamp{0_s};
+  units::second_t bllastEstTimestamp{0_s};
+  units::second_t brlastEstTimestamp{0_s};
 };

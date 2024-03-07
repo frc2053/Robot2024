@@ -16,18 +16,50 @@ void Robot::RobotInit() {
 
   pdh.ClearStickyFaults();
   wpi::PortForwarder::GetInstance().Add(5800, "10.20.53.54", 5800);
+  wpi::PortForwarder::GetInstance().Add(5800, "10.20.53.55", 5800);
 }
 
 void Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
   // nt::NetworkTableInstance::GetDefault().Flush();
 
-  auto visionEst = m_container.GetVisionSystem().GetEstimatedGlobalPose();
-  if (visionEst.has_value()) {
-    auto est = visionEst.value();
+  auto flvisionEst = m_container.GetVisionSystem().GetFLEstimatedGlobalPose();
+  auto frvisionEst = m_container.GetVisionSystem().GetFREstimatedGlobalPose();
+  auto blvisionEst = m_container.GetVisionSystem().GetBLEstimatedGlobalPose();
+  auto brvisionEst = m_container.GetVisionSystem().GetBREstimatedGlobalPose();
+
+  if (flvisionEst.has_value()) {
+    auto est = flvisionEst.value();
     auto estPose = est.estimatedPose.ToPose2d();
     auto estStdDevs =
-        m_container.GetVisionSystem().GetEstimationStdDevs(estPose);
+        m_container.GetVisionSystem().GetFLEstimationStdDevs(estPose);
+    m_container.GetDrivebaseSubsystem().AddVisionMeasurement(
+        est.estimatedPose.ToPose2d(), est.timestamp, estStdDevs);
+  }
+
+  if (frvisionEst.has_value()) {
+    auto est = frvisionEst.value();
+    auto estPose = est.estimatedPose.ToPose2d();
+    auto estStdDevs =
+        m_container.GetVisionSystem().GetFREstimationStdDevs(estPose);
+    m_container.GetDrivebaseSubsystem().AddVisionMeasurement(
+        est.estimatedPose.ToPose2d(), est.timestamp, estStdDevs);
+  }
+
+  if (blvisionEst.has_value()) {
+    auto est = blvisionEst.value();
+    auto estPose = est.estimatedPose.ToPose2d();
+    auto estStdDevs =
+        m_container.GetVisionSystem().GetBLEstimationStdDevs(estPose);
+    m_container.GetDrivebaseSubsystem().AddVisionMeasurement(
+        est.estimatedPose.ToPose2d(), est.timestamp, estStdDevs);
+  }
+
+  if (brvisionEst.has_value()) {
+    auto est = brvisionEst.value();
+    auto estPose = est.estimatedPose.ToPose2d();
+    auto estStdDevs =
+        m_container.GetVisionSystem().GetBREstimationStdDevs(estPose);
     m_container.GetDrivebaseSubsystem().AddVisionMeasurement(
         est.estimatedPose.ToPose2d(), est.timestamp, estStdDevs);
   }

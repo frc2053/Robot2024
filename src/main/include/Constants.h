@@ -315,10 +315,31 @@ inline constexpr units::meter_t SAFE_ZONE_LINE_RED = 14.26_m;
 }  // namespace swerve
 
 namespace vision {
-inline constexpr std::string_view kCameraName{"apriltagcam"};
-inline const frc::Transform3d kRobotToCam{
-    frc::Translation3d{11.1992_in, 11.6461_in, 7.747680_in},
-    frc::Rotation3d{0_rad, -61.875_deg, -7.171507_deg}};
+inline constexpr std::string_view kflCameraName{"str_fl_cam"};
+inline constexpr std::string_view kfrCameraName{"str_fr_cam"};
+inline constexpr std::string_view kblCameraName{"str_bl_cam"};
+inline constexpr std::string_view kbrCameraName{"str_br_cam"};
+
+inline const frc::Transform3d kflRobotToCam{
+    frc::Translation3d{11.1992_in, 11.6461_in, 8.25_in},
+    frc::Rotation3d{0_rad, -28.125_deg, 0_deg}.RotateBy(
+        frc::Rotation3d{0.0_deg, 0.0_deg, 30_deg})};
+
+inline const frc::Transform3d kfrRobotToCam{
+    frc::Translation3d{11.1992_in, -11.6461_in, 8.25_in},
+    frc::Rotation3d{0_rad, -28.125_deg, 0_deg}.RotateBy(
+        frc::Rotation3d{0.0_deg, 0.0_deg, -30_deg})};
+
+inline const frc::Transform3d kblRobotToCam{
+    frc::Translation3d{-11.1992_in, 11.6461_in, 8.25_in},
+    frc::Rotation3d{0_rad, -28.125_deg, 0_deg}.RotateBy(
+        frc::Rotation3d{0.0_deg, 0.0_deg, 120_deg})};
+
+inline const frc::Transform3d kbrRobotToCam{
+    frc::Translation3d{-11.1992_in, -11.6461_in, 8.25_in},
+    frc::Rotation3d{0_rad, -28.125_deg, 0_deg}.RotateBy(
+        frc::Rotation3d{0.0_deg, 0.0_deg, -120_deg})};
+
 inline const Eigen::Matrix<double, 3, 1> kSingleTagStdDevs{4, 4, 8};
 inline const Eigen::Matrix<double, 3, 1> kMultiTagStdDevs{0.5, 0.5, 1};
 }  // namespace vision
