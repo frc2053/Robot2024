@@ -321,22 +321,22 @@ inline constexpr std::string_view kblCameraName{"str_bl_cam"};
 inline constexpr std::string_view kbrCameraName{"str_br_cam"};
 
 inline const frc::Transform3d kflRobotToCam{
-    frc::Translation3d{11.1992_in, 11.6461_in, 8.25_in},
+    frc::Translation3d{10_in, 12_in, 8.25_in},
     frc::Rotation3d{0_rad, -28.125_deg, 0_deg}.RotateBy(
         frc::Rotation3d{0.0_deg, 0.0_deg, 30_deg})};
 
 inline const frc::Transform3d kfrRobotToCam{
-    frc::Translation3d{11.1992_in, -11.6461_in, 8.25_in},
+    frc::Translation3d{10_in, -12_in, 8.25_in},
     frc::Rotation3d{0_rad, -28.125_deg, 0_deg}.RotateBy(
         frc::Rotation3d{0.0_deg, 0.0_deg, -30_deg})};
 
 inline const frc::Transform3d kblRobotToCam{
-    frc::Translation3d{-11.1992_in, 11.6461_in, 8.25_in},
+    frc::Translation3d{-10_in, 12_in, 8.25_in},
     frc::Rotation3d{0_rad, -28.125_deg, 0_deg}.RotateBy(
         frc::Rotation3d{0.0_deg, 0.0_deg, 120_deg})};
 
 inline const frc::Transform3d kbrRobotToCam{
-    frc::Translation3d{-11.1992_in, -11.6461_in, 8.25_in},
+    frc::Translation3d{-10_in, -12_in, 8.25_in},
     frc::Rotation3d{0_rad, -28.125_deg, 0_deg}.RotateBy(
         frc::Rotation3d{0.0_deg, 0.0_deg, -120_deg})};
 

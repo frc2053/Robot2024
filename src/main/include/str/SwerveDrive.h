@@ -5,6 +5,7 @@
 #pragma once
 
 #include <frc/estimator/SwerveDrivePoseEstimator.h>
+#include <frc/filter/SlewRateLimiter.h>
 #include <frc/geometry/Pose2d.h>
 #include <frc/kinematics/SwerveDriveKinematics.h>
 #include <frc/smartdashboard/Field2d.h>
@@ -70,6 +71,7 @@ class SwerveDrive {
                                 frc2::Requirements reqs);
   frc2::CommandPtr TuneDrivePID(std::function<bool()> done,
                                 frc2::Requirements reqs);
+  frc2::CommandPtr WheelRadiusCmd(frc2::Requirements reqs, double direction);
 
   frc::Field2d& GetField();
 
@@ -134,6 +136,14 @@ class SwerveDrive {
   units::second_t lastTime = 0_s;
   units::second_t currentTime = 0_s;
   units::second_t averageLoopTime = 0_s;
+
+  // wheel radius stuff
+  units::radian_t lastGyroYaw = 0_rad;
+  units::radian_t accumGyroYaw = 0_rad;
+  std::array<units::meter_t, 4> startWheelPositions;
+  units::meter_t effectiveWheelRadius = 0_m;
+  frc::SlewRateLimiter<units::radians_per_second> omegaLimiter{1_rad_per_s /
+                                                               1_s};
 
   // Logging
   frc::Field2d ntField{};
