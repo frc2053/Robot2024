@@ -548,6 +548,15 @@ void SwerveDrive::SetAllModulesToCurrent(units::volt_t voltsToSend) {
 
 void SwerveDrive::AddVisionMeasurement(const frc::Pose2d& visionMeasurement,
                                        units::second_t timestamp) {
+  // outside field, so we dont want to add this measurement to estimator,
+  // because we know its wrong
+  if (visionMeasurement.X() < 0_m || visionMeasurement.Y() < 0_m) {
+    return;
+  }
+  if (visionMeasurement.X() > layout.GetFieldLength() ||
+      visionMeasurement.Y() > layout.GetFieldWidth()) {
+    return;
+  }
   poseEstimator.AddVisionMeasurement(visionMeasurement, timestamp);
 }
 

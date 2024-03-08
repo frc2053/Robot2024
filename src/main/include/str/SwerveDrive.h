@@ -152,5 +152,8 @@ class SwerveDrive {
 
   // Logging
   frc::Field2d ntField{};
+
+  frc::AprilTagFieldLayout layout =
+      frc::LoadAprilTagLayoutField(frc::AprilTagField::k2024Crescendo);
 };
 }  // namespace str
