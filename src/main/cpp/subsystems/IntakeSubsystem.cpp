@@ -15,10 +15,12 @@ IntakeSubsystem::IntakeSubsystem() {
 
 // This method will be called once per scheduler run
 void IntakeSubsystem::Periodic() {
+  units::millimeter_t intakeDist = units::millimeter_t{intakeSensor.GetRange()};
+  filteredReading = intakeFilter.Calculate(intakeDist);
   frc::SmartDashboard::PutNumber("Intake/Sensor Distance",
-                                 units::millimeter_t{intakeSensor.GetRange()}
-                                     .convert<units::inches>()
-                                     .value());
+                                 intakeDist.convert<units::inches>().value());
+  frc::SmartDashboard::PutNumber("Intake/Filtered Sensor Distance",
+                                 filteredReading.value());
   frc::SmartDashboard::PutNumber("Intake/Motor Speed", intakeMotor.Get());
 }
 
@@ -74,6 +76,10 @@ frc2::CommandPtr IntakeSubsystem::SuckInUntilNoteIsSeen() {
 bool IntakeSubsystem::SeesNote() {
   return units::millimeter_t{intakeSensor.GetRange()} <=
          constants::intake::INTAKE_SENSOR_DISTANCE;
+}
+
+bool IntakeSubsystem::SensorFoundEdge() {
+  return filteredReading <= constants::intake::INTAKE_SENSOR_DISTANCE;
 }
 
 void IntakeSubsystem::SetIntakeSpeed(double speed) {

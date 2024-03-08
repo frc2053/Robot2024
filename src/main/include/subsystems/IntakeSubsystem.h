@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <frc/filter/LinearFilter.h>
 #include <frc2/command/Commands.h>
 #include <frc2/command/SubsystemBase.h>
 
@@ -37,8 +38,13 @@ class IntakeSubsystem : public frc2::SubsystemBase {
 #endif
 
   units::inch_t currentIntakeSensorReading = 0_in;
+  units::inch_t filteredReading = 0_in;
+
+  frc::LinearFilter<units::millimeter_t> intakeFilter =
+      frc::LinearFilter<units::millimeter_t>::HighPass(0.1, 0.02_s);
 
   void ConfigureMotors();
   void SetIntakeSpeed(double speed);
   bool SeesNote();
+  bool SensorFoundEdge();
 };
