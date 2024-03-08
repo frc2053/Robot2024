@@ -563,6 +563,15 @@ void SwerveDrive::AddVisionMeasurement(const frc::Pose2d& visionMeasurement,
 void SwerveDrive::AddVisionMeasurement(const frc::Pose2d& visionMeasurement,
                                        units::second_t timestamp,
                                        const Eigen::Vector3d& stdDevs) {
+  // outside field, so we dont want to add this measurement to estimator,
+  // because we know its wrong
+  if (visionMeasurement.X() < 0_m || visionMeasurement.Y() < 0_m) {
+    return;
+  }
+  if (visionMeasurement.X() > layout.GetFieldLength() ||
+      visionMeasurement.Y() > layout.GetFieldWidth()) {
+    return;
+  }
   wpi::array<double, 3> newStdDevs{stdDevs(0), stdDevs(1), stdDevs(2)};
   poseEstimator.AddVisionMeasurement(visionMeasurement, timestamp, newStdDevs);
 }
