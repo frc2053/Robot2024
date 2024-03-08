@@ -550,39 +550,47 @@ void SwerveDrive::AddVisionMeasurement(const frc::Pose2d& visionMeasurement,
   poseEstimator.AddVisionMeasurement(visionMeasurement, timestamp, newStdDevs);
 }
 
-// frc2::CommandPtr SwerveDrive::WheelRadiusCmd(frc2::Requirements reqs, double
-// direction) {
-//   return frc2::cmd::RunOnce([this] {
-//     lastGyroYaw = imuYaw;
-//     accumGyroYaw = 0_rad;
-//     for(int i = 0; i < 4; i++) {
-//       startWheelPositions[i] = swerveModules[i].GetMotorRotations() /
-//       constants::swerve::physical::DRIVE_GEARING;
-//     }
-//     omegaLimiter.Reset(0_rad_per_s);
-//     effectiveWheelRadius = 0_in;
-//   }, reqs).AndThen(
-//     frc2::cmd::RunEnd([this, direction] {
-//       Drive(0_mps, 0_mps, omegaLimiter.Calculate(0.1_rad_per_s * direction),
-//       true, false); accumGyroYaw += frc::AngleModulus(imuYaw - lastGyroYaw);
-//       lastGyroYaw = imuYaw;
-//       units::radian_t avgWheelPos = 0.0_rad;
-//       std::array<units::radian_t, 4> currentPositions;
-//       for(int i = 0; i < 4; i++) {
-//         currentPositions[i] = swerveModules[i].GetMotorRotations() /
-//         constants::swerve::physical::DRIVE_GEARING;
-//       }
-//       for(int i = 0; i < 4; i++) {
-//         avgWheelPos += units::math::abs(currentPositions[i] -
-//         startWheelPositions[i]);
-//       }
-//       avgWheelPos /= 4.0;
-//       effectiveWheelRadius = (accumGyroYaw *
-//       constants::swerve::physical::WHEELBASE_WIDTH) / avgWheelPos;
-//     }, [this] {
-//       Drive(0_mps, 0_mps, 0_rad_per_s, true, false);
-//       fmt::print("WHEEL RADIUS: {}\n",
-//       effectiveWheelRadius.convert<units::inches>().value());
-//     }, reqs)
-//   );
-// }
+frc2::CommandPtr SwerveDrive::WheelRadiusCmd(frc2::Requirements reqs,
+                                             double direction) {
+  return frc2::cmd::RunOnce(
+             [this] {
+               lastGyroYaw = imuYaw;
+               accumGyroYaw = 0_rad;
+               for (int i = 0; i < 4; i++) {
+                 startWheelPositions[i] =
+                     swerveModules[i].GetMotorRotations() /
+                     constants::swerve::physical::DRIVE_GEARING;
+               }
+               omegaLimiter.Reset(0_rad_per_s);
+               effectiveWheelRadius = 0_in;
+             },
+             reqs)
+      .AndThen(frc2::cmd::RunEnd(
+          [this, direction] {
+            Drive(0_mps, 0_mps,
+                  omegaLimiter.Calculate(0.1_rad_per_s * direction), true,
+                  false);
+            accumGyroYaw += frc::AngleModulus(imuYaw - lastGyroYaw);
+            lastGyroYaw = imuYaw;
+            units::radian_t avgWheelPos = 0.0_rad;
+            std::array<units::radian_t, 4> currentPositions;
+            for (int i = 0; i < 4; i++) {
+              currentPositions[i] = swerveModules[i].GetMotorRotations() /
+                                    constants::swerve::physical::DRIVE_GEARING;
+            }
+            for (int i = 0; i < 4; i++) {
+              avgWheelPos += units::math::abs(currentPositions[i] -
+                                              startWheelPositions[i]);
+            }
+            avgWheelPos /= 4.0;
+            effectiveWheelRadius =
+                (accumGyroYaw * constants::swerve::physical::WHEELBASE_WIDTH) /
+                avgWheelPos;
+          },
+          [this] {
+            Drive(0_mps, 0_mps, 0_rad_per_s, true, false);
+            fmt::print("WHEEL RADIUS: {}\n",
+                       effectiveWheelRadius.convert<units::inches>().value());
+          },
+          reqs));
+}

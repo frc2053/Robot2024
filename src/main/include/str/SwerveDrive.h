@@ -140,7 +140,7 @@ class SwerveDrive {
   // wheel radius stuff
   units::radian_t lastGyroYaw = 0_rad;
   units::radian_t accumGyroYaw = 0_rad;
-  std::array<units::meter_t, 4> startWheelPositions;
+  std::array<units::radian_t, 4> startWheelPositions;
   units::meter_t effectiveWheelRadius = 0_m;
   frc::SlewRateLimiter<units::radians_per_second> omegaLimiter{1_rad_per_s /
                                                                1_s};
