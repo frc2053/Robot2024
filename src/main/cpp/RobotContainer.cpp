@@ -129,6 +129,9 @@ void RobotContainer::ConfigureBindings() {
   frc::SmartDashboard::PutData("Drivebase/DonePathTuningCmd",
                                donePathTuningCmd.get());
 
+  testController.A().WhileTrue(driveSub.WheelRadFwd());
+  testController.B().WhileTrue(driveSub.WheelRadRev());
+
   // testController.Back().WhileTrue(
   //     driveSub.SysIdQuasistaticSteer(frc2::sysid::Direction::kForward));
   // testController.Start().WhileTrue(

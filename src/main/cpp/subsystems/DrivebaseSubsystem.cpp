@@ -555,3 +555,11 @@ frc2::CommandPtr DrivebaseSubsystem::SysIdDynamicDrive(
   return sysIdRoutineDrive.Dynamic(direction).BeforeStarting(
       [this] { ctre::phoenix6::SignalLogger::Start(); });
 }
+
+frc2::CommandPtr DrivebaseSubsystem::WheelRadFwd() {
+  return swerveDrive.WheelRadiusCmd({this}, 1.0);
+}
+
+frc2::CommandPtr DrivebaseSubsystem::WheelRadRev() {
+  return swerveDrive.WheelRadiusCmd({this}, -1.0);
+}

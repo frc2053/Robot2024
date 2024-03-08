@@ -59,6 +59,9 @@ class DrivebaseSubsystem : public frc2::SubsystemBase {
   frc2::CommandPtr SysIdQuasistaticDrive(frc2::sysid::Direction direction);
   frc2::CommandPtr SysIdDynamicDrive(frc2::sysid::Direction direction);
 
+  frc2::CommandPtr WheelRadFwd();
+  frc2::CommandPtr WheelRadRev();
+
   units::meter_t CalcDistanceFromSpeaker();
 
   void SetTranslationPIDs(double p, double i, double d);
