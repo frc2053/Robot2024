@@ -111,6 +111,7 @@ void SwerveDrive::TareEverything() {
   }
   poseEstimator.ResetPosition(imu.GetRotation2d(), modulePositions,
                               frc::Pose2d{});
+  odom.ResetPosition(imu.GetRotation2d(), modulePositions, frc::Pose2d{});
 }
 
 void SwerveDrive::SeedFieldRelative() {
@@ -121,6 +122,7 @@ void SwerveDrive::SeedFieldRelative() {
 void SwerveDrive::SeedFieldRelative(const frc::Pose2d& location) {
   fieldRelativeOffset = location.Rotation().Radians();
   poseEstimator.ResetPosition(location.Rotation(), modulePositions, location);
+  odom.ResetPosition(location.Rotation(), modulePositions, location);
 }
 
 void SwerveDrive::SetChassisSpeeds(const frc::ChassisSpeeds& newChassisSpeeds,
@@ -185,6 +187,7 @@ void SwerveDrive::Log() {
 
   ntField.GetObject("Estimated Robot Pose")->SetPose(GetPose());
   ntField.GetObject("Estimated Robot Modules")->SetPoses(GetModulePoses());
+  ntField.GetObject("Odom Pose")->SetPose(GetOdomPose());
 
   std::array<frc::SwerveModuleState, 4> moduleStates;
 
@@ -243,6 +246,10 @@ frc::Pose2d SwerveDrive::GetPose() const {
   return poseEstimator.GetEstimatedPosition();
 }
 
+frc::Pose2d SwerveDrive::GetOdomPose() const {
+  return odom.GetPose();
+}
+
 units::ampere_t SwerveDrive::GetCurrentDraw() const {
   return totalCurrentDraw;
 }
@@ -283,6 +290,7 @@ void SwerveDrive::UpdateOdometry() {
   imuRate = imu.GetAngularVelocityZWorld().GetValue();
   poseEstimator.Update(frc::Rotation2d{imuYaw + fieldRelativeOffset},
                        modulePositions);
+  odom.Update(frc::Rotation2d{imuYaw + fieldRelativeOffset}, modulePositions);
 }
 
 frc2::CommandPtr SwerveDrive::SelfTest(frc2::Requirements reqs) {

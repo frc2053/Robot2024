@@ -59,6 +59,7 @@ class SwerveDrive {
   frc::Rotation2d GetHeading() const;
   frc::Rotation2d GetGyroYaw() const;
   frc::Pose2d GetPose() const;
+  frc::Pose2d GetOdomPose() const;
   units::ampere_t GetCurrentDraw() const;
   std::array<frc::Pose2d, 4> GetModulePoses() const;
 
@@ -112,6 +113,10 @@ class SwerveDrive {
       swerveModules[2].GetPosition(true),
       swerveModules[3].GetPosition(true),
   };
+
+  frc::SwerveDriveOdometry<4> odom{constants::swerve::physical::KINEMATICS,
+                                   frc::Rotation2d{}, modulePositions,
+                                   frc::Pose2d{}};
 
   frc::SwerveDrivePoseEstimator<4> poseEstimator{
       constants::swerve::physical::KINEMATICS, frc::Rotation2d{},
