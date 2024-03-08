@@ -325,22 +325,22 @@ inline constexpr std::string_view kbrCameraName{"str_br_cam"};
 inline const frc::Transform3d kflRobotToCam{
     frc::Translation3d{10.273802_in, 11.7301_in, 8.25_in},
     frc::Rotation3d{0_rad, -28.125_deg, 0_deg}.RotateBy(
-        frc::Rotation3d{0.0_deg, 0.0_deg, 30_deg})};
+        frc::Rotation3d{0.0_deg, 0.0_deg, -30_deg})};
 
 inline const frc::Transform3d kfrRobotToCam{
     frc::Translation3d{10.273802_in, -11.7301_in, 8.25_in},
     frc::Rotation3d{0_rad, -28.125_deg, 0_deg}.RotateBy(
-        frc::Rotation3d{0.0_deg, 0.0_deg, -30_deg})};
+        frc::Rotation3d{0.0_deg, 0.0_deg, 30_deg})};
 
 inline const frc::Transform3d kblRobotToCam{
     frc::Translation3d{-10.273802_in, 11.7301_in, 8.25_in},
     frc::Rotation3d{0_rad, -28.125_deg, 0_deg}.RotateBy(
-        frc::Rotation3d{0.0_deg, 0.0_deg, 120_deg})};
+        frc::Rotation3d{0.0_deg, 0.0_deg, -120_deg})};
 
 inline const frc::Transform3d kbrRobotToCam{
     frc::Translation3d{-10.273802_in, -11.7301_in, 8.25_in},
     frc::Rotation3d{0_rad, -28.125_deg, 0_deg}.RotateBy(
-        frc::Rotation3d{0.0_deg, 0.0_deg, -120_deg})};
+        frc::Rotation3d{0.0_deg, 0.0_deg, 120_deg})};
 
 inline const Eigen::Matrix<double, 3, 1> kSingleTagStdDevs{4, 4, 8};
 inline const Eigen::Matrix<double, 3, 1> kMultiTagStdDevs{0.5, 0.5, 1};

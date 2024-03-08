@@ -191,14 +191,16 @@ class Vision {
     return visionEst;
   }
 
-  Eigen::Matrix<double, 3, 1> GetFLEstimationStdDevs(
-      frc::Pose2d estimatedPose) {
+  Eigen::Matrix<double, 3, 1> GetEstimationStdDevs(frc::Pose2d estimatedPose) {
     Eigen::Matrix<double, 3, 1> estStdDevs =
         constants::vision::kSingleTagStdDevs;
-    auto targets = GetLatestResultFL().GetTargets();
+    auto targetsfl = GetLatestResultFL().GetTargets();
+    auto targetsfr = GetLatestResultFR().GetTargets();
+    auto targetsbl = GetLatestResultBL().GetTargets();
+    auto targetsbr = GetLatestResultBR().GetTargets();
     int numTags = 0;
     units::meter_t avgDist = 0_m;
-    for (const auto& tgt : targets) {
+    for (const auto& tgt : targetsfl) {
       auto tagPose =
           flPhotonEstimator->GetFieldLayout().GetTagPose(tgt.GetFiducialId());
       if (tagPose.has_value()) {
@@ -207,32 +209,7 @@ class Vision {
             estimatedPose.Translation());
       }
     }
-    if (numTags == 0) {
-      return estStdDevs;
-    }
-    avgDist /= numTags;
-    if (numTags > 1) {
-      estStdDevs = constants::vision::kMultiTagStdDevs;
-    }
-    if (numTags == 1 && avgDist > 4_m) {
-      estStdDevs = (Eigen::MatrixXd(3, 1) << std::numeric_limits<double>::max(),
-                    std::numeric_limits<double>::max(),
-                    std::numeric_limits<double>::max())
-                       .finished();
-    } else {
-      estStdDevs = estStdDevs * (1 + (avgDist.value() * avgDist.value() / 30));
-    }
-    return estStdDevs;
-  }
-
-  Eigen::Matrix<double, 3, 1> GetFREstimationStdDevs(
-      frc::Pose2d estimatedPose) {
-    Eigen::Matrix<double, 3, 1> estStdDevs =
-        constants::vision::kSingleTagStdDevs;
-    auto targets = GetLatestResultFR().GetTargets();
-    int numTags = 0;
-    units::meter_t avgDist = 0_m;
-    for (const auto& tgt : targets) {
+    for (const auto& tgt : targetsfr) {
       auto tagPose =
           frPhotonEstimator->GetFieldLayout().GetTagPose(tgt.GetFiducialId());
       if (tagPose.has_value()) {
@@ -241,32 +218,7 @@ class Vision {
             estimatedPose.Translation());
       }
     }
-    if (numTags == 0) {
-      return estStdDevs;
-    }
-    avgDist /= numTags;
-    if (numTags > 1) {
-      estStdDevs = constants::vision::kMultiTagStdDevs;
-    }
-    if (numTags == 1 && avgDist > 4_m) {
-      estStdDevs = (Eigen::MatrixXd(3, 1) << std::numeric_limits<double>::max(),
-                    std::numeric_limits<double>::max(),
-                    std::numeric_limits<double>::max())
-                       .finished();
-    } else {
-      estStdDevs = estStdDevs * (1 + (avgDist.value() * avgDist.value() / 30));
-    }
-    return estStdDevs;
-  }
-
-  Eigen::Matrix<double, 3, 1> GetBLEstimationStdDevs(
-      frc::Pose2d estimatedPose) {
-    Eigen::Matrix<double, 3, 1> estStdDevs =
-        constants::vision::kSingleTagStdDevs;
-    auto targets = GetLatestResultBL().GetTargets();
-    int numTags = 0;
-    units::meter_t avgDist = 0_m;
-    for (const auto& tgt : targets) {
+    for (const auto& tgt : targetsbl) {
       auto tagPose =
           blPhotonEstimator->GetFieldLayout().GetTagPose(tgt.GetFiducialId());
       if (tagPose.has_value()) {
@@ -275,32 +227,7 @@ class Vision {
             estimatedPose.Translation());
       }
     }
-    if (numTags == 0) {
-      return estStdDevs;
-    }
-    avgDist /= numTags;
-    if (numTags > 1) {
-      estStdDevs = constants::vision::kMultiTagStdDevs;
-    }
-    if (numTags == 1 && avgDist > 4_m) {
-      estStdDevs = (Eigen::MatrixXd(3, 1) << std::numeric_limits<double>::max(),
-                    std::numeric_limits<double>::max(),
-                    std::numeric_limits<double>::max())
-                       .finished();
-    } else {
-      estStdDevs = estStdDevs * (1 + (avgDist.value() * avgDist.value() / 30));
-    }
-    return estStdDevs;
-  }
-
-  Eigen::Matrix<double, 3, 1> GetBREstimationStdDevs(
-      frc::Pose2d estimatedPose) {
-    Eigen::Matrix<double, 3, 1> estStdDevs =
-        constants::vision::kSingleTagStdDevs;
-    auto targets = GetLatestResultBR().GetTargets();
-    int numTags = 0;
-    units::meter_t avgDist = 0_m;
-    for (const auto& tgt : targets) {
+    for (const auto& tgt : targetsbr) {
       auto tagPose =
           brPhotonEstimator->GetFieldLayout().GetTagPose(tgt.GetFiducialId());
       if (tagPose.has_value()) {

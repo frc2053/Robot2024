@@ -32,7 +32,7 @@ void Robot::RobotPeriodic() {
     auto est = flvisionEst.value();
     auto estPose = est.estimatedPose.ToPose2d();
     auto estStdDevs =
-        m_container.GetVisionSystem().GetFLEstimationStdDevs(estPose);
+        m_container.GetVisionSystem().GetEstimationStdDevs(estPose);
     m_container.GetDrivebaseSubsystem().AddVisionMeasurement(
         est.estimatedPose.ToPose2d(), est.timestamp, estStdDevs);
   }
@@ -41,7 +41,7 @@ void Robot::RobotPeriodic() {
     auto est = frvisionEst.value();
     auto estPose = est.estimatedPose.ToPose2d();
     auto estStdDevs =
-        m_container.GetVisionSystem().GetFREstimationStdDevs(estPose);
+        m_container.GetVisionSystem().GetEstimationStdDevs(estPose);
     m_container.GetDrivebaseSubsystem().AddVisionMeasurement(
         est.estimatedPose.ToPose2d(), est.timestamp, estStdDevs);
   }
@@ -50,7 +50,7 @@ void Robot::RobotPeriodic() {
     auto est = blvisionEst.value();
     auto estPose = est.estimatedPose.ToPose2d();
     auto estStdDevs =
-        m_container.GetVisionSystem().GetBLEstimationStdDevs(estPose);
+        m_container.GetVisionSystem().GetEstimationStdDevs(estPose);
     m_container.GetDrivebaseSubsystem().AddVisionMeasurement(
         est.estimatedPose.ToPose2d(), est.timestamp, estStdDevs);
   }
@@ -59,7 +59,7 @@ void Robot::RobotPeriodic() {
     auto est = brvisionEst.value();
     auto estPose = est.estimatedPose.ToPose2d();
     auto estStdDevs =
-        m_container.GetVisionSystem().GetBREstimationStdDevs(estPose);
+        m_container.GetVisionSystem().GetEstimationStdDevs(estPose);
     m_container.GetDrivebaseSubsystem().AddVisionMeasurement(
         est.estimatedPose.ToPose2d(), est.timestamp, estStdDevs);
   }
@@ -142,7 +142,7 @@ void Robot::RobotPeriodic() {
 
 void Robot::SimulationPeriodic() {
   m_container.GetVisionSystem().SimPeriodic(
-      m_container.GetDrivebaseSubsystem().GetRobotPose());
+      m_container.GetDrivebaseSubsystem().GetOdomPose());
 }
 
 void Robot::DisabledInit() {}

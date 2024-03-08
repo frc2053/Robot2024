@@ -73,6 +73,7 @@ class DrivebaseSubsystem : public frc2::SubsystemBase {
                             units::second_t timestamp,
                             const Eigen::Vector3d& stdDevs);
   frc::Pose2d GetRobotPose();
+  frc::Pose2d GetOdomPose();
   bool InSafeZone();
   frc::Pose2d CalculateClosestGoodShooterPoint();
   frc::Pose2d CalculateClosestSafeSpot();

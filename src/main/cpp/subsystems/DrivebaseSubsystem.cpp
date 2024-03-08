@@ -271,6 +271,10 @@ frc::Pose2d DrivebaseSubsystem::GetRobotPose() {
   return swerveDrive.GetPose();
 }
 
+frc::Pose2d DrivebaseSubsystem::GetOdomPose() {
+  return swerveDrive.GetOdomPose();
+}
+
 frc::Pose2d DrivebaseSubsystem::CalculateClosestGoodShooterPoint() {
   frc::Translation2d pointToLookAt =
       constants::swerve::automation::BLUE_ALLIANCE_GOAL;
