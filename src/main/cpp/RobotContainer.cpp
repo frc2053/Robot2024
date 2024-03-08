@@ -41,7 +41,7 @@ void RobotContainer::ConfigureBindings() {
       [this] { return driveSub.CalcDistanceFromSpeaker(); }));
   operatorController.B().OnFalse(NotUsingShooter());
 
-  driverController.RightBumper().WhileTrue(
+  driverController.RightTrigger().WhileTrue(
       driveSub
           .GoToPose([this] {
             frc::Pose2d closestPoint = driveSub.BestShooterPoint();
@@ -57,6 +57,16 @@ void RobotContainer::ConfigureBindings() {
                     .Rotation()
                     .Radians();
               })));
+
+  driverController.LeftTrigger().WhileTrue(driveSub.GoToPose([this] {
+    auto ally = frc::DriverStation::GetAlliance();
+    if (ally.has_value()) {
+      if (ally.value() == frc::DriverStation::Alliance::kRed) {
+        return constants::swerve::automation::RED_AMP;
+      }
+    }
+    return constants::swerve::automation::BLUE_AMP;
+  }));
 
   driverController.Start().OnTrue(driveSub.ZeroYawCMD());
 
