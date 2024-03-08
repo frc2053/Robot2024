@@ -84,7 +84,7 @@ void RobotContainer::ConfigureBindings() {
         return frc::TrapezoidProfile<units::radians>::State{
             ShouldFlipAngleForDriver(0_deg), 0_deg_per_s};
       },
-      [this] { return std::abs(driverController.GetRightX()) > 0.1; }));
+      [this] { return std::abs(driverController.GetRightX()) > 0.1; }, true));
 
   driverController.X().OnTrue(driveSub.TurnToAngleFactory(
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
@@ -93,7 +93,7 @@ void RobotContainer::ConfigureBindings() {
         return frc::TrapezoidProfile<units::radians>::State{
             ShouldFlipAngleForDriver(90_deg), 0_deg_per_s};
       },
-      [this] { return std::abs(driverController.GetRightX()) > 0.1; }));
+      [this] { return std::abs(driverController.GetRightX()) > 0.1; }, true));
 
   driverController.B().OnTrue(driveSub.TurnToAngleFactory(
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
@@ -102,7 +102,7 @@ void RobotContainer::ConfigureBindings() {
         return frc::TrapezoidProfile<units::radians>::State{
             ShouldFlipAngleForDriver(-90_deg), 0_deg_per_s};
       },
-      [this] { return std::abs(driverController.GetRightX()) > 0.1; }));
+      [this] { return std::abs(driverController.GetRightX()) > 0.1; }, true));
 
   driverController.A().OnTrue(driveSub.TurnToAngleFactory(
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
@@ -111,13 +111,23 @@ void RobotContainer::ConfigureBindings() {
         return frc::TrapezoidProfile<units::radians>::State{
             ShouldFlipAngleForDriver(180_deg), 0_deg_per_s};
       },
-      [this] { return std::abs(driverController.GetRightX()) > 0.1; }));
+      [this] { return std::abs(driverController.GetRightX()) > 0.1; }, true));
 
-  driverController.LeftBumper().WhileTrue(driveSub.DriveFactory(
-      DeadbandAndSquare([this] { return driverController.GetLeftY(); }),
-      DeadbandAndSquare([this] { return driverController.GetLeftX(); }),
-      DeadbandAndSquare([this] { return -driverController.GetRightX(); }),
-      [] { return false; }));
+  driverController.LeftBumper().OnTrue(driveSub.TurnToAngleFactory(
+      DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
+      DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
+      [this] {
+        units::radian_t robotYawToGoTo =
+            driveSub.GetRobotPose().Rotation().Radians();
+        auto result = vision.GetNoteCamResult();
+        if (result.HasTargets()) {
+          robotYawToGoTo =
+              robotYawToGoTo + units::degree_t{result.GetBestTarget().GetYaw()};
+        }
+        return frc::TrapezoidProfile<units::radians>::State{
+            ShouldFlipAngleForDriver(robotYawToGoTo), 0_deg_per_s};
+      },
+      [this] { return std::abs(driverController.GetRightX()) > 0.1; }, false));
 
   frc::SmartDashboard::PutBoolean("Drivebase/DoneWithStep", false);
 

@@ -62,6 +62,10 @@ class Vision {
     brPhotonEstimator->SetMultiTagFallbackStrategy(
         photon::PoseStrategy::LOWEST_AMBIGUITY);
 
+    noteCamera = std::make_shared<photon::PhotonCamera>(
+        constants::vision::knoteCameraName);
+    noteCamera->SetVersionCheckEnabled(false);
+
     if (frc::RobotBase::IsSimulation()) {
       visionSim = std::make_unique<photon::VisionSystemSim>("main");
 
@@ -81,6 +85,10 @@ class Vision {
       visionSim->AddCamera(cameraSim.get(), constants::vision::kflRobotToCam);
       cameraSim->EnableDrawWireframe(true);
     }
+  }
+
+  photon::PhotonPipelineResult GetNoteCamResult() {
+    return noteCamera->GetLatestResult();
   }
 
   photon::PhotonPipelineResult GetLatestResultFL() {
@@ -275,6 +283,7 @@ class Vision {
   std::shared_ptr<photon::PhotonCamera> frCamera;
   std::shared_ptr<photon::PhotonCamera> blCamera;
   std::shared_ptr<photon::PhotonCamera> brCamera;
+  std::shared_ptr<photon::PhotonCamera> noteCamera;
   std::unique_ptr<photon::VisionSystemSim> visionSim;
   std::unique_ptr<photon::SimCameraProperties> cameraProp;
   std::shared_ptr<photon::PhotonCameraSim> cameraSim;

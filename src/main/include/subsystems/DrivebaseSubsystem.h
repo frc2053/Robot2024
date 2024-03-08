@@ -43,7 +43,7 @@ class DrivebaseSubsystem : public frc2::SubsystemBase {
       std::function<double()> fow, std::function<double()> side,
       std::function<frc::TrapezoidProfile<units::radians>::State()>
           angleProfile,
-      std::function<bool()> wantsToOverride);
+      std::function<bool()> wantsToOverride, bool fieldRelative);
 
   frc2::CommandPtr SelfTest();
   frc2::CommandPtr MeasureWheelDiam(std::function<bool()> done);

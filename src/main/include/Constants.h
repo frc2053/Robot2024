@@ -321,6 +321,7 @@ inline constexpr std::string_view kflCameraName{"str_fl_cam"};
 inline constexpr std::string_view kfrCameraName{"str_fr_cam"};
 inline constexpr std::string_view kblCameraName{"str_bl_cam"};
 inline constexpr std::string_view kbrCameraName{"str_br_cam"};
+inline constexpr std::string_view knoteCameraName{"note_cam"};
 
 inline const frc::Transform3d kflRobotToCam{
     frc::Translation3d{10.273802_in, 11.7301_in, 8.25_in},

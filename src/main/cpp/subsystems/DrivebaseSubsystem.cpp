@@ -159,17 +159,17 @@ frc2::CommandPtr DrivebaseSubsystem::DriveFactory(
 frc2::CommandPtr DrivebaseSubsystem::TurnToAngleFactory(
     std::function<double()> fow, std::function<double()> side,
     std::function<frc::TrapezoidProfile<units::radians>::State()> angle,
-    std::function<bool()> wantsToOverride) {
+    std::function<bool()> wantsToOverride, bool fieldRelative) {
   return frc2::ProfiledPIDCommand<units::radians>(
              thetaController,
              [this] { return swerveDrive.GetHeading().Radians(); }, angle,
-             [this, fow, side, wantsToOverride](
+             [this, fow, side, wantsToOverride, fieldRelative](
                  double output,
                  frc::TrapezoidProfile<units::radians>::State state) {
                swerveDrive.Drive(
                    fow() * constants::swerve::physical::MAX_LINEAR_SPEED,
                    side() * constants::swerve::physical::MAX_LINEAR_SPEED,
-                   output * 1_rad_per_s, true);
+                   output * 1_rad_per_s, fieldRelative);
              },
              {this})
       .Until(wantsToOverride)
