@@ -56,7 +56,8 @@ void RobotContainer::ConfigureBindings() {
                 return driveSub.CalculateClosestGoodShooterPoint()
                     .Rotation()
                     .Radians();
-              })));
+              }))
+          .AlongWith(SpinUpShooter()));
 
   driverController.LeftTrigger().WhileTrue(driveSub.GoToPose([this] {
     auto ally = frc::DriverStation::GetAlliance();
