@@ -177,8 +177,7 @@ void SwerveModule::LockSteerAtZero() {
   frc::SwerveModuleState optimizedState = frc::SwerveModuleState::Optimize(
       frc::SwerveModuleState{0_mps, frc::Rotation2d{0_rad}},
       currentState.angle);
-  steerMotor.SetControl(
-      steerAngleSetter.WithPosition(optimizedState.angle.Radians()));
+  steerMotor.SetControl(steerAngleSetter.WithPosition(0_rad));
 }
 
 void SwerveModule::PushMode(bool onOff) {

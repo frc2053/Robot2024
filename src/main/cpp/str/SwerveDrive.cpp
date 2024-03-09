@@ -540,6 +540,10 @@ void SwerveDrive::ZeroYaw() {
 }
 
 void SwerveDrive::SetAllModulesToCurrent(units::volt_t voltsToSend) {
+  swerveModules[0].LockSteerAtZero();
+  swerveModules[1].LockSteerAtZero();
+  swerveModules[2].LockSteerAtZero();
+  swerveModules[3].LockSteerAtZero();
   swerveModules[0].SetDriveMotorToCurrent(voltsToSend);
   swerveModules[1].SetDriveMotorToCurrent(voltsToSend);
   swerveModules[2].SetDriveMotorToCurrent(voltsToSend);
@@ -593,9 +597,8 @@ frc2::CommandPtr SwerveDrive::WheelRadiusCmd(frc2::Requirements reqs,
              reqs)
       .AndThen(frc2::cmd::RunEnd(
           [this, direction] {
-            Drive(0_mps, 0_mps,
-                  omegaLimiter.Calculate(0.1_rad_per_s * direction), true,
-                  false);
+            Drive(0_mps, 0_mps, omegaLimiter.Calculate(1_rad_per_s * direction),
+                  true, false);
             accumGyroYaw += frc::AngleModulus(imuYaw - lastGyroYaw);
             lastGyroYaw = imuYaw;
             units::radian_t avgWheelPos = 0.0_rad;
@@ -609,9 +612,7 @@ frc2::CommandPtr SwerveDrive::WheelRadiusCmd(frc2::Requirements reqs,
                                               startWheelPositions[i]);
             }
             avgWheelPos /= 4.0;
-            effectiveWheelRadius =
-                (accumGyroYaw * constants::swerve::physical::WHEELBASE_WIDTH) /
-                avgWheelPos;
+            effectiveWheelRadius = (accumGyroYaw * driveRadius) / avgWheelPos;
           },
           [this] {
             Drive(0_mps, 0_mps, 0_rad_per_s, true, false);

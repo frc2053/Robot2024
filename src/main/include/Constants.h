@@ -226,11 +226,11 @@ inline constexpr ModuleDriveGains driveGains{
     0.5};
 inline constexpr ModuleSteerGains steerGains{
     units::unit_t<frc::SimpleMotorFeedforward<units::radians>::ka_unit>{0},
-    units::unit_t<frc::SimpleMotorFeedforward<units::radians>::kv_unit>{0.0},
-    0.0_V,
-    150,
+    units::unit_t<frc::SimpleMotorFeedforward<units::radians>::kv_unit>{0},
+    4.4054_V,
+    118.95,
     0.0,
-    50.0};
+    20.654};
 
 namespace pathplanning {
 inline constexpr units::scalar_t TRANSLATION_P = 10.0;
@@ -271,7 +271,7 @@ inline constexpr frc::DCMotor SWERVE_MOTOR_FOC{frc::DCMotor::Falcon500FOC(1)};
 
 inline constexpr units::meter_t WHEELBASE_LENGTH = 22.75_in;
 inline constexpr units::meter_t WHEELBASE_WIDTH = 22.75_in;
-inline constexpr units::meter_t DRIVE_WHEEL_DIAMETER = 4_in;
+inline constexpr units::meter_t DRIVE_WHEEL_DIAMETER = 3.8621_in;
 inline constexpr units::scalar_t DRIVE_GEARING =
     (50.0 / 16.0) * (17.0 / 27.0) * (45.0 / 15.0);  // SDS L2 with 16t pinion
 inline constexpr units::scalar_t STEER_GEARING = (50.0 / 14.0) * (60.0 / 10.0);
@@ -310,7 +310,7 @@ inline constexpr frc::Translation2d BLUE_ALLIANCE_GOAL{0.475_m, 5.55_m};
 inline constexpr frc::Translation2d RED_ALLIANCE_GOAL{16.05_m, 5.55_m};
 inline constexpr frc::Pose2d BLUE_AMP{1.8468_m, 7.7512_m, 90_deg};
 inline constexpr frc::Pose2d RED_AMP{14.694_m, 7.7512_m, 90_deg};
-inline constexpr units::meter_t GOOD_DISTANCE_FOR_SHOOTER = 95.827_in;
+inline constexpr units::meter_t GOOD_DISTANCE_FOR_SHOOTER = 92.827_in;
 inline constexpr units::meter_t SAFE_ZONE_LINE_BLUE = 2.196_m;
 inline constexpr units::meter_t SAFE_ZONE_LINE_RED = 14.26_m;
 }  // namespace automation
@@ -326,22 +326,22 @@ inline constexpr std::string_view knoteCameraName{"note_cam"};
 inline const frc::Transform3d kflRobotToCam{
     frc::Translation3d{10.273802_in, 11.7301_in, 8.25_in},
     frc::Rotation3d{0_rad, -28.125_deg, 0_deg}.RotateBy(
-        frc::Rotation3d{0.0_deg, 0.0_deg, -30_deg})};
+        frc::Rotation3d{0.0_deg, 0.0_deg, 30_deg})};
 
 inline const frc::Transform3d kfrRobotToCam{
     frc::Translation3d{10.273802_in, -11.7301_in, 8.25_in},
     frc::Rotation3d{0_rad, -28.125_deg, 0_deg}.RotateBy(
-        frc::Rotation3d{0.0_deg, 0.0_deg, 30_deg})};
+        frc::Rotation3d{0.0_deg, 0.0_deg, -30_deg})};
 
 inline const frc::Transform3d kblRobotToCam{
     frc::Translation3d{-10.273802_in, 11.7301_in, 8.25_in},
     frc::Rotation3d{0_rad, -28.125_deg, 0_deg}.RotateBy(
-        frc::Rotation3d{0.0_deg, 0.0_deg, -120_deg})};
+        frc::Rotation3d{0.0_deg, 0.0_deg, -210_deg})};
 
 inline const frc::Transform3d kbrRobotToCam{
     frc::Translation3d{-10.273802_in, -11.7301_in, 8.25_in},
     frc::Rotation3d{0_rad, -28.125_deg, 0_deg}.RotateBy(
-        frc::Rotation3d{0.0_deg, 0.0_deg, 120_deg})};
+        frc::Rotation3d{0.0_deg, 0.0_deg, 210_deg})};
 
 inline const Eigen::Matrix<double, 3, 1> kSingleTagStdDevs{4, 4, 8};
 inline const Eigen::Matrix<double, 3, 1> kMultiTagStdDevs{0.5, 0.5, 1};

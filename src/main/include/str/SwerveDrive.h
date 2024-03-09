@@ -149,6 +149,9 @@ class SwerveDrive {
   units::meter_t effectiveWheelRadius = 0_m;
   frc::SlewRateLimiter<units::radians_per_second> omegaLimiter{1_rad_per_s /
                                                                1_s};
+  units::meter_t driveRadius =
+      units::math::hypot(constants::swerve::physical::WHEELBASE_LENGTH / 2.0,
+                         constants::swerve::physical::WHEELBASE_WIDTH / 2.0);
 
   // Logging
   frc::Field2d ntField{};
