@@ -435,9 +435,8 @@ frc2::CommandPtr DrivebaseSubsystem::GoToPose(
             bool fieldOriented = true;
             if (allyValue) {
               if (allyValue.value() == frc::DriverStation::Alliance::kRed) {
-                fieldOriented = false;
-              } else {
-                fieldOriented = true;
+                xOutput = -xOutput;
+                yOutput = -yOutput;
               }
             }
             swerveDrive.Drive(xOutput, yOutput, thetaOutput, false,
