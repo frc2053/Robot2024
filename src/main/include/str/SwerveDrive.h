@@ -58,6 +58,7 @@ class SwerveDrive {
 
   frc::Rotation2d GetHeading() const;
   frc::Rotation2d GetGyroYaw() const;
+  void SetGyroYaw(units::radian_t newYaw);
   frc::Pose2d GetPose() const;
   frc::Pose2d GetOdomPose() const;
   units::ampere_t GetCurrentDraw() const;

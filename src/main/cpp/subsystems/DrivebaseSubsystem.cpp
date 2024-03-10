@@ -32,6 +32,7 @@ void DrivebaseSubsystem::SetupAutoBuilder() {
   pathplanner::AutoBuilder::configureHolonomic(
       [this] { return swerveDrive.GetPose(); },
       [this](frc::Pose2d resetPose) {
+        swerveDrive.SetGyroYaw(resetPose.Rotation().Radians());
         swerveDrive.SeedFieldRelative(resetPose);
       },
       [] { return frc::ChassisSpeeds{}; },

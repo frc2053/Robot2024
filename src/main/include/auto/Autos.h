@@ -80,8 +80,8 @@ class Autos {
                   frc2::cmd::Print("ERROR: DO NOTHING AUTO SELECTED! YOU "
                                    "PROBABLY DIDNT MEAN THIS")},
         std::pair{SQUARE, pathplanner::PathPlannerAuto{"Square"}.ToPtr()},
-        std::pair{CHOREO_TEST, m_driveSub.FollowChoreoTrajectory(
-                                   [] { return "ChoreoTestPath"; })},
+        std::pair{CHOREO_TEST,
+                  pathplanner::PathPlannerAuto{"ChoreoTestPath"}.ToPtr()},
         std::pair{AMP_SIDE, pathplanner::PathPlannerAuto{"AmpSide"}.ToPtr()},
         std::pair{
             MIDDLE_OF_DRIVER_STATION,

@@ -115,12 +115,12 @@ void SwerveDrive::TareEverything() {
 }
 
 void SwerveDrive::SeedFieldRelative() {
-  fieldRelativeOffset = GetPose().Rotation().Radians();
+  // fieldRelativeOffset = GetPose().Rotation().Radians();
   fmt::print("field relative offset {}\n", fieldRelativeOffset.value());
 }
 
 void SwerveDrive::SeedFieldRelative(const frc::Pose2d& location) {
-  fieldRelativeOffset = location.Rotation().Radians();
+  // fieldRelativeOffset = location.Rotation().Radians();
   poseEstimator.ResetPosition(location.Rotation(), modulePositions, location);
   odom.ResetPosition(location.Rotation(), modulePositions, location);
 }
@@ -537,6 +537,10 @@ void SwerveDrive::ZeroYaw() {
     }
   }
   imu.SetYaw(targetAngle);
+}
+
+void SwerveDrive::SetGyroYaw(units::radian_t newYaw) {
+  imu.SetYaw(newYaw);
 }
 
 void SwerveDrive::SetAllModulesToCurrent(units::volt_t voltsToSend) {
