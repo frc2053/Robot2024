@@ -14,8 +14,8 @@
 #include "str/ledpatterns/TachometerPattern.h"
 
 LedSubsystem::LedSubsystem() {
-  ledStrip.AddSection(22);
-  ledStrip.AddSection(22);
+  ledStrip.AddSection(17);
+  ledStrip.AddSection(17);
 }
 
 // This method will be called once per scheduler run
