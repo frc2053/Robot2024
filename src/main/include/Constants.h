@@ -306,11 +306,11 @@ inline frc::SwerveDriveKinematics<4> KINEMATICS{
 }  // namespace physical
 
 namespace automation {
-inline constexpr frc::Translation2d BLUE_ALLIANCE_GOAL{0.475_m, 5.55_m};
-inline constexpr frc::Translation2d RED_ALLIANCE_GOAL{16.05_m, 5.55_m};
+inline constexpr frc::Translation2d BLUE_ALLIANCE_GOAL{0_m, 5.55_m};
+inline constexpr frc::Translation2d RED_ALLIANCE_GOAL{16.575_m, 5.55_m};
 inline constexpr frc::Pose2d BLUE_AMP{1.8468_m, 7.7512_m, 90_deg};
 inline constexpr frc::Pose2d RED_AMP{14.694_m, 7.7512_m, 90_deg};
-inline constexpr units::meter_t GOOD_DISTANCE_FOR_SHOOTER = 92.827_in;
+inline constexpr units::meter_t GOOD_DISTANCE_FOR_SHOOTER = 111.527_in;
 inline constexpr units::meter_t SAFE_ZONE_LINE_BLUE = 2.196_m;
 inline constexpr units::meter_t SAFE_ZONE_LINE_RED = 14.26_m;
 }  // namespace automation

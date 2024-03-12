@@ -2,23 +2,41 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3483245372772217,
-      "y": 5.565273284912109
+      "x": 1.4862844944000244,
+      "y": 6.211969375610352
     },
-    "rotation": 179.9775026064942
+    "rotation": -178.9911936402757
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "SpinUpShooter"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "SixNote.1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "FeedNote"
+          }
+        },
+        {
           "type": "deadline",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "FourNote.1"
+                  "pathName": "SixNote.2"
                 }
               },
               {
@@ -31,28 +49,15 @@
           }
         },
         {
-          "type": "sequential",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "SpinUpShooter"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "FeedNote"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "StopShooter"
-                }
-              }
-            ]
+            "name": "SpinUpShooter"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "FeedNote"
           }
         },
         {
@@ -62,7 +67,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "FourNote.3"
+                  "pathName": "SixNote.3"
                 }
               },
               {
@@ -75,28 +80,15 @@
           }
         },
         {
-          "type": "sequential",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "SpinUpShooter"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "FeedNote"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "StopShooter"
-                }
-              }
-            ]
+            "name": "SpinUpShooter"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "FeedNote"
           }
         },
         {
@@ -106,7 +98,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "FourNote.4"
+                  "pathName": "SixNote.4"
                 }
               },
               {
@@ -119,25 +111,62 @@
           }
         },
         {
-          "type": "sequential",
+          "type": "named",
+          "data": {
+            "name": "SpinUpShooter"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "FeedNote"
+          }
+        },
+        {
+          "type": "deadline",
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "SpinUpShooter"
+                  "pathName": "SixNote.5"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "FeedNote"
+                  "name": "IntakeNote"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "SpinUpShooter"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "FeedNote"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "SixNote.6"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "StopShooter"
+                  "name": "IntakeNote"
                 }
               }
             ]
