@@ -28,7 +28,7 @@ enum CommandSelector {
   MOVE_OUT,
   MIDDLE_SUB,
   AMP_SIDE_SINGLE,
-  FOUR_NOTE,
+  SIX_NOTE,
   PODIUM_NOTE,
   RUIN_UR_DAY
 };
@@ -50,7 +50,7 @@ class Autos {
         shooterSub
             .GoToVelocityCmd([] { return constants::shooter::SHOOTER_SPEED; },
                              [] { return false; })
-            .WithTimeout(2_s));
+            .WithTimeout(2.5_s));
 
     pathplanner::NamedCommands::registerCommand(
         "StopShooter",
@@ -91,7 +91,7 @@ class Autos {
                   pathplanner::PathPlannerAuto{"MiddleSub"}.ToPtr()},
         std::pair{AMP_SIDE_SINGLE,
                   pathplanner::PathPlannerAuto("AmpSideSingle").ToPtr()},
-        std::pair{FOUR_NOTE, pathplanner::PathPlannerAuto("FourNote").ToPtr()},
+        std::pair{SIX_NOTE, pathplanner::PathPlannerAuto("SixNote").ToPtr()},
         std::pair{PODIUM_NOTE,
                   pathplanner::PathPlannerAuto("PodiumNote").ToPtr()},
         std::pair{RUIN_UR_DAY,
@@ -106,7 +106,7 @@ class Autos {
     chooser.AddOption("Move Out", CommandSelector::MOVE_OUT);
     chooser.AddOption("Middle Sub", CommandSelector::MIDDLE_SUB);
     chooser.AddOption("Amp Side Single", CommandSelector::AMP_SIDE_SINGLE);
-    chooser.AddOption("Four Note", CommandSelector::FOUR_NOTE);
+    chooser.AddOption("Six Note", CommandSelector::SIX_NOTE);
     chooser.AddOption("Podium Note", CommandSelector::PODIUM_NOTE);
     chooser.AddOption("Ruin Ur Day", CommandSelector::RUIN_UR_DAY);
 

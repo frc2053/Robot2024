@@ -160,7 +160,7 @@ inline constexpr ShooterGains GAINS{
 
 inline constexpr ShooterGains GAINS_DUNK{
     units::unit_t<frc::SimpleMotorFeedforward<units::radians>::ka_unit>{0.0},
-    units::unit_t<frc::SimpleMotorFeedforward<units::radians>::kv_unit>{0.15},
+    units::unit_t<frc::SimpleMotorFeedforward<units::radians>::kv_unit>{0.16},
     units::volt_t{0.0},
     units::radian_volt_kp_unit_t{0.25},
     units::radian_volt_ki_unit_t{0},
@@ -168,8 +168,8 @@ inline constexpr ShooterGains GAINS_DUNK{
 
 inline constexpr units::scalar_t SHOOTER_RATIO = 1.0;
 inline constexpr units::kilogram_square_meter_t SHOOTER_MOI = 0.001_kg_sq_m;
-inline constexpr units::radians_per_second_t SHOOTER_TOLERANCE = 100_rpm;
-inline constexpr units::radians_per_second_t SHOOTER_SPEED = 5200_rpm;
+inline constexpr units::radians_per_second_t SHOOTER_TOLERANCE = 50_rpm;
+inline constexpr units::radians_per_second_t SHOOTER_SPEED = 5600_rpm;
 inline constexpr units::radians_per_second_t SHOOTER_DUNK_SPEED = 2000_rpm;
 }  // namespace shooter
 
@@ -218,24 +218,24 @@ struct ModuleSteerGains {
 };
 
 inline constexpr ModuleDriveGains driveGains{
-    units::unit_t<frc::SimpleMotorFeedforward<units::meters>::ka_unit>{0.0},
-    units::unit_t<frc::SimpleMotorFeedforward<units::meters>::kv_unit>{0.0},
-    1_V,
-    8.0,
+    units::unit_t<frc::SimpleMotorFeedforward<units::meters>::ka_unit>{0},
+    units::unit_t<frc::SimpleMotorFeedforward<units::meters>::kv_unit>{0},
+    7.6474_V,
+    30,
     0.0,
-    0.5};
+    0.0};
 inline constexpr ModuleSteerGains steerGains{
     units::unit_t<frc::SimpleMotorFeedforward<units::radians>::ka_unit>{0},
     units::unit_t<frc::SimpleMotorFeedforward<units::radians>::kv_unit>{0},
     4.4054_V,
-    118.95,
+    300,
     0.0,
     20.654};
 
 namespace pathplanning {
 inline constexpr units::scalar_t TRANSLATION_P = 10.0;
 inline constexpr units::scalar_t TRANSLATION_I = 0.0;
-inline constexpr units::scalar_t TRANSLATION_D = 0.0;
+inline constexpr units::scalar_t TRANSLATION_D = 0.1;
 
 inline constexpr units::scalar_t ROTATION_P = 5.0;
 inline constexpr units::scalar_t ROTATION_I = 0.0;
