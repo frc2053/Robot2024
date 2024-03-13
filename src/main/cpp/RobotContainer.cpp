@@ -113,21 +113,18 @@ void RobotContainer::ConfigureBindings() {
       },
       [this] { return std::abs(driverController.GetRightX()) > 0.1; }, true));
 
-  driverController.LeftBumper().WhileTrue(driveSub.TurnToAngleFactory(
+  driverController.RightBumper().OnTrue(driveSub.TurnToAngleFactory(
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
       DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
       [this] {
         units::radian_t robotYawToGoTo =
             driveSub.GetRobotPose().Rotation().Radians();
-        auto result = vision.GetNoteCamResult();
-        if (result.HasTargets()) {
-          robotYawToGoTo =
-              robotYawToGoTo + units::degree_t{result.GetBestTarget().GetYaw()};
-        }
-        return frc::TrapezoidProfile<units::radians>::State{
-            ShouldFlipAngleForDriver(robotYawToGoTo), 0_deg_per_s};
+        units::radian_t tagYaw = vision.GetYawToCenterTag();
+        robotYawToGoTo = robotYawToGoTo - tagYaw;
+        return frc::TrapezoidProfile<units::radians>::State{robotYawToGoTo,
+                                                            0_deg_per_s};
       },
-      [this] { return std::abs(driverController.GetRightX()) > 0.1; }, false));
+      [this] { return std::abs(driverController.GetRightX()) > 0.1; }, true));
 
   frc::SmartDashboard::PutBoolean("Drivebase/DoneWithStep", false);
 

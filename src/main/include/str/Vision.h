@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <frc/DriverStation.h>
 #include <frc/RobotBase.h>
 #include <frc/apriltag/AprilTagFieldLayout.h>
 #include <frc/apriltag/AprilTagFields.h>
@@ -270,6 +271,41 @@ class Vision {
     if (frc::RobotBase::IsSimulation()) {
       visionSim->ResetRobotPose(pose);
     }
+  }
+
+  int GetSpeakerCenterTagId() {
+    auto ally = frc::DriverStation::GetAlliance();
+    if (ally.has_value()) {
+      if (ally.value() == frc::DriverStation::Alliance::kRed) {
+        return 4;
+      }
+      if (ally.value() == frc::DriverStation::Alliance::kBlue) {
+        return 7;
+      }
+    }
+    return 7;
+  }
+
+  units::radian_t GetYawToCenterTag() {
+    int tagToLookFor = GetSpeakerCenterTagId();
+    photon::PhotonPipelineResult flResult = flCamera->GetLatestResult();
+    photon::PhotonPipelineResult frResult = flCamera->GetLatestResult();
+    if (flResult.HasTargets()) {
+      for (const photon::PhotonTrackedTarget& target : flResult.GetTargets()) {
+        if (target.GetFiducialId() == tagToLookFor) {
+          return units::degree_t{target.GetYaw()};
+        }
+      }
+    }
+    if (frResult.HasTargets()) {
+      for (const photon::PhotonTrackedTarget& target : frResult.GetTargets()) {
+        if (target.GetFiducialId() == tagToLookFor) {
+          return units::degree_t{target.GetYaw()};
+        }
+      }
+    }
+    fmt::print("NO SUITABLE TARGET FOUND!!!!\n");
+    return 0_rad;
   }
 
   frc::Field2d& GetSimDebugField() { return visionSim->GetDebugField(); }

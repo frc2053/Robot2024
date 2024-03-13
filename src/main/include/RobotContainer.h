@@ -49,7 +49,7 @@ class RobotContainer {
 
   Vision vision;
 
-  autos::Autos autos{driveSub, shooterSub, intakeSub, dunkSub};
+  autos::Autos autos{driveSub, shooterSub, intakeSub, dunkSub, vision};
 
   frc2::CommandPtr selfTestCmd = driveSub.SelfTest();
   frc2::CommandPtr measureWheelCmd = driveSub.MeasureWheelDiam([] {

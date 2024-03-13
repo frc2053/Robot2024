@@ -12,6 +12,7 @@
 #include "frc/smartdashboard/SmartDashboard.h"
 #include "frc2/command/CommandPtr.h"
 #include "frc2/command/PrintCommand.h"
+#include "str/Vision.h"
 #include "subsystems/DrivebaseSubsystem.h"
 #include "subsystems/DunkerSubsystem.h"
 #include "subsystems/IntakeSubsystem.h"
@@ -36,11 +37,13 @@ enum CommandSelector {
 class Autos {
  public:
   explicit Autos(DrivebaseSubsystem& driveSub, ShooterSubsystem& shooterSub,
-                 IntakeSubsystem& intakeSub, DunkerSubsystem& dunkSub)
+                 IntakeSubsystem& intakeSub, DunkerSubsystem& dunkSub,
+                 Vision& vision)
       : m_driveSub(driveSub),
         m_shooterSub(shooterSub),
         m_intakeSub(intakeSub),
-        m_dunkerSub(dunkSub) {
+        m_dunkerSub(dunkSub),
+        m_vision(vision) {
     pathplanner::NamedCommands::registerCommand(
         "TestCommandPrint",
         frc2::PrintCommand("Test Print from PP Command").ToPtr());
@@ -79,6 +82,20 @@ class Autos {
           frc::Pose2d closestPoint = m_driveSub.BestShooterPoint();
           return closestPoint;
         }));
+
+    pathplanner::NamedCommands::registerCommand(
+        "PointAtGoal",
+        driveSub.TurnToAngleFactory(
+            [] { return 0; }, [] { return 0; },
+            [this] {
+              units::radian_t robotYawToGoTo =
+                  m_driveSub.GetRobotPose().Rotation().Radians();
+              units::radian_t tagYaw = m_vision.GetYawToCenterTag();
+              robotYawToGoTo = robotYawToGoTo - tagYaw;
+              return frc::TrapezoidProfile<units::radians>::State{
+                  robotYawToGoTo, 0_deg_per_s};
+            },
+            [] { return false; }, true));
 
     GetSelectedAutoCmd = frc2::cmd::Select<CommandSelector>(
         [this] { return chooser.GetSelected(); },
@@ -123,6 +140,7 @@ class Autos {
   ShooterSubsystem& m_shooterSub;
   IntakeSubsystem& m_intakeSub;
   DunkerSubsystem& m_dunkerSub;
+  Vision& m_vision;
 
   frc::SendableChooser<CommandSelector> chooser;
 
