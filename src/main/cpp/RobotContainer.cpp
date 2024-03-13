@@ -113,7 +113,7 @@ void RobotContainer::ConfigureBindings() {
       },
       [this] { return std::abs(driverController.GetRightX()) > 0.1; }, true));
 
-  driverController.LeftBumper().OnTrue(driveSub.TurnToAngleFactory(
+  driverController.LeftBumper().WhileTrue(driveSub.TurnToAngleFactory(
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
       DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
       [this] {

@@ -74,6 +74,12 @@ class Autos {
             .AlongWith(
                 dunkSub.StopDunking().AndThen(dunkSub.PivotDunkNotesIn())));
 
+    pathplanner::NamedCommands::registerCommand(
+        "GoToShooterPoint",
+        driveSub.GoToVelocityCmd([] { return 0_rpm; }, [] { return true; })
+            .AlongWith(
+                dunkSub.StopDunking().AndThen(dunkSub.PivotDunkNotesIn())));
+
     GetSelectedAutoCmd = frc2::cmd::Select<CommandSelector>(
         [this] { return chooser.GetSelected(); },
         std::pair{DO_NOTHING,
