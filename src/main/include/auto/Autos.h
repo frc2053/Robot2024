@@ -75,10 +75,10 @@ class Autos {
                 dunkSub.StopDunking().AndThen(dunkSub.PivotDunkNotesIn())));
 
     pathplanner::NamedCommands::registerCommand(
-        "GoToShooterPoint",
-        driveSub.GoToVelocityCmd([] { return 0_rpm; }, [] { return true; })
-            .AlongWith(
-                dunkSub.StopDunking().AndThen(dunkSub.PivotDunkNotesIn())));
+        "GoToShooterPoint", driveSub.GoToPose([this] {
+          frc::Pose2d closestPoint = m_driveSub.BestShooterPoint();
+          return closestPoint;
+        }));
 
     GetSelectedAutoCmd = frc2::cmd::Select<CommandSelector>(
         [this] { return chooser.GetSelected(); },

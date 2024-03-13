@@ -82,6 +82,12 @@
         {
           "type": "named",
           "data": {
+            "name": "GoToShooterPoint"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "SpinUpShooter"
           }
         },
@@ -113,6 +119,12 @@
         {
           "type": "named",
           "data": {
+            "name": "GoToShooterPoint"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "SpinUpShooter"
           }
         },
@@ -139,6 +151,12 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "GoToShooterPoint"
           }
         },
         {
