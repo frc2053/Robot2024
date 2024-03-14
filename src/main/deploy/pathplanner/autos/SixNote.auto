@@ -26,6 +26,12 @@
         {
           "type": "named",
           "data": {
+            "name": "PointAtGoal"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "FeedNote"
           }
         },
@@ -46,6 +52,12 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PointAtGoal"
           }
         },
         {

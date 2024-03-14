@@ -85,17 +85,27 @@ class Autos {
 
     pathplanner::NamedCommands::registerCommand(
         "PointAtGoal",
-        driveSub.TurnToAngleFactory(
-            [] { return 0; }, [] { return 0; },
-            [this] {
-              units::radian_t robotYawToGoTo =
-                  m_driveSub.GetRobotPose().Rotation().Radians();
-              units::radian_t tagYaw = m_vision.GetYawToCenterTag();
-              robotYawToGoTo = robotYawToGoTo - tagYaw;
-              return frc::TrapezoidProfile<units::radians>::State{
-                  robotYawToGoTo, 0_deg_per_s};
-            },
-            [] { return false; }, true));
+        driveSub
+            .TurnToAngleFactory(
+                [] { return 0; }, [] { return 0; },
+                [this] {
+                  frc::Translation2d goal =
+                      constants::swerve::automation::BLUE_ALLIANCE_GOAL;
+                  auto ally = frc::DriverStation::GetAlliance();
+                  if (ally.has_value()) {
+                    if (ally.value() == frc::DriverStation::Alliance::kRed) {
+                      goal = constants::swerve::automation::RED_ALLIANCE_GOAL;
+                    }
+                  }
+                  frc::Pose2d pose = m_driveSub.GetRobotPose();
+                  frc::Rotation2d angle{
+                      units::math::atan2(goal.Y() - pose.Translation().Y(),
+                                         goal.X() - pose.Translation().X())};
+                  return frc::TrapezoidProfile<units::radians>::State{
+                      angle.Radians(), 0_deg_per_s};
+                },
+                [] { return false; }, true)
+            .WithTimeout(.5_s));
 
     GetSelectedAutoCmd = frc2::cmd::Select<CommandSelector>(
         [this] { return chooser.GetSelected(); },

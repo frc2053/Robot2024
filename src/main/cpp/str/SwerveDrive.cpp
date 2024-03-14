@@ -127,10 +127,9 @@ void SwerveDrive::SeedFieldRelative(const frc::Pose2d& location) {
 
 void SwerveDrive::SetChassisSpeeds(const frc::ChassisSpeeds& newChassisSpeeds,
                                    bool openLoop) {
-  SetModuleStates(
-      constants::swerve::physical::KINEMATICS.ToSwerveModuleStates(
-          frc::ChassisSpeeds::Discretize(newChassisSpeeds, 0.02_s * 4)),
-      openLoop);
+  SetModuleStates(constants::swerve::physical::KINEMATICS.ToSwerveModuleStates(
+                      frc::ChassisSpeeds::Discretize(newChassisSpeeds, 0.02_s)),
+                  openLoop);
 }
 
 void SwerveDrive::SetModuleStates(

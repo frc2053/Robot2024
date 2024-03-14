@@ -82,7 +82,7 @@ void RobotContainer::ConfigureBindings() {
       DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
       [this] {
         return frc::TrapezoidProfile<units::radians>::State{
-            ShouldFlipAngleForDriver(0_deg), 0_deg_per_s};
+            ShouldFlipAngleForDriver(180_deg), 0_deg_per_s};
       },
       [this] { return std::abs(driverController.GetRightX()) > 0.1; }, true));
 
@@ -91,7 +91,7 @@ void RobotContainer::ConfigureBindings() {
       DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
       [this] {
         return frc::TrapezoidProfile<units::radians>::State{
-            ShouldFlipAngleForDriver(90_deg), 0_deg_per_s};
+            ShouldFlipAngleForDriver(-90_deg), 0_deg_per_s};
       },
       [this] { return std::abs(driverController.GetRightX()) > 0.1; }, true));
 
@@ -100,7 +100,7 @@ void RobotContainer::ConfigureBindings() {
       DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
       [this] {
         return frc::TrapezoidProfile<units::radians>::State{
-            ShouldFlipAngleForDriver(-90_deg), 0_deg_per_s};
+            ShouldFlipAngleForDriver(90_deg), 0_deg_per_s};
       },
       [this] { return std::abs(driverController.GetRightX()) > 0.1; }, true));
 
@@ -109,7 +109,7 @@ void RobotContainer::ConfigureBindings() {
       DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
       [this] {
         return frc::TrapezoidProfile<units::radians>::State{
-            ShouldFlipAngleForDriver(180_deg), 0_deg_per_s};
+            ShouldFlipAngleForDriver(0_deg), 0_deg_per_s};
       },
       [this] { return std::abs(driverController.GetRightX()) > 0.1; }, true));
 
@@ -117,11 +117,19 @@ void RobotContainer::ConfigureBindings() {
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
       DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
       [this] {
-        units::radian_t robotYawToGoTo =
-            driveSub.GetRobotPose().Rotation().Radians();
-        units::radian_t tagYaw = vision.GetYawToCenterTag();
-        robotYawToGoTo = robotYawToGoTo - tagYaw;
-        return frc::TrapezoidProfile<units::radians>::State{robotYawToGoTo,
+        frc::Translation2d goal =
+            constants::swerve::automation::BLUE_ALLIANCE_GOAL;
+        auto ally = frc::DriverStation::GetAlliance();
+        if (ally.has_value()) {
+          if (ally.value() == frc::DriverStation::Alliance::kRed) {
+            goal = constants::swerve::automation::RED_ALLIANCE_GOAL;
+          }
+        }
+        frc::Pose2d pose = driveSub.GetRobotPose();
+        frc::Rotation2d angle{
+            units::math::atan2(goal.Y() - pose.Translation().Y(),
+                               goal.X() - pose.Translation().X())};
+        return frc::TrapezoidProfile<units::radians>::State{angle.Radians(),
                                                             0_deg_per_s};
       },
       [this] { return std::abs(driverController.GetRightX()) > 0.1; }, true));

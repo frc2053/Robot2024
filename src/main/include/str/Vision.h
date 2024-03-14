@@ -289,18 +289,20 @@ class Vision {
   units::radian_t GetYawToCenterTag() {
     int tagToLookFor = GetSpeakerCenterTagId();
     photon::PhotonPipelineResult flResult = flCamera->GetLatestResult();
-    photon::PhotonPipelineResult frResult = flCamera->GetLatestResult();
+    photon::PhotonPipelineResult frResult = frCamera->GetLatestResult();
     if (flResult.HasTargets()) {
       for (const photon::PhotonTrackedTarget& target : flResult.GetTargets()) {
         if (target.GetFiducialId() == tagToLookFor) {
-          return units::degree_t{target.GetYaw()};
+          return units::degree_t{target.GetYaw()} -
+                 constants::vision::kflRobotToCam.Rotation().Z();
         }
       }
     }
     if (frResult.HasTargets()) {
       for (const photon::PhotonTrackedTarget& target : frResult.GetTargets()) {
         if (target.GetFiducialId() == tagToLookFor) {
-          return units::degree_t{target.GetYaw()};
+          return units::degree_t{target.GetYaw()} -
+                 constants::vision::kfrRobotToCam.Rotation().Z();
         }
       }
     }
