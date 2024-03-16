@@ -218,7 +218,7 @@ struct ModuleSteerGains {
 };
 
 inline constexpr ModuleDriveGains driveGains{
-    units::unit_t<frc::SimpleMotorFeedforward<units::meters>::ka_unit>{0},
+    units::unit_t<frc::SimpleMotorFeedforward<units::meters>::ka_unit>{40},
     units::unit_t<frc::SimpleMotorFeedforward<units::meters>::kv_unit>{0},
     7.6474_V,
     30,
