@@ -28,6 +28,10 @@ frc2::CommandPtr DunkerSubsystem::PivotDunkNotesIn() {
       frc2::cmd::WaitUntil([this] { return IsPivotAtGoal(); }));
 }
 
+frc2::CommandPtr DunkerSubsystem::DunkManual(std::function<double()> speed) {
+  return frc2::cmd::RunOnce([this, speed] { SetDunkSpeed(speed()); }, {this});
+}
+
 frc2::CommandPtr DunkerSubsystem::DunkTheNotes() {
   return frc2::cmd::RunEnd([this] { SetDunkSpeed(1); },
                            [this] { SetDunkSpeed(0); }, {this});

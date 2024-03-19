@@ -18,6 +18,7 @@
 #include <frc2/command/sysid/SysIdRoutine.h>
 #include <rev/CANSparkMax.h>
 
+#include <functional>
 #include <memory>
 
 #include <ctre/phoenix6/TalonFX.hpp>
@@ -33,6 +34,7 @@ class DunkerSubsystem : public frc2::SubsystemBase {
   units::radian_t GetPivotAngle();
   frc2::CommandPtr PivotDunkNotesOut();
   frc2::CommandPtr PivotDunkNotesIn();
+  frc2::CommandPtr DunkManual(std::function<double()> speed);
   frc2::CommandPtr DunkTheNotes();
   frc2::CommandPtr StopDunking();
   frc2::CommandPtr JammedDunkNotes();

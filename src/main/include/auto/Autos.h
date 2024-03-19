@@ -67,9 +67,12 @@ class Autos {
 
     pathplanner::NamedCommands::registerCommand(
         "ReadyToDunk",
-        shooterSub.GoToVelocityCmd([] { return 2000_rpm; }, [] { return true; })
-            .AlongWith(
-                dunkSub.PivotDunkNotesOut().AndThen(dunkSub.DunkTheNotes())));
+        frc2::cmd::Parallel(
+            frc2::cmd::Sequence(dunkSub.PivotDunkNotesOut(),
+                                dunkSub.DunkManual([] { return 1; })),
+            shooterSub.GoToVelocityCmd([] { return 2000_rpm; },
+                                       [] { return true; }))
+            .WithTimeout(2_s));
 
     pathplanner::NamedCommands::registerCommand(
         "ResetDunker",

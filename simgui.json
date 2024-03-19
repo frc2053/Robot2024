@@ -208,7 +208,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 3,
+          "height": 303,
           "series": [
             {
               "color": [
@@ -242,7 +242,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 3,
+          "height": 303,
           "series": [
             {
               "color": [
@@ -276,7 +276,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 3,
+          "height": 303,
           "series": [
             {
               "color": [
@@ -310,7 +310,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 3,
+          "height": 303,
           "series": [
             {
               "color": [
@@ -334,7 +334,8 @@
         }
       ],
       "window": {
-        "name": "Drive Velocities"
+        "name": "Drive Velocities",
+        "visible": false
       }
     },
     "Plot <1>": {
@@ -351,7 +352,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 3,
+          "height": -31,
           "series": [
             {
               "color": [
@@ -385,7 +386,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 3,
+          "height": -31,
           "series": [
             {
               "color": [
@@ -419,7 +420,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 3,
+          "height": -31,
           "series": [
             {
               "color": [
@@ -453,7 +454,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 3,
+          "height": -31,
           "series": [
             {
               "color": [
@@ -477,7 +478,8 @@
         }
       ],
       "window": {
-        "name": "Steer Angles"
+        "name": "Steer Angles",
+        "visible": false
       }
     },
     "Plot <2>": {
@@ -535,7 +537,7 @@
             0.0,
             0.8500000238418579
           ],
-          "height": 610,
+          "height": 74,
           "series": [
             {
               "color": [
@@ -568,7 +570,8 @@
         }
       ],
       "window": {
-        "name": "ShooterInfo"
+        "name": "ShooterInfo",
+        "visible": false
       }
     }
   }

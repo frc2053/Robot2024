@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3534495830535889,
-      "y": 5.600351333618164
+      "x": 1.489290475845337,
+      "y": 5.568321704864502
     },
     "rotation": 179.49385687022107
   },
@@ -11,6 +11,24 @@
     "type": "sequential",
     "data": {
       "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "ReadyToDunk"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "FeedNote"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ResetDunker"
+          }
+        },
         {
           "type": "deadline",
           "data": {
@@ -28,6 +46,12 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "GoToShooterPoint"
           }
         },
         {
@@ -64,6 +88,12 @@
         {
           "type": "named",
           "data": {
+            "name": "GoToShooterPoint"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "SpinUpShooter"
           }
         },
@@ -90,6 +120,86 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "GoToShooterPoint"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "SpinUpShooter"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "FeedNote"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "MiddleSub.4"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeNote"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "GoToShooterPoint"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "SpinUpShooter"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "FeedNote"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "MiddleSub.5"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeNote"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "GoToShooterPoint"
           }
         },
         {
