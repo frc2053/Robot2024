@@ -41,6 +41,11 @@ void RobotContainer::ConfigureBindings() {
       [this] { return driveSub.CalcDistanceFromSpeaker(); }));
   operatorController.B().OnFalse(NotUsingShooter());
 
+  driverController.LeftBumper().WhileTrue(driveSub.DriveFactory(
+      DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
+      DeadbandAndSquare([this] { return -rotSpeed; }),
+      DeadbandAndSquare([this] { return rotSpeed; }), [] { return true; }));
+
   driverController.RightTrigger().WhileTrue(
       driveSub
           .GoToPose([this] {
@@ -325,4 +330,14 @@ std::function<frc2::CommandPtr()> RobotContainer::GetAStarCmd() {
     return driveSub.PathfindToSafeSpot(
         [this] { return driveSub.CalculateClosestSafeSpot(); });
   };
+}
+
+void RobotContainer::CalculateNotePid() {
+  auto result = vision.GetNoteCamResult();
+  notePid.SetSetpoint(0);
+  if (result.HasTargets()) {
+    rotSpeed = notePid.Calculate(result.GetBestTarget().GetYaw());
+  } else {
+    rotSpeed = 0;
+  }
 }

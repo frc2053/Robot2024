@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <frc/controller/PIDController.h>
 #include <frc2/command/CommandPtr.h>
 #include <frc2/command/button/CommandXboxController.h>
 
@@ -33,6 +34,7 @@ class RobotContainer {
   IntakeSubsystem& GetIntakeSubsystem();
   Vision& GetVisionSystem();
   LedSubsystem& GetLedSubsystem();
+  void CalculateNotePid();
 
  private:
   void ConfigureBindings();
@@ -61,6 +63,10 @@ class RobotContainer {
   frc2::CommandPtr tuneDriveCmd = driveSub.TuneDrivePID([] {
     return frc::SmartDashboard::GetBoolean("Drivebase/DoneWithStep", false);
   });
+
+  frc::PIDController notePid{.035, 0, 0};
+
+  double rotSpeed = 0;
 
   frc2::CommandPtr resetPositionCmd =
       driveSub.ResetPosition([] { return frc::Pose2d{}; });

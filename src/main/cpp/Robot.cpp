@@ -23,6 +23,8 @@ void Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
   // nt::NetworkTableInstance::GetDefault().Flush();
 
+  m_container.CalculateNotePid();
+
   auto flvisionEst = m_container.GetVisionSystem().GetFLEstimatedGlobalPose();
   auto frvisionEst = m_container.GetVisionSystem().GetFREstimatedGlobalPose();
   auto blvisionEst = m_container.GetVisionSystem().GetBLEstimatedGlobalPose();

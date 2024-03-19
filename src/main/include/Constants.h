@@ -235,7 +235,7 @@ inline constexpr ModuleSteerGains steerGains{
 namespace pathplanning {
 inline constexpr units::scalar_t TRANSLATION_P = 10.0;
 inline constexpr units::scalar_t TRANSLATION_I = 0.0;
-inline constexpr units::scalar_t TRANSLATION_D = 0.1;
+inline constexpr units::scalar_t TRANSLATION_D = 0.0;
 
 inline constexpr units::scalar_t ROTATION_P = 5.0;
 inline constexpr units::scalar_t ROTATION_I = 0.0;
