@@ -36,6 +36,8 @@ class RobotContainer {
   LedSubsystem& GetLedSubsystem();
   void CalculateNotePid();
 
+  units::radian_t desiredAngle = 0_rad;
+
  private:
   void ConfigureBindings();
   frc2::CommandXboxController driverController{0};

@@ -149,7 +149,10 @@ void Robot::SimulationPeriodic() {
 
 void Robot::DisabledInit() {}
 
-void Robot::DisabledPeriodic() {}
+void Robot::DisabledPeriodic() {
+  m_container.desiredAngle =
+      m_container.GetDrivebaseSubsystem().GetRobotPose().Rotation().Radians();
+}
 
 void Robot::DisabledExit() {}
 
