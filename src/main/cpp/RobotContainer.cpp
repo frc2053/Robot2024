@@ -43,8 +43,9 @@ void RobotContainer::ConfigureBindings() {
 
   driverController.LeftBumper().WhileTrue(driveSub.DriveFactory(
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
-      DeadbandAndSquare([this] { return -rotSpeed; }),
-      DeadbandAndSquare([this] { return rotSpeed; }), [] { return true; }));
+      [this] { return -rotSpeed; },
+      DeadbandAndSquare([this] { return -driverController.GetRightX(); }),
+      [] { return false; }));
 
   driverController.RightTrigger().WhileTrue(
       driveSub

@@ -142,6 +142,9 @@
             "open": true
           }
         },
+        "Dunker Telemetry": {
+          "open": true
+        },
         "Field": {
           "double[]##v_/SmartDashboard/Field/Estimated Robot Pose": {
             "open": true
