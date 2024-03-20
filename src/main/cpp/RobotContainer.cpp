@@ -10,6 +10,7 @@
 
 RobotContainer::RobotContainer() {
   ConfigureBindings();
+  notePid.SetTolerance(2);
 }
 
 void RobotContainer::ConfigureBindings() {
@@ -42,9 +43,12 @@ void RobotContainer::ConfigureBindings() {
   operatorController.B().OnFalse(NotUsingShooter());
 
   driverController.LeftBumper().WhileTrue(driveSub.DriveFactory(
-      DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
-      [this] { return -rotSpeed; },
-      DeadbandAndSquare([this] { return -driverController.GetRightX(); }),
+      DeadbandAndSquare([this] {
+        return ShouldFlipControlsForDriver(-driverController.GetLeftY());
+      }),
+      [this] { return -rotSpeed; }, DeadbandAndSquare([this] {
+        return ShouldFlipControlsForDriver(-driverController.GetRightX());
+      }),
       [] { return false; }));
 
   driverController.RightTrigger().WhileTrue(
@@ -298,6 +302,16 @@ units::radian_t RobotContainer::ShouldFlipAngleForDriver(
     }
   }
   return targetAngle;
+}
+
+double RobotContainer::ShouldFlipControlsForDriver(double val) {
+  auto ally = frc::DriverStation::GetAlliance();
+  if (ally.has_value()) {
+    if (ally.value() == frc::DriverStation::Alliance::kRed) {
+      return val;
+    }
+  }
+  return -val;
 }
 
 DrivebaseSubsystem& RobotContainer::GetDrivebaseSubsystem() {

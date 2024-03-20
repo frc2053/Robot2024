@@ -66,7 +66,7 @@ class RobotContainer {
     return frc::SmartDashboard::GetBoolean("Drivebase/DoneWithStep", false);
   });
 
-  frc::PIDController notePid{.035, 0, 0};
+  frc::PIDController notePid{.015, 0, 0};
 
   double rotSpeed = 0;
 
@@ -96,5 +96,6 @@ class RobotContainer {
   str::DeadbandAndSquareFunc DeadbandAndSquare(
       std::function<double()> joystickValue);
 
+  double ShouldFlipControlsForDriver(double val);
   units::radian_t ShouldFlipAngleForDriver(units::radian_t targetAngle);
 };
