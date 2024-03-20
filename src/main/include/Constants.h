@@ -271,7 +271,8 @@ inline constexpr frc::DCMotor SWERVE_MOTOR_FOC{frc::DCMotor::Falcon500FOC(1)};
 
 inline constexpr units::meter_t WHEELBASE_LENGTH = 22.75_in;
 inline constexpr units::meter_t WHEELBASE_WIDTH = 22.75_in;
-inline constexpr units::meter_t DRIVE_WHEEL_DIAMETER = 3.767106817_in;
+inline constexpr units::meter_t DRIVE_WHEEL_DIAMETER =
+    1.9408891188967263_in * 2;
 inline constexpr units::scalar_t DRIVE_GEARING =
     (50.0 / 16.0) * (17.0 / 27.0) * (45.0 / 15.0);  // SDS L2 with 16t pinion
 inline constexpr units::scalar_t STEER_GEARING = (50.0 / 14.0) * (60.0 / 10.0);
@@ -286,9 +287,9 @@ inline constexpr units::radians_per_second_t MAX_ROTATION_SPEED = 720_deg_per_s;
 inline constexpr units::radians_per_second_squared_t MAX_ROTATION_ACCEL =
     10000_deg_per_s_sq;
 
-inline constexpr double FL_ENCODER_OFFSET = -0.479392;
+inline constexpr double FL_ENCODER_OFFSET = -0.468520;
 inline constexpr double FR_ENCODER_OFFSET = -.028076;
-inline constexpr double BL_ENCODER_OFFSET = -.126221;
+inline constexpr double BL_ENCODER_OFFSET = -0.218262;
 inline constexpr double BR_ENCODER_OFFSET = 0.112793;
 
 inline constexpr units::ampere_t SLIP_CURRENT = 180_A;

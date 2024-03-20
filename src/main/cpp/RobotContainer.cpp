@@ -81,17 +81,11 @@ void RobotContainer::ConfigureBindings() {
 
   driverController.Start().OnTrue(driveSub.ZeroYawCMD());
 
-  driveSub.SetDefaultCommand(driveSub.TurnToAngleFactory(
+  driveSub.SetDefaultCommand(driveSub.DriveFactory(
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
       DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
-      [this] {
-        desiredAngle +=
-            (frc::ApplyDeadband<double>(-driverController.GetRightX(), .1) *
-             (constants::swerve::physical::MAX_ROTATION_SPEED * 20_ms));
-        return frc::TrapezoidProfile<units::radians>::State{
-            ShouldFlipAngleForDriver(desiredAngle), 0_deg_per_s};
-      },
-      [] { return false; }, true));
+      DeadbandAndSquare([this] { return -driverController.GetRightX(); }),
+      [] { return true; }));
 
   driverController.Y().OnTrue(driveSub.TurnToAngleFactory(
       DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
