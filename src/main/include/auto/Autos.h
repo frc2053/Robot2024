@@ -51,9 +51,8 @@ class Autos {
     pathplanner::NamedCommands::registerCommand(
         "SpinUpShooter",
         shooterSub
-            .GoToVelocityCmd([] { return constants::shooter::SHOOTER_SPEED; },
-                             [] { return false; })
-            .WithTimeout(2.5_s));
+            .GoToVelocityCmd([] { return 5200_rpm; }, [] { return false; })
+            .WithTimeout(.75_s));
 
     pathplanner::NamedCommands::registerCommand(
         "StopShooter",
@@ -108,7 +107,7 @@ class Autos {
                       angle.Radians(), 0_deg_per_s};
                 },
                 [] { return false; }, true)
-            .WithTimeout(.5_s));
+            .WithTimeout(1_s));
 
     GetSelectedAutoCmd = frc2::cmd::Select<CommandSelector>(
         [this] { return chooser.GetSelected(); },
