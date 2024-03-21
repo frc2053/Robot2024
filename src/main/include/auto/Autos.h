@@ -31,7 +31,8 @@ enum CommandSelector {
   AMP_SIDE_SINGLE,
   SIX_NOTE,
   PODIUM_NOTE,
-  RUIN_UR_DAY
+  RUIN_UR_DAY,
+  THREE_MIDDLE_SUB
 };
 
 class Autos {
@@ -60,6 +61,9 @@ class Autos {
 
     pathplanner::NamedCommands::registerCommand(
         "IntakeNote", intakeSub.SuckInUntilNoteIsSeen());
+
+    pathplanner::NamedCommands::registerCommand(
+        "SpitNote", intakeSub.SpitOutNotes().WithTimeout(.5_s));
 
     pathplanner::NamedCommands::registerCommand(
         "FeedNote", intakeSub.SuckInNotes().WithTimeout(1_s));
@@ -124,6 +128,8 @@ class Autos {
         std::pair{MOVE_OUT, pathplanner::PathPlannerAuto{"MoveOut"}.ToPtr()},
         std::pair{MIDDLE_SUB,
                   pathplanner::PathPlannerAuto{"MiddleSub"}.ToPtr()},
+        std::pair{THREE_MIDDLE_SUB,
+                  pathplanner::PathPlannerAuto{"ThreeMiddleSub"}.ToPtr()},
         std::pair{AMP_SIDE_SINGLE,
                   pathplanner::PathPlannerAuto("AmpSideSingle").ToPtr()},
         std::pair{SIX_NOTE, pathplanner::PathPlannerAuto("SixNote").ToPtr()},
@@ -140,6 +146,7 @@ class Autos {
                       CommandSelector::MIDDLE_OF_DRIVER_STATION);
     chooser.AddOption("Move Out", CommandSelector::MOVE_OUT);
     chooser.AddOption("Middle Sub", CommandSelector::MIDDLE_SUB);
+    chooser.AddOption("Three Middle Sub", CommandSelector::THREE_MIDDLE_SUB);
     chooser.AddOption("Amp Side Single", CommandSelector::AMP_SIDE_SINGLE);
     chooser.AddOption("Six Note", CommandSelector::SIX_NOTE);
     chooser.AddOption("Podium Note", CommandSelector::PODIUM_NOTE);
