@@ -115,8 +115,8 @@ inline constexpr units::radians_per_second_squared_t MAX_ROTATION_ACCEL =
 extern const frc::TrapezoidProfile<units::radians>::Constraints
     PIVOT_CONTROLLER_CONSTRAINTS;
 
-inline constexpr double DUNKER_MIN_ENCODER = 0.067;
-inline constexpr double DUNKER_MAX_ENCODER = 0.330;
+inline constexpr double DUNKER_MIN_ENCODER = 0.723;
+inline constexpr double DUNKER_MAX_ENCODER = 1.0;
 inline constexpr units::radian_t DUNKER_MIN_ANGLE = 20_deg;
 inline constexpr units::radian_t DUNKER_MAX_ANGLE = 125_deg;
 

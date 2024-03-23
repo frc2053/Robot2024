@@ -26,7 +26,7 @@ enum CommandSelector {
   CHOREO_TEST,
   AMP_SIDE,
   MIDDLE_OF_DRIVER_STATION,
-  MOVE_OUT,
+  THREE_NOTE_SOURCE,
   MIDDLE_SUB,
   AMP_SIDE_SINGLE,
   SIX_NOTE,
@@ -125,7 +125,8 @@ class Autos {
         std::pair{
             MIDDLE_OF_DRIVER_STATION,
             pathplanner::PathPlannerAuto{"MiddleOfDriverStation"}.ToPtr()},
-        std::pair{MOVE_OUT, pathplanner::PathPlannerAuto{"MoveOut"}.ToPtr()},
+        std::pair{THREE_NOTE_SOURCE,
+                  pathplanner::PathPlannerAuto{"ThreeNoteSource"}.ToPtr()},
         std::pair{MIDDLE_SUB,
                   pathplanner::PathPlannerAuto{"MiddleSub"}.ToPtr()},
         std::pair{THREE_MIDDLE_SUB,
@@ -144,7 +145,7 @@ class Autos {
     chooser.AddOption("Amp Side", CommandSelector::AMP_SIDE);
     chooser.AddOption("Middle of Driver Station",
                       CommandSelector::MIDDLE_OF_DRIVER_STATION);
-    chooser.AddOption("Move Out", CommandSelector::MOVE_OUT);
+    chooser.AddOption("Three Note Source", CommandSelector::THREE_NOTE_SOURCE);
     chooser.AddOption("Middle Sub", CommandSelector::MIDDLE_SUB);
     chooser.AddOption("Three Middle Sub", CommandSelector::THREE_MIDDLE_SUB);
     chooser.AddOption("Amp Side Single", CommandSelector::AMP_SIDE_SINGLE);

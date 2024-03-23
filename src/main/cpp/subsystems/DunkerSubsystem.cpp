@@ -59,6 +59,9 @@ frc2::CommandPtr DunkerSubsystem::SysIdDynamic(
 
 void DunkerSubsystem::Periodic() {
   double encReading = pivotEncoder.GetOutput();
+  if (encReading < .5) {
+    encReading = .99;
+  }
   frc::SmartDashboard::PutNumber("Dunker/EncoderPos", encReading);
   currentPivotPos = ConvertEncoderToAngle(encReading);
 
