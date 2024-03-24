@@ -12,9 +12,9 @@
     "data": {
       "commands": [
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 5.0
+            "name": "SpinUpShooter"
           }
         },
         {
@@ -34,12 +34,6 @@
           "type": "named",
           "data": {
             "name": "PointAtGoal"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "SpinUpShooter"
           }
         },
         {
@@ -70,7 +64,7 @@
         {
           "type": "named",
           "data": {
-            "name": "GoToShooterPoint"
+            "name": "PointAtGoal"
           }
         },
         {
@@ -107,7 +101,7 @@
         {
           "type": "named",
           "data": {
-            "name": "GoToShooterPoint"
+            "name": "PointAtGoal"
           }
         },
         {
