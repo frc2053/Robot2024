@@ -18,6 +18,8 @@ void RobotContainer::ConfigureBindings() {
     return frc::ApplyDeadband<double>(operatorController.GetLeftY(), 0.1);
   }));
 
+  operatorController.RightBumper().WhileTrue(BabySpinUpShooter());
+
   operatorController.RightTrigger().WhileTrue(intakeSub.SuckInNotes());
   operatorController.LeftTrigger().WhileTrue(IntakeNote());
 
@@ -230,6 +232,20 @@ frc2::CommandPtr RobotContainer::SpinUpShooter() {
                 return shooterSub.GetLeftShooterCurrentVelocity().value();
               },
               [] { return constants::shooter::SHOOTER_SPEED.value(); })),
+      ledSub.SetBothToSolidGreen(),
+      frc2::cmd::Parallel(RumbleDriver(), RumbleOperator()));
+}
+frc2::CommandPtr RobotContainer::BabySpinUpShooter() {
+  return frc2::cmd::Sequence(
+      frc2::cmd::Deadline(
+          shooterSub.GoToVelocityCmd(
+              [] { return constants::shooter::SHOOTER_SPEED * .10; },
+              [] { return false; }),
+          ledSub.SetBothToTach(
+              [this] {
+                return shooterSub.GetLeftShooterCurrentVelocity().value();
+              },
+              [] { return constants::shooter::SHOOTER_SPEED.value() * .10; })),
       ledSub.SetBothToSolidGreen(),
       frc2::cmd::Parallel(RumbleDriver(), RumbleOperator()));
 }

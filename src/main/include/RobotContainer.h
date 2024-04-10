@@ -80,6 +80,7 @@ class RobotContainer {
   frc2::CommandPtr SpinUpShooterBasedOnDist(
       std::function<units::meter_t()> distToGoal);
   frc2::CommandPtr SpinUpShooter();
+  frc2::CommandPtr BabySpinUpShooter();
   frc2::CommandPtr NotUsingShooter();
 
   frc2::CommandPtr DunkNote();
