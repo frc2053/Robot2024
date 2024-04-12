@@ -42,6 +42,7 @@ class RobotContainer {
   void ConfigureBindings();
   frc2::CommandXboxController driverController{0};
   frc2::CommandXboxController operatorController{1};
+  frc2::CommandXboxController testController{2};
 
   DrivebaseSubsystem driveSub;
   ShooterSubsystem shooterSub;

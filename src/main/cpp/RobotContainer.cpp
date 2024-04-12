@@ -14,11 +14,18 @@ RobotContainer::RobotContainer() {
 }
 
 void RobotContainer::ConfigureBindings() {
+  testController.RightBumper().WhileTrue(BabySpinUpShooter());
+  testController.RightBumper().OnFalse(NotUsingShooter());
+
+  driveSub.SetDefaultCommand(driveSub.BabyDriveFactory(
+      DeadbandAndSquare([this] { return -testController.GetLeftY(); }),
+      DeadbandAndSquare([this] { return -testController.GetLeftX(); }),
+      DeadbandAndSquare([this] { return -testController.GetRightX(); }),
+      [] { return true; }));
+
   operatorController.X().WhileTrue(shooterSub.GoToSpeedCmd([this] {
     return frc::ApplyDeadband<double>(operatorController.GetLeftY(), 0.1);
   }));
-
-  operatorController.RightBumper().WhileTrue(BabySpinUpShooter());
 
   operatorController.RightTrigger().WhileTrue(intakeSub.SuckInNotes());
   operatorController.LeftTrigger().WhileTrue(IntakeNote());
