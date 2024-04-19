@@ -14,7 +14,7 @@ RobotContainer::RobotContainer() {
 }
 
 void RobotContainer::ConfigureBindings() {
-  testController.RightBumper().WhileTrue(BabySpinUpShooter());
+  testController.RightBumper().WhileTrue(SpinUpShooter());
   testController.RightBumper().OnFalse(NotUsingShooter());
 
   driveSub.SetDefaultCommand(driveSub.BabyDriveFactory(
@@ -23,135 +23,140 @@ void RobotContainer::ConfigureBindings() {
       DeadbandAndSquare([this] { return -testController.GetRightX(); }),
       [] { return true; }));
 
-  operatorController.X().WhileTrue(shooterSub.GoToSpeedCmd([this] {
-    return frc::ApplyDeadband<double>(operatorController.GetLeftY(), 0.1);
-  }));
+  // operatorController.X().WhileTrue(shooterSub.GoToSpeedCmd([this] {
+  //   return frc::ApplyDeadband<double>(operatorController.GetLeftY(), 0.1);
+  // }));
 
-  operatorController.RightTrigger().WhileTrue(intakeSub.SuckInNotes());
-  operatorController.LeftTrigger().WhileTrue(IntakeNote());
+  testController.RightTrigger().WhileTrue(intakeSub.SuckInNotes());
+  testController.LeftTrigger().WhileTrue(IntakeNote());
 
-  operatorController.Back().WhileTrue(intakeSub.SpitOutNotes());
+  testController.Back().WhileTrue(intakeSub.SpitOutNotes());
 
-  operatorController.Start().WhileTrue(
-      climbSub.ManualControl([] { return 1; }, [] { return -1; }));
+  // operatorController.Start().WhileTrue(
+  //     climbSub.ManualControl([] { return 1; }, [] { return -1; }));
 
-  operatorController.LeftBumper().OnTrue(dunkSub.PivotDunkNotesOut());
+  // operatorController.LeftBumper().OnTrue(dunkSub.PivotDunkNotesOut());
 
-  operatorController.Y().WhileTrue(
-      DunkNote().AlongWith(shooterSub.GoToVelocityCmd(
-          [] { return constants::shooter::SHOOTER_DUNK_SPEED; },
-          [] { return true; })));
-  operatorController.Y().OnFalse(StopDunk().AlongWith(
+  testController.Y().WhileTrue(DunkNote().AlongWith(shooterSub.GoToVelocityCmd(
+      [] { return constants::shooter::SHOOTER_DUNK_SPEED; },
+      [] { return true; })));
+  testController.Y().OnFalse(StopDunk().AlongWith(
       shooterSub.GoToVelocityCmd([] { return 0_rpm; }, [] { return true; })));
 
-  operatorController.A().WhileTrue(SpinUpShooter());
-  operatorController.A().OnFalse(NotUsingShooter());
+  // operatorController.A().WhileTrue(SpinUpShooter());
+  // operatorController.A().OnFalse(NotUsingShooter());
 
-  operatorController.B().WhileTrue(SpinUpShooterBasedOnDist(
-      [this] { return driveSub.CalcDistanceFromSpeaker(); }));
-  operatorController.B().OnFalse(NotUsingShooter());
+  // operatorController.B().WhileTrue(SpinUpShooterBasedOnDist(
+  //     [this] { return driveSub.CalcDistanceFromSpeaker(); }));
+  // operatorController.B().OnFalse(NotUsingShooter());
 
-  driverController.LeftBumper().WhileTrue(driveSub.DriveFactory(
-      DeadbandAndSquare([this] {
-        return ShouldFlipControlsForDriver(-driverController.GetLeftY());
-      }),
-      [this] { return -rotSpeed; }, DeadbandAndSquare([this] {
-        return ShouldFlipControlsForDriver(-driverController.GetRightX());
-      }),
-      [] { return false; }));
+  // driverController.LeftBumper().WhileTrue(driveSub.DriveFactory(
+  //     DeadbandAndSquare([this] {
+  //       return ShouldFlipControlsForDriver(-driverController.GetLeftY());
+  //     }),
+  //     [this] { return -rotSpeed; }, DeadbandAndSquare([this] {
+  //       return ShouldFlipControlsForDriver(-driverController.GetRightX());
+  //     }),
+  //     [] { return false; }));
 
-  driverController.RightTrigger().WhileTrue(
-      driveSub
-          .GoToPose([this] {
-            frc::Pose2d closestPoint = driveSub.BestShooterPoint();
-            return closestPoint;
-          })
-          .AndThen(driveSub.MoveAlongArc(
-              [this] {
-                return frc::ApplyDeadband<double>(-driverController.GetLeftX(),
-                                                  .1);
-              },
-              [this] {
-                return driveSub.CalculateClosestGoodShooterPoint()
-                    .Rotation()
-                    .Radians();
-              }))
-          .AlongWith(SpinUpShooter()));
+  // driverController.RightTrigger().WhileTrue(
+  //     driveSub
+  //         .GoToPose([this] {
+  //           frc::Pose2d closestPoint = driveSub.BestShooterPoint();
+  //           return closestPoint;
+  //         })
+  //         .AndThen(driveSub.MoveAlongArc(
+  //             [this] {
+  //               return
+  //               frc::ApplyDeadband<double>(-driverController.GetLeftX(),
+  //                                                 .1);
+  //             },
+  //             [this] {
+  //               return driveSub.CalculateClosestGoodShooterPoint()
+  //                   .Rotation()
+  //                   .Radians();
+  //             }))
+  //         .AlongWith(SpinUpShooter()));
 
-  driverController.LeftTrigger().WhileTrue(driveSub.GoToPose([this] {
-    auto ally = frc::DriverStation::GetAlliance();
-    if (ally.has_value()) {
-      if (ally.value() == frc::DriverStation::Alliance::kRed) {
-        return constants::swerve::automation::RED_AMP;
-      }
-    }
-    return constants::swerve::automation::BLUE_AMP;
-  }));
+  // driverController.LeftTrigger().WhileTrue(driveSub.GoToPose([this] {
+  //   auto ally = frc::DriverStation::GetAlliance();
+  //   if (ally.has_value()) {
+  //     if (ally.value() == frc::DriverStation::Alliance::kRed) {
+  //       return constants::swerve::automation::RED_AMP;
+  //     }
+  //   }
+  //   return constants::swerve::automation::BLUE_AMP;
+  // }));
 
-  driverController.Start().OnTrue(driveSub.ZeroYawCMD());
+  testController.Start().OnTrue(driveSub.ZeroYawCMD());
 
-  driveSub.SetDefaultCommand(driveSub.DriveFactory(
-      DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
-      DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
-      DeadbandAndSquare([this] { return -driverController.GetRightX(); }),
-      [] { return true; }));
+  // driveSub.SetDefaultCommand(driveSub.DriveFactory(
+  //     DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
+  //     DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
+  //     DeadbandAndSquare([this] { return -driverController.GetRightX(); }),
+  //     [] { return true; }));
 
-  driverController.Y().OnTrue(driveSub.TurnToAngleFactory(
-      DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
-      DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
-      [this] {
-        return frc::TrapezoidProfile<units::radians>::State{
-            ShouldFlipAngleForDriver(180_deg), 0_deg_per_s};
-      },
-      [this] { return std::abs(driverController.GetRightX()) > 0.1; }, true));
+  // driverController.Y().OnTrue(driveSub.TurnToAngleFactory(
+  //     DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
+  //     DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
+  //     [this] {
+  //       return frc::TrapezoidProfile<units::radians>::State{
+  //           ShouldFlipAngleForDriver(180_deg), 0_deg_per_s};
+  //     },
+  //     [this] { return std::abs(driverController.GetRightX()) > 0.1; },
+  //     true));
 
-  driverController.X().OnTrue(driveSub.TurnToAngleFactory(
-      DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
-      DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
-      [this] {
-        return frc::TrapezoidProfile<units::radians>::State{
-            ShouldFlipAngleForDriver(-90_deg), 0_deg_per_s};
-      },
-      [this] { return std::abs(driverController.GetRightX()) > 0.1; }, true));
+  // driverController.X().OnTrue(driveSub.TurnToAngleFactory(
+  //     DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
+  //     DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
+  //     [this] {
+  //       return frc::TrapezoidProfile<units::radians>::State{
+  //           ShouldFlipAngleForDriver(-90_deg), 0_deg_per_s};
+  //     },
+  //     [this] { return std::abs(driverController.GetRightX()) > 0.1; },
+  //     true));
 
-  driverController.B().OnTrue(driveSub.TurnToAngleFactory(
-      DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
-      DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
-      [this] {
-        return frc::TrapezoidProfile<units::radians>::State{
-            ShouldFlipAngleForDriver(90_deg), 0_deg_per_s};
-      },
-      [this] { return std::abs(driverController.GetRightX()) > 0.1; }, true));
+  // driverController.B().OnTrue(driveSub.TurnToAngleFactory(
+  //     DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
+  //     DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
+  //     [this] {
+  //       return frc::TrapezoidProfile<units::radians>::State{
+  //           ShouldFlipAngleForDriver(90_deg), 0_deg_per_s};
+  //     },
+  //     [this] { return std::abs(driverController.GetRightX()) > 0.1; },
+  //     true));
 
-  driverController.A().OnTrue(driveSub.TurnToAngleFactory(
-      DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
-      DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
-      [this] {
-        return frc::TrapezoidProfile<units::radians>::State{
-            ShouldFlipAngleForDriver(0_deg), 0_deg_per_s};
-      },
-      [this] { return std::abs(driverController.GetRightX()) > 0.1; }, true));
+  // driverController.A().OnTrue(driveSub.TurnToAngleFactory(
+  //     DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
+  //     DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
+  //     [this] {
+  //       return frc::TrapezoidProfile<units::radians>::State{
+  //           ShouldFlipAngleForDriver(0_deg), 0_deg_per_s};
+  //     },
+  //     [this] { return std::abs(driverController.GetRightX()) > 0.1; },
+  //     true));
 
-  driverController.RightBumper().OnTrue(driveSub.TurnToAngleFactory(
-      DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
-      DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
-      [this] {
-        frc::Translation2d goal =
-            constants::swerve::automation::BLUE_ALLIANCE_GOAL;
-        auto ally = frc::DriverStation::GetAlliance();
-        if (ally.has_value()) {
-          if (ally.value() == frc::DriverStation::Alliance::kRed) {
-            goal = constants::swerve::automation::RED_ALLIANCE_GOAL;
-          }
-        }
-        frc::Pose2d pose = driveSub.GetRobotPose();
-        frc::Rotation2d angle{
-            units::math::atan2(goal.Y() - pose.Translation().Y(),
-                               goal.X() - pose.Translation().X())};
-        return frc::TrapezoidProfile<units::radians>::State{angle.Radians(),
-                                                            0_deg_per_s};
-      },
-      [this] { return std::abs(driverController.GetRightX()) > 0.1; }, true));
+  // driverController.RightBumper().OnTrue(driveSub.TurnToAngleFactory(
+  //     DeadbandAndSquare([this] { return -driverController.GetLeftY(); }),
+  //     DeadbandAndSquare([this] { return -driverController.GetLeftX(); }),
+  //     [this] {
+  //       frc::Translation2d goal =
+  //           constants::swerve::automation::BLUE_ALLIANCE_GOAL;
+  //       auto ally = frc::DriverStation::GetAlliance();
+  //       if (ally.has_value()) {
+  //         if (ally.value() == frc::DriverStation::Alliance::kRed) {
+  //           goal = constants::swerve::automation::RED_ALLIANCE_GOAL;
+  //         }
+  //       }
+  //       frc::Pose2d pose = driveSub.GetRobotPose();
+  //       frc::Rotation2d angle{
+  //           units::math::atan2(goal.Y() - pose.Translation().Y(),
+  //                              goal.X() - pose.Translation().X())};
+  //       return frc::TrapezoidProfile<units::radians>::State{angle.Radians(),
+  //                                                           0_deg_per_s};
+  //     },
+  //     [this] { return std::abs(driverController.GetRightX()) > 0.1; },
+  //     true));
 
   frc::SmartDashboard::PutBoolean("Drivebase/DoneWithStep", false);
 
