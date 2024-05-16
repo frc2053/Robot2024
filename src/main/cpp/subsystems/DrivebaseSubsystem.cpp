@@ -141,23 +141,6 @@ frc2::CommandPtr DrivebaseSubsystem::ResetPosition(
   });
 }
 
-frc2::CommandPtr DrivebaseSubsystem::BabyDriveFactory(
-    std::function<double()> fow, std::function<double()> side,
-    std::function<double()> rot, std::function<bool()> fieldOriented) {
-  return frc2::RunCommand(
-             [this, fow, side, rot, fieldOriented]() {
-               swerveDrive.Drive(
-                   fow() * constants::swerve::physical::MAX_LINEAR_SPEED * .10,
-                   side() * constants::swerve::physical::MAX_LINEAR_SPEED * .10,
-                   rot() * constants::swerve::physical::MAX_ROTATION_SPEED *
-                       .10,
-                   true, fieldOriented());
-             },
-             {this})
-      .ToPtr()
-      .WithName("Baby Drive Factory");
-}
-
 frc2::CommandPtr DrivebaseSubsystem::DriveFactory(
     std::function<double()> fow, std::function<double()> side,
     std::function<double()> rot, std::function<bool()> fieldOriented) {

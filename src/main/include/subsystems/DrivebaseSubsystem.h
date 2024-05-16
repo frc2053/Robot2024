@@ -35,11 +35,6 @@ class DrivebaseSubsystem : public frc2::SubsystemBase {
   void UpdateOdometry();
   frc2::CommandPtr ResetPosition(std::function<frc::Pose2d()> newPosition);
 
-  frc2::CommandPtr BabyDriveFactory(std::function<double()> fow,
-                                    std::function<double()> side,
-                                    std::function<double()> rot,
-                                    std::function<bool()> fieldOriented);
-
   frc2::CommandPtr DriveFactory(std::function<double()> fow,
                                 std::function<double()> side,
                                 std::function<double()> rot,
