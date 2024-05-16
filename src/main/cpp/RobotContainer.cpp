@@ -23,9 +23,6 @@ void RobotContainer::ConfigureBindings() {
 
   operatorController.Back().WhileTrue(intakeSub.SpitOutNotes());
 
-  operatorController.Start().WhileTrue(
-      climbSub.ManualControl([] { return 1; }, [] { return -1; }));
-
   operatorController.LeftBumper().OnTrue(dunkSub.PivotDunkNotesOut());
 
   operatorController.Y().WhileTrue(
@@ -41,6 +38,9 @@ void RobotContainer::ConfigureBindings() {
   operatorController.B().WhileTrue(SpinUpShooterBasedOnDist(
       [this] { return driveSub.CalcDistanceFromSpeaker(); }));
   operatorController.B().OnFalse(NotUsingShooter());
+
+  driverController.Back().WhileTrue(
+      climbSub.ManualControl([] { return 1; }, [] { return -1; }));
 
   driverController.LeftBumper().WhileTrue(driveSub.DriveFactory(
       DeadbandAndSquare([this] {
