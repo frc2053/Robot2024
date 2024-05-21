@@ -115,8 +115,8 @@ inline constexpr units::radians_per_second_squared_t MAX_ROTATION_ACCEL =
 extern const frc::TrapezoidProfile<units::radians>::Constraints
     PIVOT_CONTROLLER_CONSTRAINTS;
 
-inline constexpr double DUNKER_MIN_ENCODER = 0.723;
-inline constexpr double DUNKER_MAX_ENCODER = 1.0;
+inline constexpr double DUNKER_MIN_ENCODER = 0.570;
+inline constexpr double DUNKER_MAX_ENCODER = 0.830;
 inline constexpr units::radian_t DUNKER_MIN_ANGLE = 20_deg;
 inline constexpr units::radian_t DUNKER_MAX_ANGLE = 125_deg;
 
@@ -287,13 +287,13 @@ inline constexpr units::radians_per_second_t MAX_ROTATION_SPEED = 720_deg_per_s;
 inline constexpr units::radians_per_second_squared_t MAX_ROTATION_ACCEL =
     10000_deg_per_s_sq;
 
-inline constexpr double FL_ENCODER_OFFSET = -0.468520;
-inline constexpr double FR_ENCODER_OFFSET = -.028076;
-inline constexpr double BL_ENCODER_OFFSET = -0.218262;
-inline constexpr double BR_ENCODER_OFFSET = 0.112793;
+inline constexpr double FL_ENCODER_OFFSET = -0.467041;
+inline constexpr double FR_ENCODER_OFFSET = -.023682;
+inline constexpr double BL_ENCODER_OFFSET = -0.247070;
+inline constexpr double BR_ENCODER_OFFSET = 0.115723;
 
-inline constexpr units::ampere_t SLIP_CURRENT = 180_A;
-inline constexpr units::ampere_t SUPPLY_CURRENT_LIMIT = 80_A;
+inline constexpr units::ampere_t SLIP_CURRENT = 120_A;
+inline constexpr units::ampere_t SUPPLY_CURRENT_LIMIT = 60_A;
 
 inline constexpr units::ampere_t SWERVE_STEER_CURRENT_LIMIT = 40_A;
 

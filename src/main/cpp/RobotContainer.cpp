@@ -23,7 +23,7 @@ void RobotContainer::ConfigureBindings() {
 
   operatorController.Back().WhileTrue(intakeSub.SpitOutNotes());
 
-  operatorController.LeftBumper().OnTrue(dunkSub.PivotDunkNotesOut());
+  // operatorController.LeftBumper().OnTrue(dunkSub.PivotDunkNotesOut());
 
   operatorController.Y().WhileTrue(
       DunkNote().AlongWith(shooterSub.GoToVelocityCmd(
@@ -39,8 +39,9 @@ void RobotContainer::ConfigureBindings() {
       [this] { return driveSub.CalcDistanceFromSpeaker(); }));
   operatorController.B().OnFalse(NotUsingShooter());
 
-  driverController.LeftBumper().WhileTrue(
-      climbSub.ManualControl([] { return 1; }, [] { return -1; }));
+  driverController.LeftBumper().WhileTrue(frc2::cmd::Sequence(
+      dunkSub.PivotDunkNotesOut(),
+      climbSub.ManualControl([] { return 1; }, [] { return -1; })));
 
   /*
     driverController.LeftBumper().WhileTrue(driveSub.DriveFactory(
