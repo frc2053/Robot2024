@@ -32,7 +32,9 @@ enum CommandSelector {
   SIX_NOTE,
   PODIUM_NOTE,
   RUIN_UR_DAY,
-  THREE_MIDDLE_SUB
+  THREE_MIDDLE_SUB,
+  SILLY_TWO_SOURCE,
+  SILLY_TWO_AMP
 };
 
 class Autos {
@@ -136,6 +138,10 @@ class Autos {
         std::pair{SIX_NOTE, pathplanner::PathPlannerAuto("SixNote").ToPtr()},
         std::pair{PODIUM_NOTE,
                   pathplanner::PathPlannerAuto("PodiumNote").ToPtr()},
+        std::pair{SILLY_TWO_SOURCE,
+                  pathplanner::PathPlannerAuto("SillyTwoNoteSource").ToPtr()},
+        std::pair{SILLY_TWO_AMP,
+                  pathplanner::PathPlannerAuto("SillyTwoNoteAmp").ToPtr()},
         std::pair{RUIN_UR_DAY,
                   pathplanner::PathPlannerAuto("RuinUrDay").ToPtr()});
 
@@ -152,6 +158,9 @@ class Autos {
     chooser.AddOption("Six Note", CommandSelector::SIX_NOTE);
     chooser.AddOption("Podium Note", CommandSelector::PODIUM_NOTE);
     chooser.AddOption("Ruin Ur Day", CommandSelector::RUIN_UR_DAY);
+    chooser.AddOption("Silly Two Note Source",
+                      CommandSelector::SILLY_TWO_SOURCE);
+    chooser.AddOption("Silly Two Note Amp", CommandSelector::SILLY_TWO_AMP);
 
     frc::SmartDashboard::PutData("Auto Chooser", &chooser);
   }
