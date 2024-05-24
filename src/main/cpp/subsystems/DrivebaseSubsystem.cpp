@@ -177,6 +177,22 @@ frc2::CommandPtr DrivebaseSubsystem::TurnToAngleFactory(
       .WithName("Turn To Angle Factory");
 }
 
+frc2::CommandPtr DrivebaseSubsystem::XCommand() {
+  return frc2::cmd::Run(
+             [this] {
+               std::array<frc::SwerveModuleState, 4> states;
+
+               states[0].angle = 45_deg;
+               states[1].angle = -45_deg;
+               states[2].angle = -45_deg;
+               states[3].angle = 45_deg;
+
+               swerveDrive.SetModuleStates(states, true);
+             },
+             {this})
+      .WithName("X Pattern");
+}
+
 frc2::CommandPtr DrivebaseSubsystem::SelfTest() {
   return swerveDrive.SelfTest({this});
 }

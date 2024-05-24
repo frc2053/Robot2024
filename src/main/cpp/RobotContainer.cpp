@@ -39,17 +39,22 @@ void RobotContainer::ConfigureBindings() {
       [this] { return driveSub.CalcDistanceFromSpeaker(); }));
   operatorController.B().OnFalse(NotUsingShooter());
 
-  driverController.Back().WhileTrue(
+  driverController.LeftBumper().WhileTrue(
       climbSub.ManualControl([] { return 1; }, [] { return -1; }));
 
-  driverController.LeftBumper().WhileTrue(driveSub.DriveFactory(
-      DeadbandAndSquare([this] {
-        return ShouldFlipControlsForDriver(-driverController.GetLeftY());
-      }),
-      [this] { return -rotSpeed; }, DeadbandAndSquare([this] {
-        return ShouldFlipControlsForDriver(-driverController.GetRightX());
-      }),
-      [] { return false; }));
+  /*
+    driverController.LeftBumper().WhileTrue(driveSub.DriveFactory(
+        DeadbandAndSquare([this] {
+          return ShouldFlipControlsForDriver(-driverController.GetLeftY());
+        }),
+        [this] { return -rotSpeed; }, DeadbandAndSquare([this] {
+          return ShouldFlipControlsForDriver(-driverController.GetRightX());
+        }),
+        [] { return false; }));
+
+  */
+
+  driverController.RightStick().OnTrue(driveSub.XCommand());
 
   driverController.RightTrigger().WhileTrue(
       driveSub

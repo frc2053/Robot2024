@@ -59,6 +59,8 @@ class DrivebaseSubsystem : public frc2::SubsystemBase {
   frc2::CommandPtr SysIdQuasistaticDrive(frc2::sysid::Direction direction);
   frc2::CommandPtr SysIdDynamicDrive(frc2::sysid::Direction direction);
 
+  frc2::CommandPtr XCommand();
+
   frc2::CommandPtr WheelRadFwd();
   frc2::CommandPtr WheelRadRev();
 
