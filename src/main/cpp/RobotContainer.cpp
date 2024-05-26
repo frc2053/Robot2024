@@ -54,7 +54,7 @@ void RobotContainer::ConfigureBindings() {
 
   */
 
-  driverController.RightStick().OnTrue(driveSub.XCommand());
+  driverController.RightStick().WhileTrue(driveSub.XCommand());
 
   driverController.RightTrigger().WhileTrue(
       driveSub
