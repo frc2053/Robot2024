@@ -295,6 +295,8 @@ inline constexpr double BR_ENCODER_OFFSET = 0.112793;
 inline constexpr units::ampere_t SLIP_CURRENT = 180_A;
 inline constexpr units::ampere_t SUPPLY_CURRENT_LIMIT = 80_A;
 
+inline constexpr units::ampere_t SWERVE_STEER_CURRENT_LIMIT = 40_A;
+
 inline constexpr std::array<frc::Translation2d, 4> moduleLocations{
     frc::Translation2d{WHEELBASE_LENGTH / 2, WHEELBASE_WIDTH / 2},
     frc::Translation2d{WHEELBASE_LENGTH / 2, -WHEELBASE_WIDTH / 2},

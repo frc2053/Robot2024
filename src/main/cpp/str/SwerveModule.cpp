@@ -359,6 +359,11 @@ ctre::phoenix::StatusCode SwerveModule::ConfigureSteerMotor(bool invertSteer) {
   steerConfig.CurrentLimits.SupplyCurrentLimit =
       constants::swerve::physical::SUPPLY_CURRENT_LIMIT.value();
 
+  steerConfig.TorqueCurrent.PeakForwardTorqueCurrent =
+      constants::swerve::physical::SWERVE_STEER_CURRENT_LIMIT.value();
+  steerConfig.TorqueCurrent.PeakReverseTorqueCurrent =
+      -constants::swerve::physical::SWERVE_STEER_CURRENT_LIMIT.value();
+
   return steerMotor.GetConfigurator().Apply(steerConfig);
 }
 
