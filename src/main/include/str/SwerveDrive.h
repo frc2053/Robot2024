@@ -58,6 +58,7 @@ class SwerveDrive {
 
   frc::Rotation2d GetHeading() const;
   frc::Rotation2d GetGyroYaw() const;
+  frc::ChassisSpeeds GetRobotRelativeSpeeds();
   void SetGyroYaw(units::radian_t newYaw);
   frc::Pose2d GetPose() const;
   frc::Pose2d GetOdomPose() const;
@@ -88,6 +89,10 @@ class SwerveDrive {
   void AddVisionMeasurement(const frc::Pose2d& visionMeasurement,
                             units::second_t timestamp,
                             const Eigen::Vector3d& stdDevs);
+
+  units::meter_t driveRadius =
+      units::math::hypot(constants::swerve::physical::WHEELBASE_LENGTH / 2.0,
+                         constants::swerve::physical::WHEELBASE_WIDTH / 2.0);
 
  private:
   std::array<SwerveModule, 4> swerveModules = {
@@ -150,9 +155,6 @@ class SwerveDrive {
   units::meter_t effectiveWheelRadius = 0_m;
   frc::SlewRateLimiter<units::radians_per_second> omegaLimiter{1_rad_per_s /
                                                                1_s};
-  units::meter_t driveRadius =
-      units::math::hypot(constants::swerve::physical::WHEELBASE_LENGTH / 2.0,
-                         constants::swerve::physical::WHEELBASE_WIDTH / 2.0);
 
   // Logging
   frc::Field2d ntField{};

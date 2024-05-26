@@ -35,7 +35,7 @@ void DrivebaseSubsystem::SetupAutoBuilder() {
         swerveDrive.SetGyroYaw(resetPose.Rotation().Radians());
         swerveDrive.SeedFieldRelative(resetPose);
       },
-      [] { return frc::ChassisSpeeds{}; },
+      [this] { return swerveDrive.GetRobotRelativeSpeeds(); },
       [this](frc::ChassisSpeeds speeds) {
         swerveDrive.SetChassisSpeeds(speeds, false);
       },
@@ -49,7 +49,7 @@ void DrivebaseSubsystem::SetupAutoBuilder() {
               constants::swerve::pathplanning::ROTATION_I,
               constants::swerve::pathplanning::ROTATION_D},
           constants::swerve::physical::MAX_LINEAR_SPEED_FOC,
-          constants::swerve::physical::WHEELBASE_LENGTH / 2,
+          swerveDrive.driveRadius,
           pathplanner::ReplanningConfig{true, true, .25_m, .25_m}),
       [this] { return ShouldMirrorPath(); }, this);
 }

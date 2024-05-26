@@ -249,6 +249,16 @@ frc::Pose2d SwerveDrive::GetOdomPose() const {
   return odom.GetPose();
 }
 
+frc::ChassisSpeeds SwerveDrive::GetRobotRelativeSpeeds() {
+  std::array<frc::SwerveModuleState, 4> moduleStates;
+
+  for (size_t i = 0; i < swerveModules.size(); i++) {
+    moduleStates[i] = swerveModules[i].GetState();
+  }
+
+  return constants::swerve::physical::KINEMATICS.ToChassisSpeeds(moduleStates);
+}
+
 units::ampere_t SwerveDrive::GetCurrentDraw() const {
   return totalCurrentDraw;
 }
