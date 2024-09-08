@@ -287,10 +287,10 @@ inline constexpr units::radians_per_second_t MAX_ROTATION_SPEED = 720_deg_per_s;
 inline constexpr units::radians_per_second_squared_t MAX_ROTATION_ACCEL =
     10000_deg_per_s_sq;
 
-inline constexpr double FL_ENCODER_OFFSET = -0.467041;
-inline constexpr double FR_ENCODER_OFFSET = -.023682;
-inline constexpr double BL_ENCODER_OFFSET = -0.247070;
-inline constexpr double BR_ENCODER_OFFSET = 0.115723;
+inline constexpr double FL_ENCODER_OFFSET = 0.008789;
+inline constexpr double FR_ENCODER_OFFSET = -0.303223;
+inline constexpr double BL_ENCODER_OFFSET = -0.141357;
+inline constexpr double BR_ENCODER_OFFSET = 0.214111;
 
 inline constexpr units::ampere_t SLIP_CURRENT = 120_A;
 inline constexpr units::ampere_t SUPPLY_CURRENT_LIMIT = 60_A;
