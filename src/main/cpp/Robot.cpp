@@ -9,6 +9,7 @@
 #include <wpinet/PortForwarder.h>
 
 void Robot::RobotInit() {
+  std::cout << "hello world\n";
   str::DataUtils::SetupDataLogging();
   str::DataUtils::LogGitInfo();
   AddPeriodic([this] { m_container.GetDrivebaseSubsystem().UpdateOdometry(); },
